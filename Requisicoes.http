@@ -1,9 +1,9 @@
+### Apresenta lista de Institutos:
 GET http://localhost:8080/instituto/ HTTP/1.1
 content-type: application/json
 
 
-###
-
+### Cadastra instituto:
 POST http://localhost:8080/instituto/ HTTP/1.1
 content-type: application/json
 
@@ -11,3 +11,6 @@ content-type: application/json
     "nome": "Universidade Federal do Rio de Janeiro",
     "acronimo": "UFRJ"
 }
+
+### Apaga o instituto id 1:
+GET http://localhost:8080/instituto/1 HTTP/1.1
