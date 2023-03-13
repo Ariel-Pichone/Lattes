@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.ws.rs.Path;
+
 
 @RestController
 @RequestMapping("/instituto")
@@ -29,6 +31,17 @@ public class InstitutoController {
     public void gravar(@RequestBody Instituto instituto){
         institutoRepository.save(instituto);
     }
+
+    @GetMapping("/nome/{nome}")
+    public List<Instituto> getInstitutoPeloNome(@PathVariable("nome") String nome){
+        return institutoRepository.findByNomeContainingIgnoreCase(nome);
+    }
+
+    @GetMapping("/acronimo/{acronimo}")
+    public List<Instituto> getInstitutoPeloAcronimo(@PathVariable("acronimo") String acronimo){
+        return institutoRepository.findByAcronimoContainingIgnoreCase(acronimo);
+    }
+
 
     @GetMapping("/{id}")
     public void remover(@PathVariable("id") Long id) throws Exception{
