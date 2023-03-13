@@ -14,3 +14,9 @@ content-type: application/json
 
 ### Apaga o instituto id 1:
 GET http://localhost:8080/instituto/1 HTTP/1.1
+
+### Pesquisa o instituto pelo o nome em qualquer parte
+GET http://localhost:8080/instituto/nome/universidade HTTP/1.1
+
+### Pesquisa o instituto pelo o acronimo em qualquer parte 
+GET http://localhost:8080/instituto/acronimo/UF HTTP/1.1
