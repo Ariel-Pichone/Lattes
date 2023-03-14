@@ -1,4 +1,5 @@
 package org.prog.lattes.controller;
+
 import java.util.List;
 
 import org.prog.lattes.model.Instituto;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.ws.rs.Path;
 
-
 @RestController
 @RequestMapping("/instituto")
 public class InstitutoController {
@@ -23,28 +23,32 @@ public class InstitutoController {
     }
 
     @GetMapping("/")
-    public List<Instituto> getInstitutos(){
+    public List<Instituto> getInstitutos() {
         return institutoRepository.findAll();
     }
 
     @PostMapping("/")
-    public void gravar(@RequestBody Instituto instituto){
+    public void gravar(@RequestBody Instituto instituto) {
         institutoRepository.save(instituto);
     }
 
     @GetMapping("/nome/{nome}")
-    public List<Instituto> getInstitutoPeloNome(@PathVariable("nome") String nome){
+    public List<Instituto> getInstitutoPeloNome(@PathVariable("nome") String nome) {
         return institutoRepository.findByNomeContainingIgnoreCase(nome);
     }
 
     @GetMapping("/acronimo/{acronimo}")
-    public List<Instituto> getInstitutoPeloAcronimo(@PathVariable("acronimo") String acronimo){
+    public List<Instituto> getInstitutoPeloAcronimo(@PathVariable("acronimo") String acronimo) {
         return institutoRepository.findByAcronimoContainingIgnoreCase(acronimo);
     }
 
+    @GetMapping("/pesquisar/{texto}")
+    public List<Instituto> GetInstitutoQualquerCampo(@PathVariable("texto") String texto) {
+        return institutoRepository.findByNomeContainingIgnoreCaseOrAcronimoContainingIgnoreCase(texto, texto);
+    }
 
     @GetMapping("/{id}")
-    public void remover(@PathVariable("id") Long id) throws Exception{
+    public void remover(@PathVariable("id") Long id) throws Exception {
         var i = institutoRepository.findById(id);
 
         if (i.isPresent()) {
