@@ -1,15 +1,17 @@
+###########################################################################
+#                REQUISIÇÕES PARA OPERAÇÕES COM INSTITUTOS                #
+###########################################################################
+
 ### Apresenta lista de Institutos:
 GET http://localhost:8080/instituto/ HTTP/1.1
 content-type: application/json
 
-
 ### Cadastra instituto:
 POST http://localhost:8080/instituto/ HTTP/1.1
 content-type: application/json
-
 {
-    "nome": "Universidade Federal do Rio de Janeiro",
-    "acronimo": "UFRJ"
+    "nome": "Instituto Federal Fluminense",
+    "acronimo": "IFF"
 }
 
 ### Apaga o instituto id 1:
@@ -20,3 +22,51 @@ GET http://localhost:8080/instituto/nome/universidade HTTP/1.1
 
 ### Pesquisa o instituto pelo o acronimo em qualquer parte 
 GET http://localhost:8080/instituto/acronimo/UF HTTP/1.1
+
+### Pesquisa o instituto em qualquer parte 
+GET http://localhost:8080/instituto/pesquisar/UNIVERSIDADE HTTP/1.1
+
+###########################################################################
+#               REQUISIÇÕES PARA OPERAÇÕES COM PESQUISADORES              #
+###########################################################################
+
+### Apresenta lista de pesquisadores:
+GET http://localhost:8080/pesquisador/ HTTP/1.1
+content-type: application/json
+
+### Cadastra pesquisador:
+POST http://localhost:8080/pesquisador/ HTTP/1.1
+content-type: application/json
+{
+    "nome": "Isac Mendes Lacerda",
+    "email": "isac@femass.edu.br",
+    "descricao": "Professor da FEMASS"
+}
+
+POST http://localhost:8080/pesquisador/ HTTP/1.1
+content-type: application/json
+{
+    "nome": "Alan Carvalho Galante",
+    "email": "alan@femass.edu.br",
+    "descricao": "Professor da FEMASS"
+}
+
+POST http://localhost:8080/pesquisador/ HTTP/1.1
+content-type: application/json
+{
+    "nome": "Afonso Carlos Tavares Pinheiro",
+    "email": "afonso@femass.edu.br",
+    "descricao": "Professor da FEMASS"
+}
+
+### Apaga o pesquisador id 1:
+GET http://localhost:8080/pesquisador/1 HTTP/1.1
+
+### Pesquisa o pesquisador pelo o nome em qualquer parte
+GET http://localhost:8080/pesquisador/nome HTTP/1.1
+
+### Pesquisa o pesquisador pelo e-mail em qualquer parte 
+GET http://localhost:8080/pesquisador/email HTTP/1.1
+
+### Pesquisa o pesquisador em qualquer parte 
+GET http://localhost:8080/pesquisador/pesquisar HTTP/1.1
