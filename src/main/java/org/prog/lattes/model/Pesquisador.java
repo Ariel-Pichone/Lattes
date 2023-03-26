@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Pesquisador {
@@ -14,8 +15,9 @@ public class Pesquisador {
     private String nome;
     private String email;
     private String descricao;
-    
-    //FALTA VINCULAR O PESQUISADOR A UM INSTITUTO
+
+    @ManyToOne
+    private Instituto instituto;
 
     public Long getId() {
         return this.id;
@@ -77,5 +79,13 @@ public class Pesquisador {
         } else if (!id.equals(other.id))
             return false;
         return true;
+    }
+
+    public Instituto getInstituto() {
+        return instituto;
+    }
+
+    public void setInstituto(Instituto instituto) {
+        this.instituto = instituto;
     }   
 }
