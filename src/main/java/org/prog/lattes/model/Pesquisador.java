@@ -1,61 +1,62 @@
 package org.prog.lattes.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
-@Entity
-public class Pesquisador {
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String nome;
-    private String email;
-    private String descricao;
 
+@Entity
+public class Pesquisador extends AbstractModel{
+    
+    @Column(name = "nome", length = 50)
+    private String nome;
+
+    @Column(name = "uf", length = 5)
+    private String ufNascimento;
+
+    @Column(name = "identificador", length = 30)
+    private String identificador;
+    
     @ManyToOne
     private Instituto instituto;
 
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getNome() {
-        return this.nome;
+        return nome;
+
     }
 
     public void setNome(String nome) {
         this.nome = nome;
     }
 
-    public String getEmail() {
-        return this.email;
+
+    public String getUfNascimento() {
+        return ufNascimento;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUfNascimento(String ufNascimento) {
+        this.ufNascimento = ufNascimento;
     }
 
-    public String getDescricao() {
-        return this.descricao;
+    public String getIdentificador() {
+        return identificador;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setIdentificador(String identificador) {
+        this.identificador = identificador;
     }
 
     @Override
     public String toString() {
-        return nome;
+        // TODO Auto-generated method stub
+        return identificador;
     }
-
+    
     @Override
     public int hashCode() {
         final int prime = 31;
