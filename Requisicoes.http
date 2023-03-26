@@ -1,10 +1,10 @@
 ### Apresenta lista de Institutos:
-GET http://localhost:8080/instituto/ HTTP/1.1
+GET http://localhost:8072/instituto/ HTTP/1.1
 content-type: application/json
 
 
 ### Cadastra instituto:
-POST http://localhost:8080/instituto/ HTTP/1.1
+POST http://localhost:8072/instituto/ HTTP/1.1
 content-type: application/json
 
 {
