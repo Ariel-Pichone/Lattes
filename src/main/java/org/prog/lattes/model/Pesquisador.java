@@ -16,6 +16,8 @@ public class Pesquisador extends AbstractModel{
 
     @Column(name = "identificador", length = 30)
     private String identificador;
+
+    
     
     @ManyToOne
     private Instituto instituto;

@@ -3,11 +3,11 @@
 ###########################################################################
 
 ### Apresenta lista de Institutos:
-GET http://localhost:8072/instituto/ HTTP/1.1
+GET http://localhost:8080/instituto/ HTTP/1.1
 content-type: application/json
 
 ### Cadastra instituto:
-POST http://localhost:8072/instituto/ HTTP/1.1
+POST http://localhost:8080/instituto/ HTTP/1.1
 content-type: application/json
 
 {
@@ -81,7 +81,7 @@ content-type: application/json
 GET http://localhost:8080/pesquisador/2 HTTP/1.1
 
 ### Pesquisa o pesquisador pelo o nome em qualquer parte
-GET http://localhost:8080/pesquisador/nome/Afonso HTTP/1.1
+GET http://localhost:8080/pesquisador/nome/Leonardo HTTP/1.1
 
 ### Pesquisa o pesquisador pelo e-mail em qualquer parte 
 GET http://localhost:8080/pesquisador/email/isac HTTP/1.1

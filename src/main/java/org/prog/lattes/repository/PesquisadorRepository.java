@@ -12,7 +12,7 @@ public interface PesquisadorRepository extends JpaRepository<Pesquisador, Long> 
 
     List<Pesquisador> findByNomeContainingIgnoreCase(String nome);
 
-    List<Pesquisador> findByEmailContainingIgnoreCase(String email);
+/*     List<Pesquisador> findByEmailContainingIgnoreCase(String email);
 
-     List<Pesquisador> findByNomeContainingIgnoreCaseOrEmailContainingIgnoreCase(String nome, String email);
+     List<Pesquisador> findByNomeContainingIgnoreCaseOrEmailContainingIgnoreCase(String nome, String email);*/
 }
