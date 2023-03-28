@@ -20,6 +20,10 @@ export default function Instituto() {
     nome: '',
     acronimo: '',
   });
+  const [infoSearch, setInfoSearch] = useState({
+    termo: '',
+    campo: 'Todos',
+  });
 
   const [objToDelete, setObjToDelete] = useState({});
 
@@ -28,18 +32,75 @@ export default function Instituto() {
   }
 
   function handleChangeInfoCadInstituto(data) {
-    // console.log(data);
     const value = data.target.value;
     setInfoCadInstituto({
       ...InfoCadInstituto,
       [data.target.name]: value,
     });
+  }
 
-    console.log(InfoCadInstituto.nome);
+  function handleChangePesquisa(data) {
+    const value = data.target.value;
+    setInfoSearch({
+      ...infoSearch,
+      [data.target.name]: value,
+    });
+  }
+
+  function handlePerquisarInstituto() {
+    const termo = infoSearch.termo;
+    const campo = infoSearch.campo;
+    let url = '';
+
+    switch (campo) {
+      case 'Todos':
+        url = 'http://localhost:8080/instituto/pesquisar/';
+        break;
+      case 'Nome':
+        url = 'http://localhost:8080/instituto/nome/';
+        break;
+      case 'Acrônimo':
+        url = 'http://localhost:8080/instituto/acronimo/';
+        break;
+    }
+
+    console.log(campo);
+
+    fetch(`${url}` + termo)
+      .then(console.log('pesquisa realizada com o campo' + campo))
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data);
+      })
+      .catch((err) => console.log(err));
+
+    console.log(data);
+    console.log(`${url}` + termo);
   }
 
   function handleCreateInstituto() {
-    console.log(InfoCadInstituto.nome);
+    fetch('http://localhost:8080/instituto/', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        nome: InfoCadInstituto.nome,
+        acronimo: InfoCadInstituto.acronimo,
+      }),
+    })
+      .then((res) => {
+        console.log(res);
+        setShowCreateForm(!showCreateForm);
+        setInfoCadInstituto({
+          nome: '',
+          acronimo: '',
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function deleteInstituto(id) {
@@ -58,7 +119,7 @@ export default function Instituto() {
         setLoading(false);
       })
       .catch((err) => console.log(err));
-  }, [showDeleteConfirmation]);
+  }, [showDeleteConfirmation, showCreateForm]);
 
   if (isLoading) return <p>Loading...</p>;
   if (!data) return <p>No data</p>;
@@ -72,13 +133,21 @@ export default function Instituto() {
           <div className="block mr-4">
             <TextInput
               className="w-96"
-              id="Pesquisa"
+              id="termo"
+              name="termo"
               placeholder="Termo de pesquisa"
+              value={infoSearch.termo}
+              onChange={handleChangePesquisa}
             />
           </div>
 
           <div className="mr-4" id="select">
-            <Select id="countries" required={true}>
+            <Select
+              id="camp"
+              name="campo"
+              required={true}
+              onChange={handleChangePesquisa}
+            >
               <option>Todos</option>
               <option>Nome</option>
               <option>Acrônimo</option>
@@ -87,6 +156,7 @@ export default function Instituto() {
           <div className="flex justify-between items-center">
             <button
               type="button"
+              onClick={() => handlePerquisarInstituto()}
               className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
             >
               Pesquisar
@@ -120,7 +190,10 @@ export default function Instituto() {
           </thead>
           <tbody>
             {data.map((Instituto) => (
-              <tr className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+              <tr
+                key={Instituto.id}
+                className="bg-white border-b dark:bg-gray-900 dark:border-gray-700"
+              >
                 <th
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
