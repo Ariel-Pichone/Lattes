@@ -16,7 +16,7 @@ public class ReadXML{
     public void start(){
 
         System.out.println("Starting reading xml");
-        File diretorio = new File("C:\\Users\\jvito\\OneDrive\\Documentos\\José Vitor\\2023.1\\DS1\\Lattes\\src\\main\\java\\org\\prog\\lattes\\files");
+        File diretorio = new File("src\\main\\java\\org\\prog\\lattes\\files");
         File[] files;
         files = diretorio.listFiles((dir, name)-> name.endsWith(".xml"));
         assert files != null;
