@@ -1,6 +1,13 @@
 'use client';
 
-import { Button, Modal } from 'flowbite-react';
+import {
+  Button,
+  Checkbox,
+  Label,
+  Modal,
+  Select,
+  TextInput,
+} from 'flowbite-react';
 import { useState, useEffect } from 'react';
 import { HiOutlineExclamationCircle } from '@react-icons/all-files/hi/HiOutlineExclamationCircle';
 
@@ -8,17 +15,37 @@ export default function Instituto() {
   const [data, setData] = useState(null);
   const [isLoading, setLoading] = useState(true);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [showCreateForm, setShowCreateForm] = useState(false);
+  const [InfoCadInstituto, setInfoCadInstituto] = useState({
+    nome: '',
+    acronimo: '',
+  });
+
   const [objToDelete, setObjToDelete] = useState({});
 
   function handleDelete(instituto) {
     setObjToDelete(instituto), setShowDeleteConfirmation(true);
   }
 
+  function handleChangeInfoCadInstituto(data) {
+    // console.log(data);
+    const value = data.target.value;
+    setInfoCadInstituto({
+      ...InfoCadInstituto,
+      [data.target.name]: value,
+    });
+
+    console.log(InfoCadInstituto.nome);
+  }
+
+  function handleCreateInstituto() {
+    console.log(InfoCadInstituto.nome);
+  }
+
   function deleteInstituto(id) {
     fetch(`http://localhost:8080/instituto/${id}`)
       .then(console.log('deleted'))
       .then(setShowDeleteConfirmation(!showDeleteConfirmation))
-      .then(setLoading(true))
       .catch((err) => console.log(err));
   }
 
@@ -31,7 +58,7 @@ export default function Instituto() {
         setLoading(false);
       })
       .catch((err) => console.log(err));
-  }, [isLoading]);
+  }, [showDeleteConfirmation]);
 
   if (isLoading) return <p>Loading...</p>;
   if (!data) return <p>No data</p>;
@@ -40,8 +67,36 @@ export default function Instituto() {
     <div className="mx-2">
       <div className="flex justify-between items-center">
         <h1 className="text-4xl font-bold px-4 py-6">Instituto</h1>
+
+        <div className='flex justify-between items-center"'>
+          <div className="block mr-4">
+            <TextInput
+              className="w-96"
+              id="Pesquisa"
+              placeholder="Termo de pesquisa"
+            />
+          </div>
+
+          <div className="mr-4" id="select">
+            <Select id="countries" required={true}>
+              <option>Todos</option>
+              <option>Nome</option>
+              <option>Acrônimo</option>
+            </Select>
+          </div>
+          <div className="flex justify-between items-center">
+            <button
+              type="button"
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            >
+              Pesquisar
+            </button>
+          </div>
+        </div>
+
         <button
           type="button"
+          onClick={() => setShowCreateForm(true)}
           className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
         >
           Incluir
@@ -58,7 +113,9 @@ export default function Instituto() {
               <th scope="col" className="px-6 py-3">
                 Acrônimo
               </th>
-              <th>Ações</th>
+              <th cope="col" className="px-6 py-3">
+                Ações
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -122,6 +179,58 @@ export default function Instituto() {
                   }
                 >
                   Não, cancelar
+                </Button>
+              </div>
+            </div>
+          </Modal.Body>
+        </Modal>
+      </>
+
+      {/* MODAL INSERIR */}
+
+      <>
+        <Modal
+          show={showCreateForm}
+          size="md"
+          popup={true}
+          onClose={() => setShowCreateForm(!showCreateForm)}
+        >
+          <Modal.Header />
+          <Modal.Body>
+            <div className="space-y-6 px-6 pb-4 sm:pb-6 lg:px-8 xl:pb-8">
+              <h3 className="text-xl font-medium text-gray-900 dark:text-white">
+                Cadastrar Instituto
+              </h3>
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="Nome" value="Nome do Instituto" />
+                </div>
+                <TextInput
+                  id="nome"
+                  name="nome"
+                  value={InfoCadInstituto.nome}
+                  onChange={handleChangeInfoCadInstituto}
+                  placeholder="Universidade Federal do Rio de Janeiro"
+                  required={true}
+                />
+              </div>
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="acronimo" value="Acrônimo" />
+                </div>
+                <TextInput
+                  id="acronimo"
+                  name="acronimo"
+                  value={InfoCadInstituto.acronimo}
+                  onChange={handleChangeInfoCadInstituto}
+                  placeholder="UFRJ"
+                  required={true}
+                />
+              </div>
+              <div className="flex justify-between"></div>
+              <div className="w-full">
+                <Button onClick={() => handleCreateInstituto()}>
+                  Cadastrar
                 </Button>
               </div>
             </div>
