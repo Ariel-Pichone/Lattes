@@ -2,6 +2,9 @@ package org.prog.lattes.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
 
@@ -16,17 +19,19 @@ public class Pesquisador extends AbstractModel{
 
     @Column(name = "identificador", length = 30)
     private String identificador;
-        
+
     @ManyToOne
     private Instituto instituto;
 
     public String getNome() {
         return nome;
+
     }
 
     public void setNome(String nome) {
         this.nome = nome;
     }
+
 
     public String getUfNascimento() {
         return ufNascimento;
@@ -44,18 +49,19 @@ public class Pesquisador extends AbstractModel{
         this.identificador = identificador;
     }
 
-    public Instituto getInstituto() {
-        return instituto;
-    }
-
-    public void setInstituto(Instituto instituto) {
-        this.instituto = instituto;
-    }
 
     @Override
     public String toString() {
         // TODO Auto-generated method stub
         return identificador;
     }
-    
+     
+  
+    public Instituto getInstituto() {
+        return instituto;
+    }
+
+    public void setInstituto(Instituto instituto) {
+        this.instituto = instituto;
+    }   
 }

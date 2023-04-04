@@ -1,15 +1,18 @@
+###########################################################################
+#                REQUISIÇÕES PARA OPERAÇÕES COM INSTITUTOS                #
+###########################################################################
+
 ### Apresenta lista de Institutos:
 GET http://localhost:8072/instituto/ HTTP/1.1
 content-type: application/json
-
 
 ### Cadastra instituto:
 POST http://localhost:8072/instituto/ HTTP/1.1
 content-type: application/json
 
 {
-    "nome": "Universidade Federal do Rio de Janeiro",
-    "acronimo": "UFRJ"
+    "nome": "Faculdade Professor Miguel Ângelo da Silva Santos",
+    "acronimo": "FEMASS"
 }
 
 ### Apaga o instituto id 1:

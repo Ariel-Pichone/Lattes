@@ -17,18 +17,23 @@ public class Instituto {
     public Long getId() {
         return id;
     }
+    
     public void setId(Long id) {
         this.id = id;
     }
+    
     public String getNome() {
         return nome;
     }
+    
     public void setNome(String nome) {
         this.nome = nome;
     }
+    
     public String getAcronimo() {
         return acronimo;
     }
+    
     public void setAcronimo(String acronimo) {
         this.acronimo = acronimo;
     }
@@ -37,6 +42,7 @@ public class Instituto {
     public String toString() {
         return nome;
     }
+    
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -44,6 +50,7 @@ public class Instituto {
         result = prime * result + ((id == null) ? 0 : id.hashCode());
         return result;
     }
+    
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -59,8 +66,5 @@ public class Instituto {
         } else if (!id.equals(other.id))
             return false;
         return true;
-    }
-
-
-    
+    }   
 }
