@@ -28,11 +28,12 @@ public class PesquisadorXml {
 
     private final PesquisadorService pesquisadorService;
 
+    
     public PesquisadorXml(PesquisadorService pesquisadorService){
         this.pesquisadorService = pesquisadorService;
     }
 
-    public void convert(File file) {
+    public void convert(File file, Instituto instituto) {
 
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();//DocumentBuilderFactory é usada para criar uma instância de DocumentBuilder
@@ -69,7 +70,7 @@ public class PesquisadorXml {
                     pesquisador.setNome(nome);
                     pesquisador.setUfNascimento(ufNascimento);
                     pesquisador.setIdentificador(identificador);
-                    
+                    pesquisador.setInstituto(instituto);
                     
                     pesquisadorList.add(pesquisador);
                 }

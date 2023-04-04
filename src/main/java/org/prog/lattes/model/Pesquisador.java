@@ -2,6 +2,7 @@ package org.prog.lattes.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 
 
 @Entity
@@ -15,7 +16,9 @@ public class Pesquisador extends AbstractModel{
 
     @Column(name = "identificador", length = 30)
     private String identificador;
-
+        
+    @ManyToOne
+    private Instituto instituto;
 
     public String getNome() {
         return nome;
@@ -39,6 +42,14 @@ public class Pesquisador extends AbstractModel{
 
     public void setIdentificador(String identificador) {
         this.identificador = identificador;
+    }
+
+    public Instituto getInstituto() {
+        return instituto;
+    }
+
+    public void setInstituto(Instituto instituto) {
+        this.instituto = instituto;
     }
 
     @Override
