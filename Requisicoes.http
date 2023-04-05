@@ -24,67 +24,20 @@ GET http://localhost:8080/instituto/nome/universidade HTTP/1.1
 ### Pesquisa o instituto pelo o acronimo em qualquer parte 
 GET http://localhost:8080/instituto/acronimo/UF HTTP/1.1
 
-### Pesquisa o instituto em qualquer parte 
-GET http://localhost:8080/instituto/pesquisar/UNIVERSIDADE HTTP/1.1
 
-###########################################################################
-#               REQUISIÇÕES PARA OPERAÇÕES COM PESQUISADORES              #
-###########################################################################
+///Pesquisador
 
-### Apresenta lista de pesquisadores:
-GET http://localhost:8080/pesquisador/ HTTP/1.1
-content-type: application/json
+###  Pegar todos os pesquisadores que estão cadastrados no banco de dados 
+GET http://localhost:8072/pesquisador/ HTTP/1.1
 
-### Cadastra pesquisador:
-POST http://localhost:8080/pesquisador/ HTTP/1.1
-content-type: application/json
-
-{
-    "nome": "Isac Mendes Lacerda",
-    "email": "isac@femass.edu.br",
-    "descricao": "Professor da FEMASS",
-    "instituto":
-        {"id":2,
-        "nome":"Faculdade Professor Miguel Ângelo da Silva Santos",
-        "acronimo":"FEMASS"}
-}
-
-### Cadastra pesquisador:
-POST http://localhost:8080/pesquisador/ HTTP/1.1
-content-type: application/json
-
-{
-    "nome": "Alan Carvalho Galante",
-    "email": "alan@femass.edu.br",
-    "descricao": "Professor da FEMASS",
-    "instituto":
-        {"id":2,
-        "nome":"Faculdade Professor Miguel Ângelo da Silva Santos",
-        "acronimo":"FEMASS"}
-}
-
-### Cadastra pesquisador:
-POST http://localhost:8080/pesquisador/ HTTP/1.1
-content-type: application/json
-
-{
-    "nome": "Afonso Carlos Tavares Pinheiro",
-    "email": "afonso@femass.edu.br",
-    "descricao": "Professor da FEMASS",
-    "instituto":
-        {"id":2,
-        "nome":"Faculdade Professor Miguel Ângelo da Silva Santos",
-        "acronimo":"FEMASS"}
-}
-
-### Apaga o pesquisador id 1:
-GET http://localhost:8080/pesquisador/2 HTTP/1.1
+### Adicionar um pesquisador com instituto no banco de dados 
+GET http://localhost:8072/pesquisador/add/0263660448893625/instituto/2 HTTP/1.1
 
 ### Pesquisa o pesquisador pelo o nome em qualquer parte
 GET http://localhost:8080/pesquisador/nome/Leonardo HTTP/1.1
 
-### Pesquisa o pesquisador pelo e-mail em qualquer parte 
-GET http://localhost:8080/pesquisador/email/isac HTTP/1.1
+### Procura um pesquisador baseado no identificador, porém é necessário que esteja cadastrado no bd 
+GET http://localhost:8072/pesquisador/0024160866319507 HTTP/1.1
 
-### Pesquisa o pesquisador em qualquer parte 
-GET http://localhost:8080/pesquisador/pesquisar/alan HTTP/1.1
+### Excluir um pesquisador do banco de dados 
+GET http://localhost:8072/pesquisador/excluir/2602 HTTP/1.1

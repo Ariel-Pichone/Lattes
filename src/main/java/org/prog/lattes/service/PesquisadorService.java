@@ -1,7 +1,10 @@
 package org.prog.lattes.service;
 
+import java.io.Console;
 import java.util.List;
 
+import org.prog.lattes.convert.ReadXML;
+import org.prog.lattes.model.Instituto;
 import org.prog.lattes.model.Pesquisador;
 import org.prog.lattes.repository.PesquisadorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +21,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/pesquisador")
 @Service
 public class PesquisadorService {
+
+    @Autowired
+    private static ReadXML readXML = new ReadXML();
+
+	public PesquisadorService(ReadXML readXML){ //Construtor, Injeção de dependencia 
+	    PesquisadorService.readXML = readXML;
+	}
+
     @Autowired
     PesquisadorRepository pesquisadorRepository;
 
     @GetMapping("/")
     public List<Pesquisador> getPesquisadores(){
         return pesquisadorRepository.findAll();
+    }
+
+
+    @GetMapping("/add/{identificador}/instituto/{instituto}")
+    public void addPesquisador(@PathVariable("identificador") String identificador, @PathVariable("instituto") Instituto instituto){
+        readXML.start(identificador, instituto);
     }
 
     @GetMapping("/{identificador}")
