@@ -4,6 +4,7 @@ package org.prog.lattes.controller;
 import java.util.List;
 import org.prog.lattes.model.Instituto;
 import org.prog.lattes.repository.InstitutoRepository;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.ws.rs.Path;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/instituto")
 public class InstitutoController {
     

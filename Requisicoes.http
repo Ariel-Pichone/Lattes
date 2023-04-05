@@ -3,11 +3,11 @@
 ###########################################################################
 
 ### Apresenta lista de Institutos:
-GET http://localhost:8072/instituto/ HTTP/1.1
+GET http://localhost:8080/instituto/ HTTP/1.1
 content-type: application/json
 
 ### Cadastra instituto:
-POST http://localhost:8072/instituto/ HTTP/1.1
+POST http://localhost:8080/instituto/ HTTP/1.1
 content-type: application/json
 
 {
@@ -32,6 +32,9 @@ GET http://localhost:8072/pesquisador/ HTTP/1.1
 
 ### Adicionar um pesquisador com instituto no banco de dados 
 GET http://localhost:8072/pesquisador/add/0263660448893625/instituto/2 HTTP/1.1
+
+### Pesquisa o pesquisador pelo o nome em qualquer parte
+GET http://localhost:8080/pesquisador/nome/Leonardo HTTP/1.1
 
 ### Procura um pesquisador baseado no identificador, porém é necessário que esteja cadastrado no bd 
 GET http://localhost:8072/pesquisador/0024160866319507 HTTP/1.1

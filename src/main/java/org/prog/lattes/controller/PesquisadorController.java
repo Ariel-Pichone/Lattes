@@ -1,4 +1,4 @@
-package org.prog.lattes.controller;
+/*package org.prog.lattes.controller;
 
 import java.util.List;
 import org.prog.lattes.model.Pesquisador;
@@ -58,3 +58,4 @@ public class PesquisadorController {
         }
     }
 }
+*/
