@@ -1,10 +1,11 @@
 package org.prog.lattes.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 
 
@@ -17,8 +18,10 @@ public class Pesquisador extends AbstractModel{
     @Column(name = "uf", length = 5)
     private String ufNascimento;
 
-    @Column(name = "identificador", length = 30)
     private String identificador;
+
+    @ManyToMany(mappedBy = "pesquisadores")
+    private List<Producao> producoes = new ArrayList();    
 
     @ManyToOne
     private Instituto instituto;
@@ -49,12 +52,6 @@ public class Pesquisador extends AbstractModel{
         this.identificador = identificador;
     }
 
-    @Override
-    public String toString() {
-        // TODO Auto-generated method stub
-        return identificador;
-    }
-     
   
     public Instituto getInstituto() {
         return instituto;
@@ -64,6 +61,15 @@ public class Pesquisador extends AbstractModel{
         this.instituto = instituto;
     }   
 
+
+    public List<Producao> getProducoes() {
+        return producoes;
+    }
+
+    public void setProducoes(List<Producao> producoes) {
+        this.producoes = producoes;
+    }
+    
     @Override
     public int hashCode() {
         final int prime = 31;

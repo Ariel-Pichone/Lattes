@@ -37,10 +37,14 @@ public class PesquisadorService {
         return pesquisadorRepository.findAll();
     }
 
-
     @GetMapping("/add/{identificador}/instituto/{instituto}")
-    public void addPesquisador(@PathVariable("identificador") String identificador, @PathVariable("instituto") Instituto instituto){
-        readXML.start(identificador, instituto);
+    public void addPesquisador(@PathVariable("identificador") String identificador, @PathVariable("instituto") Instituto instituto) throws Exception{        
+
+        if(pesquisadorRepository.existsByIdentificador(identificador)){
+            throw new Exception("Pesquisador já cadastrado no sistema");
+        }else{
+            readXML.start(identificador, instituto);
+        }
     }
 
     @GetMapping("/{identificador}")
@@ -48,21 +52,21 @@ public class PesquisadorService {
         return pesquisadorRepository.findByIdentificador(identificador);
     }
 
-    @GetMapping("/excluir/{id}")
-    public void remover(@PathVariable("id") Long id) throws Exception{
-        var i = pesquisadorRepository.findById(id);
+    @GetMapping("/excluir/{identificador}")
+    public void remover(@PathVariable("identificador") Long identificador) throws Exception{
+        var i = pesquisadorRepository.findById(identificador);
 
         if (i.isPresent()) {
             Pesquisador pesquisador = i.get();
             pesquisadorRepository.delete(pesquisador);
         } else {
-            throw new Exception("Id não encontrado");
+            throw new Exception("Identificador não encontrado");
         }
     }
 
     public void saveAll(List<Pesquisador> pesquisadorList) {
         pesquisadorRepository.saveAll(pesquisadorList);
     }
-
+   
 
 }
