@@ -8,7 +8,6 @@ import java.util.List;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
-import jakarta.validation.constraints.Null;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -50,12 +49,35 @@ public class PesquisadorXml {
             NodeList nodelist = doc.getElementsByTagName("DADOS-GERAIS");
             List<Pesquisador> pesquisadorList = new ArrayList<>();
             Pesquisador pesquisador;
+    
+            // // NodeList child = doc.getElementsByTagName("ARTIGOS-PUBLICADOS");
+            // NodeList childNodes = doc.getChildNodes().item(0).getChildNodes();
+            
+            // List<Element> childElements = new ArrayList<>();
+
+            // for(int j = 0; j< childNodes.getLength(); j++){
+            //     Node childNode = childNodes.item(j);
+
+            //     if (childNode.getNodeType() == Node.ELEMENT_NODE) {
+            //         Element childElement = (Element) childNode;
+            //         childElements.add(childElement);
+            //     }
+            // }
+
+            // for (Element childElement : childElements) {
+            //     NodeList node = childElement.getElementsByTagName("ARTIGOS-PUBLICADOS");
+
+            //     for(int i = 0; i<node.getLength(); i++){
+            //         System.out.println(node.item(i));
+            //     }
+            
+                
+            // }
         
 
             for(int i=0; i< nodelist.getLength(); i++){
                 pesquisador = new Pesquisador();
                 Node node = nodelist.item(0);
-
                 Node parent = node.getParentNode();   
              
                 if(node.getNodeType() == Node.ELEMENT_NODE){
@@ -65,7 +87,6 @@ public class PesquisadorXml {
                     String nome = element.getAttribute("NOME-COMPLETO");
                     String ufNascimento = element.getAttribute("UF-NASCIMENTO");
                     String identificador = element2.getAttribute("NUMERO-IDENTIFICADOR");
-
 
                     pesquisador.setNome(nome);
                     pesquisador.setUfNascimento(ufNascimento);

@@ -32,12 +32,12 @@ public class ReadXML{
             count++;
 
             if(file.isFile() && file.getName().equalsIgnoreCase(identificador + ".xml")){
-                System.out.println("O nome do arquivo é " + file.getName());
+                // System.out.println("O nome do arquivo é " + file.getName());
                 pesquisadorXml.convert(file, instituto);
             }
         }
 
-        System.out.println("Temos " + count + " arquivos no diretorio");
+        // System.out.println("Temos " + count + " arquivos no diretorio");
 
     }
 
