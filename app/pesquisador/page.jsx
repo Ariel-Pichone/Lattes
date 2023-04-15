@@ -4,9 +4,10 @@ import { Button, Label, Modal, Select, TextInput } from 'flowbite-react';
 import { useState, useEffect } from 'react';
 import { HiOutlineExclamationCircle } from '@react-icons/all-files/hi/HiOutlineExclamationCircle';
 import { MdDelete } from '@react-icons/all-files/md/MdDelete';
+import { BiSearchAlt2 } from '@react-icons/all-files/bi/BiSearchAlt2';
 import { useForm } from 'react-hook-form';
 
-export default function Instituto() {
+export default function Pesquisador() {
   const [data, setData] = useState(null);
   const [isLoading, setLoading] = useState(true);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
@@ -14,24 +15,21 @@ export default function Instituto() {
   const [objToDelete, setObjToDelete] = useState({});
   const { register, handleSubmit } = useForm();
 
-  function handleDelete(instituto) {
-    setObjToDelete(instituto), setShowDeleteConfirmation(true);
+  function handleDelete(pesquisador) {
+    setObjToDelete(pesquisador), setShowDeleteConfirmation(true);
   }
 
-  function pesquisarInstituto(data) {
+  function pesquisarPesquisador(data) {
     const termo = data.termo;
     const campo = data.campo;
     let url = '';
 
     switch (campo) {
-      case 'Todos':
-        url = 'http://localhost:8080/instituto/pesquisar/';
-        break;
       case 'Nome':
-        url = 'http://localhost:8080/instituto/nome/';
+        url = 'http://localhost:8080/pesquisador/nome/';
         break;
-      case 'Acrônimo':
-        url = 'http://localhost:8080/instituto/acronimo/';
+      case 'Identificador':
+        url = 'http://localhost:8080/pesquisador/';
         break;
     }
 
@@ -44,7 +42,7 @@ export default function Instituto() {
       .catch((err) => console.log(err));
   }
 
-  function createInstituto(data) {
+  function addPesquisador(data) {
     fetch('http://localhost:8080/instituto/', {
       method: 'POST',
       headers: {
@@ -65,8 +63,8 @@ export default function Instituto() {
       });
   }
 
-  function deleteInstituto(id) {
-    fetch(`http://localhost:8080/instituto/${id}`)
+  function deletePesquisador(id) {
+    fetch(`http://localhost:8080/pesquisador/excluir/${id}`)
       .then(console.log('deleted'))
       .then(setShowDeleteConfirmation(!showDeleteConfirmation))
       .catch((err) => console.log(err));
@@ -74,7 +72,7 @@ export default function Instituto() {
 
   useEffect(() => {
     setLoading(true);
-    fetch('http://localhost:8080/instituto/')
+    fetch('http://localhost:8080/pesquisador/')
       .then((res) => res.json())
       .then((data) => {
         setData(data);
@@ -89,10 +87,10 @@ export default function Instituto() {
   return (
     <div className="mx-2">
       <div className="flex justify-between items-center">
-        <h1 className="text-4xl font-bold px-4 py-6">Instituto</h1>
+        <h1 className="text-4xl font-bold px-4 py-6">Pesquisador</h1>
 
         <form
-          onSubmit={handleSubmit(pesquisarInstituto)}
+          onSubmit={handleSubmit(pesquisarPesquisador)}
           className='flex justify-between items-center"'
         >
           <div className="block mr-4">
@@ -112,9 +110,8 @@ export default function Instituto() {
               name="campo"
               required={true}
             >
-              <option>Todos</option>
               <option>Nome</option>
-              <option>Acrônimo</option>
+              <option>Identificador</option>
             </Select>
           </div>
           <div className="flex justify-between items-center">
@@ -141,10 +138,13 @@ export default function Instituto() {
           <thead className="text-xs text-gray-700 uppercase bg-gray-300 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" className="px-6 py-3">
-                Nome Instituto
+                Nome
               </th>
               <th scope="col" className="px-6 py-3">
-                Acrônimo
+                UF
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Identificador
               </th>
               <th cope="col" className="px-6 py-3">
                 Ações
@@ -152,21 +152,22 @@ export default function Instituto() {
             </tr>
           </thead>
           <tbody>
-            {data.map((Instituto) => (
+            {data.map((pesquisador) => (
               <tr
-                key={Instituto.id}
+                key={pesquisador.id}
                 className="bg-white border-b dark:bg-gray-900 dark:border-gray-700"
               >
                 <th
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 >
-                  {Instituto.nome}
+                  {pesquisador.nome}
                 </th>
-                <td className="px-6 py-4">{Instituto.acronimo}</td>
+                <td className="px-6 py-4">{pesquisador.ufNascimento}</td>
+                <td className="px-6 py-4">{pesquisador.identificador}</td>
                 <td className="px-6 py-4 space-x-3">
                   <a
-                    onClick={() => handleDelete(Instituto)}
+                    onClick={() => handleDelete(pesquisador)}
                     className="font-medium text-red-600 dark:text-red-500 hover:underline cursor-pointer"
                   >
                     <MdDelete size={'2em'} />
@@ -192,13 +193,13 @@ export default function Instituto() {
             <div className="text-center">
               <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
               <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                Você tem certeza que deseja deletar o instituto{' '}
-                {objToDelete.acronimo}?
+                Você tem certeza que deseja deletar o pesquisador{' '}
+                {objToDelete.nome}?
               </h3>
               <div className="flex justify-center gap-4">
                 <Button
                   color="failure"
-                  onClick={() => deleteInstituto(objToDelete.id)}
+                  onClick={() => deletePesquisador(objToDelete.id)}
                 >
                   Sim, tenho ceteza
                 </Button>
@@ -228,36 +229,29 @@ export default function Instituto() {
           <Modal.Header />
           <Modal.Body>
             <form
-              onSubmit={handleSubmit(createInstituto)}
+              onSubmit={handleSubmit(addPesquisador)}
               className="space-y-6 px-6 pb-4 sm:pb-6 lg:px-8 xl:pb-8"
             >
               <h3 className="text-2xl font-medium text-gray-900 dark:text-white">
-                Cadastrar Instituto
+                Cadastrar Pesquisador
               </h3>
               <div>
                 <div className="mb-2 block">
-                  <Label htmlFor="Nome" value="Nome do Instituto" />
+                  <Label htmlFor="Nome" value="Id pesquisador" />
                 </div>
-                <TextInput
-                  {...register('nome')}
-                  id="nome"
-                  name="nome"
-                  placeholder="Universidade Federal do Rio de Janeiro"
-                  required={true}
-                />
-              </div>
-              <div>
-                <div className="mb-2 block">
-                  <Label htmlFor="acronimo" value="Acrônimo" />
+                <div className="inline-flex">
+                  <TextInput
+                    {...register('pesquisador')}
+                    id="pesquisador"
+                    name="pesquisador"
+                    required={true}
+                  />
+                  <Button onClick={handleSearchPesquisador}>
+                    <BiSearchAlt2 size={'2em'} />
+                  </Button>
                 </div>
-                <TextInput
-                  {...register('acronimo')}
-                  id="acronimo"
-                  name="acronimo"
-                  placeholder="UFRJ"
-                  required={true}
-                />
               </div>
+
               <div className="flex justify-between"></div>
               <div>
                 <Button type="submit" className="w-full">
