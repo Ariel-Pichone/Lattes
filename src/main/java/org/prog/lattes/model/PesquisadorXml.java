@@ -1,110 +1,76 @@
 package org.prog.lattes.model;
 
 import java.io.File;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-
-
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import org.prog.lattes.service.PesquisadorService;
 import org.springframework.stereotype.Component;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
-@Component  //Carregar o xml, ler o xml, alimentar um objeto de pesquisador
+/**
+ * This class converts the information from an XML file to a list of Pesquisador objects
+ */
+@Component
 public class PesquisadorXml {
 
     private final PesquisadorService pesquisadorService;
 
-    
-    public PesquisadorXml(PesquisadorService pesquisadorService){
+    public PesquisadorXml(PesquisadorService pesquisadorService) {
         this.pesquisadorService = pesquisadorService;
     }
 
+    /**
+     * Converts the information from an XML file to a list of Pesquisador objects
+     *
+     * @param file      the input XML file
+     * @param instituto the instituto to associate with the Pesquisador objects
+     */
     public void convert(File file, Instituto instituto) {
 
         try {
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();//DocumentBuilderFactory é usada para criar uma instância de DocumentBuilder
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();//o DocumentBuilder é usado para criar um novo documento e adicionar elementos a ele.     
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document doc = documentBuilder.parse(file);
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            StringWriter stringWriter = new StringWriter();
 
-            transformer.transform(new DOMSource(doc), new StreamResult(stringWriter));
-
-            doc.getDocumentElement().normalize();
-
-            NodeList nodelist = doc.getElementsByTagName("DADOS-GERAIS");
+            doc.getDocumentElement().normalize();            
+            NodeList nodeList = doc.getElementsByTagName("DADOS-GERAIS");
             List<Pesquisador> pesquisadorList = new ArrayList<>();
-            Pesquisador pesquisador;
-    
-            // // NodeList child = doc.getElementsByTagName("ARTIGOS-PUBLICADOS");
-            // NodeList childNodes = doc.getChildNodes().item(0).getChildNodes();
-            
-            // List<Element> childElements = new ArrayList<>();
 
-            // for(int j = 0; j< childNodes.getLength(); j++){
-            //     Node childNode = childNodes.item(j);
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                Node node = nodeList.item(i);
+                Node parent = node.getParentNode();
+                Pesquisador pesquisador = new Pesquisador();
 
-            //     if (childNode.getNodeType() == Node.ELEMENT_NODE) {
-            //         Element childElement = (Element) childNode;
-            //         childElements.add(childElement);
-            //     }
-            // }
-
-            // for (Element childElement : childElements) {
-            //     NodeList node = childElement.getElementsByTagName("ARTIGOS-PUBLICADOS");
-
-            //     for(int i = 0; i<node.getLength(); i++){
-            //         System.out.println(node.item(i));
-            //     }
-            
-                
-            // }
-        
-
-            for(int i=0; i< nodelist.getLength(); i++){
-                pesquisador = new Pesquisador();
-                Node node = nodelist.item(0);
-                Node parent = node.getParentNode();   
-             
-                if(node.getNodeType() == Node.ELEMENT_NODE){
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) node;
-                    Element element2 = (Element) parent;
 
                     String nome = element.getAttribute("NOME-COMPLETO");
                     String ufNascimento = element.getAttribute("UF-NASCIMENTO");
-                    String identificador = element2.getAttribute("NUMERO-IDENTIFICADOR");
+                    // Cast parent node to Element before calling getAttribute()
+                    Element parentElement = (Element) parent;
+                    String identificador = parentElement.getAttribute("NUMERO-IDENTIFICADOR");
 
                     pesquisador.setNome(nome);
                     pesquisador.setUfNascimento(ufNascimento);
                     pesquisador.setIdentificador(identificador);
                     pesquisador.setInstituto(instituto);
-                    
                     pesquisadorList.add(pesquisador);
                 }
             }
 
             pesquisadorService.saveAll(pesquisadorList);
-        
 
         } catch (Exception e) {
-           e.printStackTrace();
+            e.printStackTrace();
         }
 
-      
-    } 
-    
+    }
+
 }

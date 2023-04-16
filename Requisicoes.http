@@ -19,7 +19,7 @@ content-type: application/json
 GET http://localhost:8080/instituto/1 HTTP/1.1
 
 ### Pesquisa o instituto pelo o nome em qualquer parte
-GET http://localhost:8080/instituto/nome/universidade HTTP/1.1
+GET http://localhost:8080/instituto/nome/federal HTTP/1.1
 
 ### Pesquisa o instituto pelo o acronimo em qualquer parte 
 GET http://localhost:8080/instituto/acronimo/UF HTTP/1.1
@@ -28,16 +28,23 @@ GET http://localhost:8080/instituto/acronimo/UF HTTP/1.1
 ///Pesquisador
 
 ###  Pegar todos os pesquisadores que estão cadastrados no banco de dados 
-GET http://localhost:8072/pesquisador/ HTTP/1.1
+GET http://localhost:8080/pesquisador/ HTTP/1.1
 
 ### Adicionar um pesquisador com instituto no banco de dados 
-GET http://localhost:8072/pesquisador/add/0263660448893625/instituto/2 HTTP/1.1
+GET http://localhost:8080/pesquisador/add/0263660448893625/instituto/2 HTTP/1.1
 
 ### Pesquisa o pesquisador pelo o nome em qualquer parte
 GET http://localhost:8080/pesquisador/nome/Leonardo HTTP/1.1
 
 ### Procura um pesquisador baseado no identificador, porém é necessário que esteja cadastrado no bd 
-GET http://localhost:8072/pesquisador/0024160866319507 HTTP/1.1
+GET http://localhost:8080/pesquisador/0024160866319507 HTTP/1.1
 
 ### Excluir um pesquisador do banco de dados 
-GET http://localhost:8072/pesquisador/excluir/2602 HTTP/1.1
+GET http://localhost:8080/pesquisador/excluir/2602 HTTP/1.1
+
+HTTP/1.1 200 
+Vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Sun, 16 Apr 2023 01:53:55 GMT
+Connection: close
