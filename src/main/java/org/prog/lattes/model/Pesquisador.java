@@ -1,6 +1,5 @@
 package org.prog.lattes.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -11,18 +10,23 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 
-
 @Entity
+
 public class Pesquisador extends AbstractModel{    
 
     @Column(name = "nome", length = 50)
-    private String nome;
 
+public class Pesquisador extends AbstractModel {
+    
+    @Column(length = 50)
+
+    private String nome;
+    
     @Column(name = "uf", length = 5)
     private String ufNascimento;
-
+    
     private String identificador;
-
+    
     @ManyToMany(mappedBy = "pesquisadores")
     private List<Producao> producoes;    
 
@@ -34,46 +38,43 @@ public class Pesquisador extends AbstractModel{
          producoes = new ArrayList<>();
     }
 
+
     public String getNome() {
         return nome;
-
     }
-
+    
     public void setNome(String nome) {
         this.nome = nome;
     }
-
-
+    
     public String getUfNascimento() {
         return ufNascimento;
     }
-
+    
     public void setUfNascimento(String ufNascimento) {
         this.ufNascimento = ufNascimento;
     }
-
+    
     public String getIdentificador() {
         return identificador;
     }
-
+    
     public void setIdentificador(String identificador) {
         this.identificador = identificador;
     }
-
-  
+    
     public Instituto getInstituto() {
         return instituto;
     }
-
+    
     public void setInstituto(Instituto instituto) {
         this.instituto = instituto;
     }   
-
-
+    
     public List<Producao> getProducoes() {
         return producoes;
     }
-
+    
     public void setProducoes(List<Producao> producoes) {
         this.producoes = producoes;
     }
@@ -98,7 +99,7 @@ public class Pesquisador extends AbstractModel{
         result = prime * result + ((instituto == null) ? 0 : instituto.hashCode());
         return result;
     }
-
+    
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
