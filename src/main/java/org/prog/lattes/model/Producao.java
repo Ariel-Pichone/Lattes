@@ -10,10 +10,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinColumns;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToOne;
 
 @Entity
 public class Producao {
@@ -24,6 +22,8 @@ public class Producao {
 
     private String nome;
 
+    private String ano;
+
     @Enumerated(EnumType.STRING)
     private Tipo tipoProducao;
 
@@ -31,8 +31,12 @@ public class Producao {
     @JoinTable(name = "pesquisador_produção",
          joinColumns = @JoinColumn(name = "producao_id"),
          inverseJoinColumns = @JoinColumn(name = "pesquisador_id"))
-    private List<Pesquisador> pesquisadores = new ArrayList<>();
+    private List<Pesquisador> pesquisadores;
 
+
+    public Producao(){
+        pesquisadores = new ArrayList<>();
+    }
 
     public List<Pesquisador> getPesquisadores() {
         return pesquisadores;
@@ -46,7 +50,33 @@ public class Producao {
         this.tipoProducao = tipoProducao;
     }
 
+    public String getAno() {
+        return ano;
+    }
+    
+    public void setAno(String ano) {
+        this.ano = ano;
+    }
+
     public Tipo getTipoProducao() {
         return tipoProducao;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void adicionarPesquisador(List<Pesquisador> novosPesquisadores){
+        pesquisadores.addAll(novosPesquisadores);
+    }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        return nome;
     }
 }   

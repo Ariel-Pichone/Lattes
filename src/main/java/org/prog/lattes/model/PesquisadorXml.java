@@ -19,19 +19,34 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.prog.lattes.controller.ProducaoController;
 import org.prog.lattes.service.PesquisadorService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component  //Carregar o xml, ler o xml, alimentar um objeto de pesquisador
 public class PesquisadorXml {
 
-    private final PesquisadorService pesquisadorService;
+    @Autowired
+    private PesquisadorService pesquisadorService;
 
+    @Autowired
+    private ProducaoController producaoController;
+
+    public PesquisadorXml(){
+
+    }
     
     public PesquisadorXml(PesquisadorService pesquisadorService){
         this.pesquisadorService = pesquisadorService;
     }
 
+    public PesquisadorXml(ProducaoController producaoController){
+        this.producaoController = producaoController;
+    }
+
+
+ 
     public void convert(File file, Instituto instituto) {
 
         try {
@@ -47,32 +62,66 @@ public class PesquisadorXml {
             doc.getDocumentElement().normalize();
 
             NodeList nodelist = doc.getElementsByTagName("DADOS-GERAIS");
+            NodeList nodeList2 = doc.getElementsByTagName("DADOS-BASICOS-DO-ARTIGO");
+            NodeList nodeList3 = doc.getElementsByTagName("DADOS-BASICOS-DO-LIVRO");
+
             List<Pesquisador> pesquisadorList = new ArrayList<>();
+            List<Producao> artigoList = new ArrayList<>();
+            List<Producao> livroList = new ArrayList<>();
+            List<Producao> allList = new ArrayList<>();
+            
             Pesquisador pesquisador;
-    
-            // // NodeList child = doc.getElementsByTagName("ARTIGOS-PUBLICADOS");
-            // NodeList childNodes = doc.getChildNodes().item(0).getChildNodes();
-            
-            // List<Element> childElements = new ArrayList<>();
+            Producao producao;
+      
 
-            // for(int j = 0; j< childNodes.getLength(); j++){
-            //     Node childNode = childNodes.item(j);
+            for(int k = 0; k< nodeList3.getLength(); k++){
+                producao = new Producao();
 
-            //     if (childNode.getNodeType() == Node.ELEMENT_NODE) {
-            //         Element childElement = (Element) childNode;
-            //         childElements.add(childElement);
-            //     }
-            // }
+                Tipo tipoProducao = Tipo.LIVRO;
+                Node node = nodeList3.item(k);
 
-            // for (Element childElement : childElements) {
-            //     NodeList node = childElement.getElementsByTagName("ARTIGOS-PUBLICADOS");
-
-            //     for(int i = 0; i<node.getLength(); i++){
-            //         System.out.println(node.item(i));
-            //     }
-            
                 
-            // }
+                if(node.getNodeType() == Node.ELEMENT_NODE){
+                    Element element = (Element) node;
+
+                    String nomeLivro = element.getAttribute("TITULO-DO-LIVRO");
+                    String anoLivro = element.getAttribute("ANO");
+
+                    producao.setAno(anoLivro);
+                    producao.setNome(nomeLivro);
+                    producao.setTipoProducao(tipoProducao);
+                    producao.adicionarPesquisador(pesquisadorList);
+                    livroList.add(producao);
+                }
+            }
+
+            allList.addAll(livroList);
+            
+            for(int j = 0; j< nodeList2.getLength(); j++){
+                producao = new Producao();
+                Tipo tipoproducao = Tipo.ARTIGO;
+                Node node = nodeList2.item(j);
+            
+
+                if(node.getNodeType() == Node.ELEMENT_NODE){
+                    Element element = (Element) node;
+                    
+                    String tituloProducao = element.getAttribute("TITULO-DO-ARTIGO");
+                    String anoArtigo = element.getAttribute("ANO-DO-ARTIGO");
+                    
+
+                    producao.setNome(tituloProducao);
+                    producao.setAno(anoArtigo);
+                    producao.setTipoProducao(tipoproducao);
+                    producao.adicionarPesquisador(pesquisadorList);
+                    artigoList.add(producao);
+                    
+                    
+                }
+            }
+            allList.addAll(artigoList);
+            producaoController.saveAll(allList);
+            
         
 
             for(int i=0; i< nodelist.getLength(); i++){
@@ -92,8 +141,10 @@ public class PesquisadorXml {
                     pesquisador.setUfNascimento(ufNascimento);
                     pesquisador.setIdentificador(identificador);
                     pesquisador.setInstituto(instituto);
-                    
+                    pesquisador.adicionarProducao(livroList);
+                    pesquisador.adicionarProducao(artigoList);
                     pesquisadorList.add(pesquisador);
+                    
                 }
             }
 

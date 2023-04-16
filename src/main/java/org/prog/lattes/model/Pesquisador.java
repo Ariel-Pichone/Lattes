@@ -5,13 +5,16 @@ import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 
 
 @Entity
-public class Pesquisador extends AbstractModel{
-    
+public class Pesquisador extends AbstractModel{    
+
     @Column(name = "nome", length = 50)
     private String nome;
 
@@ -21,10 +24,15 @@ public class Pesquisador extends AbstractModel{
     private String identificador;
 
     @ManyToMany(mappedBy = "pesquisadores")
-    private List<Producao> producoes = new ArrayList();    
+    private List<Producao> producoes;    
 
     @ManyToOne
     private Instituto instituto;
+
+
+    public Pesquisador(){
+         producoes = new ArrayList<>();
+    }
 
     public String getNome() {
         return nome;
@@ -68,6 +76,16 @@ public class Pesquisador extends AbstractModel{
 
     public void setProducoes(List<Producao> producoes) {
         this.producoes = producoes;
+    }
+
+    public void adicionarProducao(List<Producao> newElements){
+        producoes.addAll(newElements);
+    }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        return nome;
     }
     
     @Override

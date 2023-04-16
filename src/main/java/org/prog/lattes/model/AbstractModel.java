@@ -44,7 +44,4 @@ public abstract class AbstractModel<Long extends Serializable> implements Serial
             return false;
         return true;
     }
-
-    
-
 }
