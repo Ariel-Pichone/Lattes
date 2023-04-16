@@ -25,12 +25,13 @@ public class PesquisadorService {
     @Autowired
     private static ReadXML readXML = new ReadXML();
 
+    @Autowired
+    PesquisadorRepository pesquisadorRepository;
+
 	public PesquisadorService(ReadXML readXML){ //Construtor, Injeção de dependencia 
 	    PesquisadorService.readXML = readXML;
 	}
 
-    @Autowired
-    PesquisadorRepository pesquisadorRepository;
 
     @GetMapping("/")
     public List<Pesquisador> getPesquisadores(){

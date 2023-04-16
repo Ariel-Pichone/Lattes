@@ -6,8 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.prog.lattes.model.Producao;
 import org.springframework.web.bind.annotation.RestController;
-
-import jakarta.validation.OverridesAttribute.List;
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -20,10 +19,14 @@ public class ProducaoController {
         this.producaoRepository = producaoRepository;
     }
 
-    // @GetMapping("/")
-    // public List<Producao> getProducoes(){
-    //     return 
-    // }
+    public void saveAll(List<Producao> producaoList){
+        producaoRepository.saveAll(producaoList);
+    }
+
+    @GetMapping("/")
+    public List<Producao> getProducoes(){
+        return producaoRepository.findAll();
+    }
 
 
     

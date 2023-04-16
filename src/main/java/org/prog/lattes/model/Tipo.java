@@ -1,19 +1,21 @@
 package org.prog.lattes.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
 @Entity
 public enum Tipo {
-    ARTIGO(1, "Artigo"), 
-    LIVRO(2, "Livro");
+    ARTIGO("Artigo"), 
+    LIVRO("Livro");
 
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String nome;
 
-    Tipo(int id, String nome){
-        this.id = id;
+    Tipo(String nome){
         this.nome = nome;
     }
 }
