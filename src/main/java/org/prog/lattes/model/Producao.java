@@ -28,11 +28,10 @@ public class Producao {
     private Tipo tipoProducao;
 
     @ManyToMany
-    @JoinTable(name = "pesquisador_produção",
+    @JoinTable(name = "pesquisador_producao",
          joinColumns = @JoinColumn(name = "producao_id"),
          inverseJoinColumns = @JoinColumn(name = "pesquisador_id"))
     private List<Pesquisador> pesquisadores;
-
 
     public Producao(){
         pesquisadores = new ArrayList<>();

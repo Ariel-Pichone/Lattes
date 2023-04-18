@@ -1,5 +1,6 @@
 package org.prog.lattes.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -13,13 +14,8 @@ import jakarta.persistence.ManyToOne;
 @Entity
 
 public class Pesquisador extends AbstractModel{    
-
-    @Column(name = "nome", length = 50)
-
-public class Pesquisador extends AbstractModel {
     
     @Column(length = 50)
-
     private String nome;
     
     @Column(name = "uf", length = 5)

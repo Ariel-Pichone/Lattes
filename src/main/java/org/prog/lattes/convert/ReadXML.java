@@ -20,7 +20,7 @@ public class ReadXML{
 
         System.out.println("Starting reading xml");
 
-        File diretorio = new File("C:\\Users\\jvito\\OneDrive\\Documentos\\José Vitor\\2023.1\\DS1\\Lattes\\src\\main\\java\\org\\prog\\lattes\\files");
+        File diretorio = new File("src\\main\\java\\org\\prog\\lattes\\files");
 
         File[] files = diretorio.listFiles();
         assert files != null;
@@ -32,12 +32,12 @@ public class ReadXML{
             count++;
 
             if(file.isFile() && file.getName().equalsIgnoreCase(identificador + ".xml")){
-                // System.out.println("O nome do arquivo é " + file.getName());
+                System.out.println("O nome do arquivo é " + file.getName());
                 pesquisadorXml.convert(file, instituto);
             }
         }
 
-        // System.out.println("Temos " + count + " arquivos no diretorio");
+        System.out.println("Temos " + count + " arquivos no diretorio");
 
     }
 
