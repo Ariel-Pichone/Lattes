@@ -16,29 +16,18 @@ public class ReadXML{
     @Autowired
     private PesquisadorXml pesquisadorXml;
 
-    public void start(String identificador, Instituto instituto){
+    public void start(String identificador, Instituto instituto) throws Exception{
 
         System.out.println("Starting reading xml");
 
         File diretorio = new File("src\\main\\java\\org\\prog\\lattes\\files");
 
-        File[] files = diretorio.listFiles();
-        assert files != null;
+        File file = new File(diretorio, identificador + ".xml");
 
-        int count = 0;
-
-        for(File file : files){
-            
-            count++;
-
-            if(file.isFile() && file.getName().equalsIgnoreCase(identificador + ".xml")){
-                System.out.println("O nome do arquivo é " + file.getName());
-                pesquisadorXml.convert(file, instituto);
-            }
+        if(file.isFile()) {
+            pesquisadorXml.convert(file, instituto);
+        } else {
+            throw new Exception("Pesquisador não encontrado.");
         }
-
-        System.out.println("Temos " + count + " arquivos no diretorio");
-
     }
-
 }
