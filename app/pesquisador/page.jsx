@@ -6,9 +6,12 @@ import { HiOutlineExclamationCircle } from '@react-icons/all-files/hi/HiOutlineE
 import { MdDelete } from '@react-icons/all-files/md/MdDelete';
 import { BiSearchAlt2 } from '@react-icons/all-files/bi/BiSearchAlt2';
 import { useForm } from 'react-hook-form';
+import Instituto from '../instituto/page';
+// import * as ReactSelect from 'react-select';
 
 export default function Pesquisador() {
   const [data, setData] = useState(null);
+  const [institutoList, setInstitutoList] = useState(null);
   const [isLoading, setLoading] = useState(true);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [showCreateForm, setShowCreateForm] = useState(false);
@@ -43,24 +46,15 @@ export default function Pesquisador() {
   }
 
   function addPesquisador(data) {
-    fetch('http://localhost:8080/instituto/', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        nome: data.nome,
-        acronimo: data.acronimo,
-      }),
-    })
-      .then((res) => {
-        console.log(res);
-        setShowCreateForm(!showCreateForm);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    console.log(data);
+
+    fetch(
+      `http://localhost:8080/pesquisador/add/${data.pesquisador}/instituto/${data.instituto}`
+    )
+      .then(console.log('Adicionado'))
+      .then((res) => console.log(res))
+      .then(setShowCreateForm(!showCreateForm))
+      .catch((err) => console.log(err));
   }
 
   function deletePesquisador(id) {
@@ -68,6 +62,17 @@ export default function Pesquisador() {
       .then(console.log('deleted'))
       .then(setShowDeleteConfirmation(!showDeleteConfirmation))
       .catch((err) => console.log(err));
+  }
+
+  function handleOpenModalIncluirPesquisador() {
+    fetch('http://localhost:8080/instituto/')
+      .then((res) => res.json())
+      .then((data) => {
+        setInstitutoList(data);
+      })
+      .catch((err) => console.log(err));
+
+    setShowCreateForm(true);
   }
 
   useEffect(() => {
@@ -79,7 +84,7 @@ export default function Pesquisador() {
         setLoading(false);
       })
       .catch((err) => console.log(err));
-  }, [showDeleteConfirmation, showCreateForm]);
+  }, []);
 
   if (isLoading) return <p>Loading...</p>;
   if (!data) return <p>No data</p>;
@@ -126,7 +131,7 @@ export default function Pesquisador() {
 
         <button
           type="button"
-          onClick={() => setShowCreateForm(true)}
+          onClick={() => handleOpenModalIncluirPesquisador()}
           className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
         >
           Incluir
@@ -239,19 +244,27 @@ export default function Pesquisador() {
                 <div className="mb-2 block">
                   <Label htmlFor="Nome" value="Id pesquisador" />
                 </div>
-                <div className="inline-flex">
+                <div>
                   <TextInput
                     {...register('pesquisador')}
                     id="pesquisador"
                     name="pesquisador"
                     required={true}
                   />
-                  <Button onClick={handleSearchPesquisador}>
-                    <BiSearchAlt2 size={'2em'} />
-                  </Button>
                 </div>
               </div>
-
+              <Select
+                {...register('instituto')}
+                id="instituto"
+                name="instituto"
+                required={true}
+              >
+                <option value="">Selecione um instituto</option>
+                {institutoList &&
+                  institutoList.map((instituto) => (
+                    <option value={instituto.id}>{instituto.nome}</option>
+                  ))}
+              </Select>
               <div className="flex justify-between"></div>
               <div>
                 <Button type="submit" className="w-full">
