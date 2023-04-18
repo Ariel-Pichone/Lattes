@@ -44,4 +44,4 @@ GET http://localhost:8080/pesquisador/nome/Leonardo HTTP/1.1
 GET http://localhost:8080/pesquisador/0024160866319507 HTTP/1.1
 
 ### Excluir um pesquisador do banco de dados 
-GET http://localhost:8080/pesquisador/excluir/252 HTTP/1.1
+GET http://localhost:8080/pesquisador/excluir/1 HTTP/1.1

@@ -13,8 +13,12 @@ import jakarta.persistence.ManyToOne;
 
 @Entity
 
-public class Pesquisador extends AbstractModel{    
+public class Pesquisador{    
     
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(length = 50)
     private String nome;
     
@@ -84,18 +88,22 @@ public class Pesquisador extends AbstractModel{
         // TODO Auto-generated method stub
         return nome;
     }
-    
+
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((nome == null) ? 0 : nome.hashCode());
         result = prime * result + ((ufNascimento == null) ? 0 : ufNascimento.hashCode());
         result = prime * result + ((identificador == null) ? 0 : identificador.hashCode());
+        result = prime * result + ((producoes == null) ? 0 : producoes.hashCode());
         result = prime * result + ((instituto == null) ? 0 : instituto.hashCode());
         return result;
     }
-    
+
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -105,6 +113,11 @@ public class Pesquisador extends AbstractModel{
         if (getClass() != obj.getClass())
             return false;
         Pesquisador other = (Pesquisador) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
         if (nome == null) {
             if (other.nome != null)
                 return false;
@@ -120,6 +133,11 @@ public class Pesquisador extends AbstractModel{
                 return false;
         } else if (!identificador.equals(other.identificador))
             return false;
+        if (producoes == null) {
+            if (other.producoes != null)
+                return false;
+        } else if (!producoes.equals(other.producoes))
+            return false;
         if (instituto == null) {
             if (other.instituto != null)
                 return false;
@@ -127,4 +145,6 @@ public class Pesquisador extends AbstractModel{
             return false;
         return true;
     }
+    
+    
 }

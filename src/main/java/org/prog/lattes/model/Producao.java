@@ -29,8 +29,8 @@ public class Producao {
 
     @ManyToMany
     @JoinTable(name = "pesquisador_producao",
-         joinColumns = @JoinColumn(name = "producao_id"),
-         inverseJoinColumns = @JoinColumn(name = "pesquisador_id"))
+         joinColumns = @JoinColumn(name = "producao_id", referencedColumnName = "id"),
+         inverseJoinColumns = @JoinColumn(name = "pesquisador_id", referencedColumnName = "id"))
     private List<Pesquisador> pesquisadores;
 
     public Producao(){
