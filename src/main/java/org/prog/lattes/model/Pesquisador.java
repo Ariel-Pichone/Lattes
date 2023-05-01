@@ -2,6 +2,9 @@ package org.prog.lattes.model;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,6 +31,7 @@ public class Pesquisador{
     
     private String identificador;
     
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "pesquisador_producao",
          joinColumns = @JoinColumn(name = "pesquisador_id"),
