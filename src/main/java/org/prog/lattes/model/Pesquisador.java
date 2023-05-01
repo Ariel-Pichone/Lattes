@@ -2,7 +2,6 @@ package org.prog.lattes.model;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,7 +13,6 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-
 public class Pesquisador{    
     
     @Id

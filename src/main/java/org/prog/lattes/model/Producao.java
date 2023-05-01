@@ -21,7 +21,7 @@ public class Producao {
     @Column(nullable = false)
     private Long id;
 
-    @Lob
+    @Column(columnDefinition = "text", length = 10485760)
     private String nome;
     
     @Column(nullable = false)
