@@ -2,7 +2,6 @@ package org.prog.lattes.model;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,7 +11,6 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-
 public class Pesquisador{    
     
     @Id
@@ -32,7 +30,6 @@ public class Pesquisador{
 
     @ManyToOne
     private Instituto instituto;
-
 
     public Pesquisador(){
          producoes = new ArrayList<>();
@@ -89,7 +86,6 @@ public class Pesquisador{
         return nome;
     }
 
-
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -102,7 +98,6 @@ public class Pesquisador{
         result = prime * result + ((instituto == null) ? 0 : instituto.hashCode());
         return result;
     }
-
 
     @Override
     public boolean equals(Object obj) {
@@ -145,6 +140,4 @@ public class Pesquisador{
             return false;
         return true;
     }
-    
-    
 }
