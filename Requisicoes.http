@@ -35,7 +35,11 @@ GET http://localhost:8080/producao/ HTTP/1.1
 GET http://localhost:8080/pesquisador/ HTTP/1.1
 
 ### Adicionar um pesquisador com instituto no banco de dados 
-GET http://localhost:8080/pesquisador/add/0263660448893625/instituto/1 HTTP/1.1
+GET http://localhost:8080/pesquisador/add/0024160866319507/instituto/1 HTTP/1.1
+
+### Adicionar um pesquisador com instituto no banco de dados 
+GET http://localhost:8080/pesquisador/add/0194631586754988/instituto/1 HTTP/1.1
+
 
 ### Pesquisa o pesquisador pelo o nome em qualquer parte
 GET http://localhost:8080/pesquisador/nome/Leonardo HTTP/1.1

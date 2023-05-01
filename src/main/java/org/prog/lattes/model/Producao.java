@@ -3,62 +3,40 @@ package org.prog.lattes.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 
 @Entity
 public class Producao {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(nullable = false)
     private Long id;
 
+    @Lob
     private String nome;
-
+    
+    @Column(nullable = false)
     private String ano;
 
     @Enumerated(EnumType.STRING)
     private Tipo tipoProducao;
-
-    @ManyToMany
-    @JoinTable(name = "pesquisador_producao",
-         joinColumns = @JoinColumn(name = "producao_id", referencedColumnName = "id"),
-         inverseJoinColumns = @JoinColumn(name = "pesquisador_id", referencedColumnName = "id"))
+    
+    @ManyToMany (mappedBy = "producoes")
     private List<Pesquisador> pesquisadores;
 
-    public Producao(){
-        pesquisadores = new ArrayList<>();
-    }
+    public Producao(){}
 
-    public List<Pesquisador> getPesquisadores() {
-        return pesquisadores;
-    }
-
-    public void setPesquisadores(List<Pesquisador> pesquisadores) {
-        this.pesquisadores = pesquisadores;
-    }
-
-    public void setTipoProducao(Tipo tipoProducao) {
-        this.tipoProducao = tipoProducao;
-    }
-
-    public String getAno() {
-        return ano;
-    }
-    
-    public void setAno(String ano) {
-        this.ano = ano;
-    }
-
-    public Tipo getTipoProducao() {
-        return tipoProducao;
+    public Long getId() {
+        return id;
     }
 
     public String getNome() {
@@ -69,13 +47,34 @@ public class Producao {
         this.nome = nome;
     }
 
-    public void adicionarPesquisador(List<Pesquisador> novosPesquisadores){
-        pesquisadores.addAll(novosPesquisadores);
+    public String getAno() {
+        return ano;
+    }
+
+    public void setAno(String ano) {
+        this.ano = ano;
+    }
+
+    public Tipo getTipoProducao() {
+        return tipoProducao;
+    }
+
+    public void setTipoProducao(Tipo tipoProducao) {
+        this.tipoProducao = tipoProducao;
+    }
+
+    public List<Pesquisador> getPesquisadores() {
+        return pesquisadores;
+    }
+
+    public void addPesquisador(List<Pesquisador> pesquisadores) {
+        this.pesquisadores = pesquisadores;
     }
 
     @Override
     public String toString() {
-        // TODO Auto-generated method stub
         return nome;
     }
+
+    
 }   

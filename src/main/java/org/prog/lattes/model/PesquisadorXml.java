@@ -88,7 +88,7 @@ public class PesquisadorXml {
                     producao.setAno(anoLivro);
                     producao.setNome(nomeLivro);
                     producao.setTipoProducao(tipoProducao);
-                    producao.adicionarPesquisador(pesquisadorList);
+                    producao.addPesquisador(pesquisadorList);
                     livroList.add(producao);
                 }
             }
@@ -111,7 +111,7 @@ public class PesquisadorXml {
                     producao.setNome(tituloProducao);
                     producao.setAno(anoArtigo);
                     producao.setTipoProducao(tipoproducao);
-                    producao.adicionarPesquisador(pesquisadorList);
+                    producao.addPesquisador(pesquisadorList);
                     artigoList.add(producao);
                     
                     
@@ -138,8 +138,8 @@ public class PesquisadorXml {
                     pesquisador.setUfNascimento(ufNascimento);
                     pesquisador.setIdentificador(identificador);
                     pesquisador.setInstituto(instituto);
-                    pesquisador.adicionarProducao(livroList);
-                    pesquisador.adicionarProducao(artigoList);
+                    pesquisador.addProducao(livroList);
+                    pesquisador.addProducao(artigoList);
                     pesquisadorList.add(pesquisador);
                     
                 }
