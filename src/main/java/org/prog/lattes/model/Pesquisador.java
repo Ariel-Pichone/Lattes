@@ -35,7 +35,6 @@ public class Pesquisador{
          producoes = new ArrayList<>();
     }
 
-
     public String getNome() {
         return nome;
     }

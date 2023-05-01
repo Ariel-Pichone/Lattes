@@ -2,7 +2,6 @@ package org.prog.lattes.service;
 
 import java.io.Console;
 import java.util.List;
-
 import org.prog.lattes.convert.ReadXML;
 import org.prog.lattes.model.Instituto;
 import org.prog.lattes.model.Pesquisador;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 
 @RestController
 @CrossOrigin
@@ -31,7 +29,6 @@ public class PesquisadorService {
 	public PesquisadorService(ReadXML readXML){ //Construtor, Injeção de dependencia 
 	    PesquisadorService.readXML = readXML;
 	}
-
 
     @GetMapping("/")
     public List<Pesquisador> getPesquisadores(){
@@ -68,6 +65,4 @@ public class PesquisadorService {
     public void saveAll(List<Pesquisador> pesquisadorList) {
         pesquisadorRepository.saveAll(pesquisadorList);
     }
-   
-
 }

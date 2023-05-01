@@ -1,14 +1,11 @@
 package org.prog.lattes.convert;
 
 import java.io.File;
-
 import org.prog.lattes.model.Instituto;
 import org.prog.lattes.model.PesquisadorXml;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import jakarta.validation.OverridesAttribute.List;
-
 
 @Component
 public class ReadXML{

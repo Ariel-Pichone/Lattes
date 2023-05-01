@@ -4,21 +4,16 @@ import java.io.File;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
-
-
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
 import org.prog.lattes.controller.ProducaoController;
 import org.prog.lattes.service.PesquisadorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,14 +66,12 @@ public class PesquisadorXml {
             Pesquisador pesquisador;
             Producao producao;
       
-
             for(int k = 0; k< nodeList3.getLength(); k++){
                 producao = new Producao();
 
                 Tipo tipoProducao = Tipo.LIVRO;
                 Node node = nodeList3.item(k);
 
-                
                 if(node.getNodeType() == Node.ELEMENT_NODE){
                     Element element = (Element) node;
 
@@ -100,27 +93,22 @@ public class PesquisadorXml {
                 Tipo tipoproducao = Tipo.ARTIGO;
                 Node node = nodeList2.item(j);
             
-
                 if(node.getNodeType() == Node.ELEMENT_NODE){
                     Element element = (Element) node;
                     
                     String tituloProducao = element.getAttribute("TITULO-DO-ARTIGO");
                     String anoArtigo = element.getAttribute("ANO-DO-ARTIGO");
                     
-
                     producao.setNome(tituloProducao);
                     producao.setAno(anoArtigo);
                     producao.setTipoProducao(tipoproducao);
                     producao.adicionarPesquisador(pesquisadorList);
-                    artigoList.add(producao);
-                    
-                    
+                    artigoList.add(producao);                   
                 }
             }
             allList.addAll(artigoList);
             producaoController.saveAll(allList);
-            
-    
+                
             for(int i=0; i< nodelist.getLength(); i++){
                 pesquisador = new Pesquisador();
                 Node node = nodelist.item(0);
@@ -141,7 +129,6 @@ public class PesquisadorXml {
                     pesquisador.adicionarProducao(livroList);
                     pesquisador.adicionarProducao(artigoList);
                     pesquisadorList.add(pesquisador);
-                    
                 }
             }
 

@@ -2,7 +2,7 @@ package org.prog.lattes.model;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -20,6 +20,7 @@ public class Producao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(columnDefinition = "text", length = 10485760)
     private String nome;
 
     private String ano;
