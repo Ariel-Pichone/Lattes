@@ -83,8 +83,8 @@ export default function Instituto() {
       .catch((err) => console.log(err));
   }, [showDeleteConfirmation, showCreateForm]);
 
-  if (isLoading) return <p>Loading...</p>;
-  if (!data) return <p>No data</p>;
+  // if (isLoading) return <p>Loading...</p>;
+  // if (!data) return <p>No data</p>;
 
   return (
     <div className="mx-2">
@@ -152,28 +152,29 @@ export default function Instituto() {
             </tr>
           </thead>
           <tbody>
-            {data.map((Instituto) => (
-              <tr
-                key={Instituto.id}
-                className="bg-white border-b dark:bg-gray-900 dark:border-gray-700"
-              >
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+            {data &&
+              data.map((Instituto) => (
+                <tr
+                  key={Instituto.id}
+                  className="bg-white border-b dark:bg-gray-900 dark:border-gray-700"
                 >
-                  {Instituto.nome}
-                </th>
-                <td className="px-6 py-4">{Instituto.acronimo}</td>
-                <td className="px-6 py-4 space-x-3">
-                  <a
-                    onClick={() => handleDelete(Instituto)}
-                    className="font-medium text-red-600 dark:text-red-500 hover:underline cursor-pointer"
+                  <th
+                    scope="row"
+                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                   >
-                    <MdDelete size={'2em'} />
-                  </a>
-                </td>
-              </tr>
-            ))}
+                    {Instituto.nome}
+                  </th>
+                  <td className="px-6 py-4">{Instituto.acronimo}</td>
+                  <td className="px-6 py-4 space-x-3">
+                    <a
+                      onClick={() => handleDelete(Instituto)}
+                      className="font-medium text-red-600 dark:text-red-500 hover:underline cursor-pointer"
+                    >
+                      <MdDelete size={'2em'} />
+                    </a>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
