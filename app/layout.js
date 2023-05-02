@@ -9,13 +9,22 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      {/* <div>
-        <h2>
-          <Link href="/instituto">Instituto</Link>
-          <Link href="/pesquisador">Pesquisador</Link>
-        </h2>
-      </div> */}
-      <body className="md:container md:mx-auto md:mb-5">{children}</body>
+      <body className="">
+        <header className="bg-slate-800 h-14 ">
+          <nav className="md:container md:mx-auto md:mb-5 md:pt-3">
+            <Link className="text-xl mr-6" href="/instituto">
+              Instituto
+            </Link>
+            <Link className="text-xl mr-6" href="/pesquisador">
+              Pesquisador
+            </Link>
+            <Link className="text-xl mr-6" href="/producao">
+              Produção
+            </Link>
+          </nav>
+        </header>
+        <main className="md:container md:mx-auto md:mb-5">{children}</main>
+      </body>
     </html>
   );
 }
