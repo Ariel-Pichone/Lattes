@@ -54,7 +54,7 @@ public class PesquisadorXml {
 
             doc.getDocumentElement().normalize();
 
-            NodeList nodelist = doc.getElementsByTagName("DADOS-GERAIS");
+            NodeList nodelist1 = doc.getElementsByTagName("DADOS-GERAIS");
             NodeList nodeList2 = doc.getElementsByTagName("DADOS-BASICOS-DO-ARTIGO");
             NodeList nodeList3 = doc.getElementsByTagName("DADOS-BASICOS-DO-LIVRO");
 
@@ -66,6 +66,10 @@ public class PesquisadorXml {
             Pesquisador pesquisador;
             Producao producao;
       
+            /*********************************************************************************************************/
+            /*                     Lendo todos os livros que o pesquisador trabalhou na produção                     */
+            /*********************************************************************************************************/
+            
             for(int k = 0; k< nodeList3.getLength(); k++){
                 producao = new Producao();
 
@@ -88,6 +92,10 @@ public class PesquisadorXml {
 
             allList.addAll(livroList);
             
+            /*********************************************************************************************************/
+            /*                     Lendo todos os artigos que o pesquisador trabalhou na produção                    */
+            /*********************************************************************************************************/
+            
             for(int j = 0; j< nodeList2.getLength(); j++){
                 producao = new Producao();
                 Tipo tipoproducao = Tipo.ARTIGO;
@@ -104,16 +112,23 @@ public class PesquisadorXml {
                     producao.setTipoProducao(tipoproducao);
                     producao.addPesquisador(pesquisadorList);
                     artigoList.add(producao);
-                    
-                    
                 }
             }
             allList.addAll(artigoList);
+            
+            /*********************************************************************************************************/
+            /*                                 Gravando toda a lista de produções                                    */
+            /*********************************************************************************************************/
+
             producaoController.saveAll(allList);
-                
-            for(int i=0; i< nodelist.getLength(); i++){
+            
+            /*********************************************************************************************************/
+            /*                                 Lendo todos os dados do pesquisador                                   */
+            /*********************************************************************************************************/
+            
+            for(int i=0; i< nodelist1.getLength(); i++){
                 pesquisador = new Pesquisador();
-                Node node = nodelist.item(0);
+                Node node = nodelist1.item(0);
                 Node parent = node.getParentNode();   
              
                 if(node.getNodeType() == Node.ELEMENT_NODE){
@@ -128,8 +143,7 @@ public class PesquisadorXml {
                     pesquisador.setUfNascimento(ufNascimento);
                     pesquisador.setIdentificador(identificador);
                     pesquisador.setInstituto(instituto);
-                    pesquisador.addProducao(livroList);
-                    pesquisador.addProducao(artigoList);
+                    pesquisador.addProducao(allList);
                     pesquisadorList.add(pesquisador);
                 }
             }
