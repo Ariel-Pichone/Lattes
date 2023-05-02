@@ -6,6 +6,8 @@ import { useForm } from 'react-hook-form';
 
 export default function Producao() {
   const [data, setData] = useState(null);
+  const [pesquisador, setPesquisador] = useState(null);
+  const [instituto, setInstituto] = useState(null);
   const [producaoList, setProducaoList] = useState(null);
   const [isLoading, setLoading] = useState(true);
   const { register, handleSubmit } = useForm();
@@ -39,6 +41,22 @@ export default function Producao() {
       .then((res) => res.json())
       .then((data) => {
         setData(data);
+        setLoading(false);
+      })
+      .catch((err) => console.log(err));
+
+    fetch('http://localhost:8080/instituto/')
+      .then((res) => res.json())
+      .then((instituto) => {
+        setInstituto(instituto);
+        setLoading(false);
+      })
+      .catch((err) => console.log(err));
+
+    fetch('http://localhost:8080/pesquisador/')
+      .then((res) => res.json())
+      .then((pesquisador) => {
+        setPesquisador(pesquisador);
         setLoading(false);
       })
       .catch((err) => console.log(err));
@@ -82,8 +100,11 @@ export default function Producao() {
               name="instituto"
               required={true}
             >
-              <option>Instituto</option>
-              <option>teste</option>
+              <option value="">Instituto</option>
+              {instituto &&
+                instituto.map((instituto) => (
+                  <option value={instituto.id}>{instituto.nome}</option>
+                ))}
             </Select>
           </div>
           <div className="mr-4" id="select">
@@ -93,8 +114,11 @@ export default function Producao() {
               name="pesquisador"
               required={true}
             >
-              <option>Pesquisador</option>
-              <option>teste</option>
+              <option value="">Pesquisador</option>
+              {pesquisador &&
+                pesquisador.map((pesquisador) => (
+                  <option value={pesquisador.id}>{pesquisador.nome}</option>
+                ))}
             </Select>
           </div>
           <div className="mr-4" id="select">
@@ -105,7 +129,8 @@ export default function Producao() {
               required={true}
             >
               <option>Tipo Prod.</option>
-              <option>teste</option>
+              <option>Artigo</option>
+              <option>Livro</option>
             </Select>
           </div>
           <div className="flex justify-between items-center">
