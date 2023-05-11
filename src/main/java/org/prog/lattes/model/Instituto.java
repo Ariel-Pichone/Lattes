@@ -14,6 +14,11 @@ public class Instituto {
     private String nome;
     private String acronimo;
     
+    public Instituto(String nome, String acronimo) {
+        this.nome = nome;
+        this.acronimo = acronimo;
+    }
+
     public Long getId() {
         return id;
     }

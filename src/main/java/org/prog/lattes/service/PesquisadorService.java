@@ -1,6 +1,5 @@
 package org.prog.lattes.service;
 
-import java.io.Console;
 import java.util.List;
 import org.prog.lattes.convert.ReadXML;
 import org.prog.lattes.model.Instituto;
@@ -48,6 +47,11 @@ public class PesquisadorService {
     @GetMapping("/{identificador}")
     public List<Pesquisador> getPesquisador(@PathVariable("identificador") String identificador){
         return pesquisadorRepository.findByIdentificador(identificador);
+    }
+
+    @GetMapping("/{nome}")
+    public List<Pesquisador> getPesquisadorNome(@PathVariable("nome") String nome){
+        return pesquisadorRepository.findByNomeContainingIgnoreCase(nome);
     }
 
     @GetMapping("/excluir/{identificador}")

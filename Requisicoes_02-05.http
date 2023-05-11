@@ -169,7 +169,7 @@ GET http://localhost:8080/pesquisador/add/0814717344017544/instituto/5 HTTP/1.1
 GET http://localhost:8080/pesquisador/ HTTP/1.1
 
 ### Pesquisa o pesquisador pelo o nome em qualquer parte
-GET http://localhost:8080/pesquisador/nome/Leonardo HTTP/1.1
+#GET http://localhost:8080/pesquisador/nome/Leonardo HTTP/1.1
 
 ### Procura um pesquisador baseado no identificador, porém é necessário que esteja cadastrado no bd 
 GET http://localhost:8080/pesquisador/0024160866319507 HTTP/1.1

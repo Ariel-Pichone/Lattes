@@ -1,8 +1,6 @@
 package org.prog.lattes.model;
 
-import java.util.ArrayList;
 import java.util.List;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -10,7 +8,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 
 @Entity
@@ -25,7 +22,7 @@ public class Producao {
     private String nome;
     
     @Column(nullable = false)
-    private String ano;
+    private Integer ano;
 
     @Enumerated(EnumType.STRING)
     private Tipo tipoProducao;
@@ -47,11 +44,11 @@ public class Producao {
         this.nome = nome;
     }
 
-    public String getAno() {
+    public Integer getAno() {
         return ano;
     }
 
-    public void setAno(String ano) {
+    public void setAno(Integer ano) {
         this.ano = ano;
     }
 
@@ -75,6 +72,4 @@ public class Producao {
     public String toString() {
         return nome;
     }
-
-    
-}   
+} 

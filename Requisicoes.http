@@ -49,3 +49,9 @@ GET http://localhost:8080/pesquisador/0024160866319507 HTTP/1.1
 
 ### Excluir um pesquisador do banco de dados 
 GET http://localhost:8080/pesquisador/excluir/1 HTTP/1.1
+
+
+
+
+### Teste de produção 
+GET http://localhost:8080/producao/filtro?dataFim=2003&instituto=Miguel&pesquisador=Rodrigo&tipoProducao=ARTIGO HTTP/1.1

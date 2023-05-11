@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 public interface PesquisadorRepository extends JpaRepository<Pesquisador, Long> {
 
     List<Pesquisador> findByIdentificador(String identificador);
+    
     List<Pesquisador> findByNomeContainingIgnoreCase(String nome);
+    
     Boolean existsByIdentificador(String identificador);
 }

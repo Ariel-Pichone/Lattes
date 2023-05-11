@@ -80,7 +80,7 @@ public class PesquisadorXml {
                     Element element = (Element) node;
 
                     String nomeLivro = element.getAttribute("TITULO-DO-LIVRO");
-                    String anoLivro = element.getAttribute("ANO");
+                    Integer anoLivro = Integer.valueOf(element.getAttribute("ANO"));
 
                     producao.setAno(anoLivro);
                     producao.setNome(nomeLivro);
@@ -105,7 +105,7 @@ public class PesquisadorXml {
                     Element element = (Element) node;
                     
                     String tituloProducao = element.getAttribute("TITULO-DO-ARTIGO");
-                    String anoArtigo = element.getAttribute("ANO-DO-ARTIGO");
+                    Integer anoArtigo = Integer.valueOf(element.getAttribute("ANO-DO-ARTIGO"));
                     
                     producao.setNome(tituloProducao);
                     producao.setAno(anoArtigo);
