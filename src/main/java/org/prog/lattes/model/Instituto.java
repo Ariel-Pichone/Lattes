@@ -14,6 +14,9 @@ public class Instituto {
     private String nome;
     private String acronimo;
     
+    public Instituto() {
+    }
+
     public Instituto(String nome, String acronimo) {
         this.nome = nome;
         this.acronimo = acronimo;
@@ -53,6 +56,8 @@ public class Instituto {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+        result = prime * result + ((acronimo == null) ? 0 : acronimo.hashCode());
         return result;
     }
     
@@ -69,6 +74,16 @@ public class Instituto {
             if (other.id != null)
                 return false;
         } else if (!id.equals(other.id))
+            return false;
+        if (nome == null) {
+            if (other.nome != null)
+                return false;
+        } else if (!nome.equals(other.nome))
+            return false;
+        if (acronimo == null) {
+            if (other.acronimo != null)
+                return false;
+        } else if (!acronimo.equals(other.acronimo))
             return false;
         return true;
     }   
