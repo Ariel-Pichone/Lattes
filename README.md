@@ -1,4 +1,4 @@
-## Projeto de Currículos de Pesquisadores Lattes
+## Projeto de Currículos Lattes de Pesquisadores
 Este projeto tem como objetivo permitir o cadastro e a apresentação de currículos de pesquisadores cadastrados na plataforma Lattes.
 
 ### Funcionalidades
