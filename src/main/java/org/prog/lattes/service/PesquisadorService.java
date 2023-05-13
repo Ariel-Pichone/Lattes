@@ -44,12 +44,12 @@ public class PesquisadorService {
         }
     }
 
-    @GetMapping("/{identificador}")
+    @GetMapping("/identificador/{identificador}")
     public List<Pesquisador> getPesquisador(@PathVariable("identificador") String identificador){
         return pesquisadorRepository.findByIdentificador(identificador);
     }
 
-    @GetMapping("/{nome}")
+    @GetMapping("/nome/{nome}")
     public List<Pesquisador> getPesquisadorNome(@PathVariable("nome") String nome){
         return pesquisadorRepository.findByNomeContainingIgnoreCase(nome);
     }
