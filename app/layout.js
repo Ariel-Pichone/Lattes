@@ -1,5 +1,6 @@
 import './globals.css';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export const metadata = {
   title: 'Lattes App',
@@ -12,6 +13,9 @@ export default function RootLayout({ children }) {
       <body className="">
         <header className="bg-slate-800 h-14 ">
           <nav className="md:container md:mx-auto md:mb-5 md:pt-3">
+            <Link className="text-xl mr-6" href="/">
+              Principal
+            </Link>
             <Link className="text-xl mr-6" href="/instituto">
               Instituto
             </Link>
