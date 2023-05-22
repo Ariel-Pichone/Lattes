@@ -60,4 +60,9 @@ public class InstitutoController {
             throw new Exception("Id não encontrado");
         }
     }
+
+    @GetMapping("/count")
+    public long count() {
+        return institutoRepository.count();
+    }
 }

@@ -5,9 +5,11 @@ import org.prog.lattes.repository.ProducaoSpecifications;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.prog.lattes.model.Producao;
+import org.prog.lattes.model.Tipo;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
@@ -31,6 +33,11 @@ public class ProducaoController {
         return producaoRepository.findAll();
     }   
     
+    @GetMapping("/ano/{ano}")
+    public List<Producao> getProducaoPeloAno(@PathVariable("ano") Integer ano) {
+        return producaoRepository.findByAno(ano);
+    }
+
     @GetMapping("/filtro")
     public List<Producao> buscarComFiltroDinamico(
             @RequestParam(required = false) Integer dataInicio,
@@ -62,5 +69,20 @@ public class ProducaoController {
         }
 
         return producaoRepository.findAll(spec);
+    }
+
+    @GetMapping("/count")
+    public long count() {
+        return producaoRepository.count();
+    }
+
+    @GetMapping("/countArtigo")
+    public long countArtigo() {
+        return producaoRepository.countArtigo();
+    }
+
+    @GetMapping("/countLivro")
+    public long countLivro() {
+        return producaoRepository.countLivro();
     }
 }

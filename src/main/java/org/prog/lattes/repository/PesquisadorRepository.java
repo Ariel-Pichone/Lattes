@@ -13,4 +13,6 @@ public interface PesquisadorRepository extends JpaRepository<Pesquisador, Long> 
     List<Pesquisador> findByNomeContainingIgnoreCase(String nome);
     
     Boolean existsByIdentificador(String identificador);
+
+    long count();
 }
