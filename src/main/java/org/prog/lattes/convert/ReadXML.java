@@ -2,7 +2,7 @@ package org.prog.lattes.convert;
 
 import java.io.File;
 import org.prog.lattes.model.Instituto;
-import org.prog.lattes.model.PesquisadorXml;
+import org.prog.lattes.model.LeituraXml;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class ReadXML{
 
     @Autowired
-    private PesquisadorXml pesquisadorXml;
+    private LeituraXml pesquisadorXml;
 
     public void start(String identificador, Instituto instituto) throws Exception{
 

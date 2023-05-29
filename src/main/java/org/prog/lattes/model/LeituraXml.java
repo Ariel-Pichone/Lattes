@@ -20,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component  //Carregar o xml, ler o xml, alimentar um objeto de pesquisador
-public class PesquisadorXml {
+public class LeituraXml {
 
     @Autowired
     private PesquisadorService pesquisadorService;
@@ -28,15 +28,15 @@ public class PesquisadorXml {
     @Autowired
     private ProducaoController producaoController;
 
-    public PesquisadorXml(){
+    public LeituraXml(){
 
     }
     
-    public PesquisadorXml(PesquisadorService pesquisadorService){
+    public LeituraXml(PesquisadorService pesquisadorService){
         this.pesquisadorService = pesquisadorService;
     }
 
-    public PesquisadorXml(ProducaoController producaoController){
+    public LeituraXml(ProducaoController producaoController){
         this.producaoController = producaoController;
     }
 
