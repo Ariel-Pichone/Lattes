@@ -1,6 +1,7 @@
 package org.prog.lattes.controller;
 
 import org.prog.lattes.repository.ProducaoRepository;
+import org.prog.lattes.repository.TotalProducoes;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -79,6 +80,11 @@ public class ProducaoController {
         return producaoRepository.countProducaoPorAno(ano);
     }
 
+    @GetMapping("/countTotalProducoesPorAno")
+    public List<TotalProducoes> countTotalProducoesPorAno() {
+        return producaoRepository.countTotalProducoesPorAno();
+    }
+    
     @GetMapping("/countArtigo")
     public long countArtigo() {
         return producaoRepository.countArtigo();

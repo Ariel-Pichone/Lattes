@@ -14,7 +14,6 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import org.prog.lattes.controller.AutorController;
 import org.prog.lattes.controller.ProducaoController;
 import org.prog.lattes.service.PesquisadorService;
 import org.springframework.beans.factory.annotation.Autowired;

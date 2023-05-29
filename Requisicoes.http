@@ -202,6 +202,9 @@ GET http://localhost:8080/producao/count HTTP/1.1
 ### Retorna a quantidade total de produções em um determinado ano
 GET http://localhost:8080/producao/count/ano/2016 HTTP/1.1
 
+### Retorna uma lista com a quantidade total de produções a cada ano
+GET http://localhost:8080/producao/countTotalProducoesPorAno HTTP/1.1
+
 ### Retorna a quantidade total de artigos
 GET http://localhost:8080/producao/countArtigo HTTP/1.1
 

@@ -38,6 +38,10 @@ public interface ProducaoRepository extends JpaRepository<Producao, Long>, JpaSp
 
     @Query("SELECT COUNT(p) FROM Producao p WHERE p.ano = :ano")
     long countProducaoPorAno(@Param("ano") int ano);
+    
+    @Query(value = "SELECT p.ano AS anoProducao, COUNT(p.*) AS totalProducao "
+         + "FROM producao AS p GROUP BY p.ano ORDER BY p.ano", nativeQuery = true)
+    List<TotalProducoes> countTotalProducoesPorAno();
 
     @Query("SELECT COUNT(p) FROM Producao p WHERE p.tipoProducao = 'ARTIGO'")
     long countArtigo();
