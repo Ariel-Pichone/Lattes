@@ -14,8 +14,6 @@ public class ReadXML{
 
     public void start(String identificador, Instituto instituto) throws Exception{
 
-        System.out.println("Starting reading xml");
-
         File diretorio = new File("src\\main\\java\\org\\prog\\lattes\\files");
 
         File file = new File(diretorio, identificador + ".xml");

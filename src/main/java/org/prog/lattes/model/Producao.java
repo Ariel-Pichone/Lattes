@@ -1,6 +1,8 @@
 package org.prog.lattes.model;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -8,6 +10,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 
 @Entity
@@ -29,6 +33,13 @@ public class Producao {
     
     @ManyToMany (mappedBy = "producoes")
     private List<Pesquisador> pesquisadores;
+
+    @JsonIgnore
+    @ManyToMany (cascade = CascadeType.ALL)
+    @JoinTable(name = "producao_autor",
+        joinColumns = @JoinColumn(name = "producao_id"),
+        inverseJoinColumns = @JoinColumn(name = "autor_id"))
+    private List<Autor> autores;
 
     public Producao(){}
 
@@ -66,6 +77,18 @@ public class Producao {
 
     public void addPesquisador(List<Pesquisador> pesquisadores) {
         this.pesquisadores = pesquisadores;
+    }
+    
+    public void setPesquisadores(List<Pesquisador> pesquisadores) {
+        this.pesquisadores = pesquisadores;
+    }
+
+    public List<Autor> getAutores() {
+        return this.autores;
+    }
+
+    public void addAutores(List<Autor> autores) {
+        this.autores = autores;
     }
 
     @Override

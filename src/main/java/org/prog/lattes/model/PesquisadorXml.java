@@ -14,6 +14,7 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import org.prog.lattes.controller.AutorController;
 import org.prog.lattes.controller.ProducaoController;
 import org.prog.lattes.service.PesquisadorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,100 +55,194 @@ public class PesquisadorXml {
 
             doc.getDocumentElement().normalize();
 
-            NodeList nodelist1 = doc.getElementsByTagName("DADOS-GERAIS");
-            NodeList nodeList2 = doc.getElementsByTagName("DADOS-BASICOS-DO-ARTIGO");
-            NodeList nodeList3 = doc.getElementsByTagName("DADOS-BASICOS-DO-LIVRO");
-
             List<Pesquisador> pesquisadorList = new ArrayList<>();
-            List<Producao> artigoList = new ArrayList<>();
-            List<Producao> livroList = new ArrayList<>();
-            List<Producao> allList = new ArrayList<>();
+            List<Producao> producaoList = new ArrayList<>();
+                        
+            /*********************************************************************************************************/
+            /*                                    Lendo os dados do pesquisador                                      */
+            /*********************************************************************************************************/
             
-            Pesquisador pesquisador;
-            Producao producao;
-      
+            Pesquisador pesquisador = new Pesquisador();
+            
+            Node node = doc.getElementsByTagName("CURRICULO-VITAE").item(0);
+
+            if(node.getNodeType() == Node.ELEMENT_NODE){
+                Element element = (Element) node;
+                
+                String identificador = element.getAttribute("NUMERO-IDENTIFICADOR");
+
+                pesquisador.setIdentificador(identificador);
+            }
+
+            node = doc.getElementsByTagName("DADOS-GERAIS").item(0);
+            
+            if(node.getNodeType() == Node.ELEMENT_NODE){
+                Element element = (Element) node;
+            
+                String nome = element.getAttribute("NOME-COMPLETO");
+                String ufNascimento = element.getAttribute("UF-NASCIMENTO");
+            
+                pesquisador.setNome(nome);
+                pesquisador.setUfNascimento(ufNascimento);
+            }
+
+            pesquisador.setInstituto(instituto);
+
             /*********************************************************************************************************/
             /*                     Lendo todos os livros que o pesquisador trabalhou na produção                     */
             /*********************************************************************************************************/
             
-            for(int k = 0; k< nodeList3.getLength(); k++){
-                producao = new Producao();
+            Tipo tipoProducao = Tipo.LIVRO;
 
-                Tipo tipoProducao = Tipo.LIVRO;
-                Node node = nodeList3.item(k);
+            // Obtenha a lista de elementos "LIVRO-PUBLICADO-OU-ORGANIZADO"
+            NodeList nodeList = doc.getElementsByTagName("LIVRO-PUBLICADO-OU-ORGANIZADO");
+            
+            // Percorra os elementos "LIVRO-PUBLICADO-OU-ORGANIZADO"
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                Producao producao = new Producao();
 
-                if(node.getNodeType() == Node.ELEMENT_NODE){
+                List<Autor> autoresList = new ArrayList<>();
+
+                node = nodeList.item(i);
+
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) node;
 
-                    String nomeLivro = element.getAttribute("TITULO-DO-LIVRO");
-                    Integer anoLivro = Integer.valueOf(element.getAttribute("ANO"));
+                    String nome = element.getElementsByTagName("DADOS-BASICOS-DO-LIVRO").item(0).getAttributes().getNamedItem("TITULO-DO-LIVRO").getNodeValue();
+                    Integer ano = Integer.valueOf(element.getElementsByTagName("DADOS-BASICOS-DO-LIVRO").item(0).getAttributes().getNamedItem("ANO").getNodeValue());
 
-                    producao.setAno(anoLivro);
-                    producao.setNome(nomeLivro);
+                    producao.setNome(nome);
+                    producao.setAno(ano);
                     producao.setTipoProducao(tipoProducao);
-                    producao.addPesquisador(pesquisadorList);
-                    livroList.add(producao);
+
+                    // Obtenha a lista de elementos "AUTORES" dentro do elemento "LIVRO-PUBLICADO-OU-ORGANIZADO"
+                    NodeList autoresNodeList = element.getElementsByTagName("AUTORES");
+
+                    // Percorra os elementos "AUTORES"
+                    for (int j = 0; j < autoresNodeList.getLength(); j++) {
+                        Autor autor = new Autor();
+
+                        Node autorNode = autoresNodeList.item(j);
+
+                        if (autorNode.getNodeType() == Node.ELEMENT_NODE) {
+                            Element autorElement = (Element) autorNode;
+                            String nomeAutor = autorElement.getAttribute("NOME-COMPLETO-DO-AUTOR");
+
+                            autor.setNome(nomeAutor);
+
+                            //Lendo os nomes para citação
+                            String nomesCitacao = autorElement.getAttribute("NOME-PARA-CITACAO");
+
+                            // Divida a string em nomes de citação separados por vírgula
+                            String[] nomesCitacaoArray = nomesCitacao.split(";");
+
+                            List<Citacao> citacaoList = new ArrayList<>();
+
+                            // Percorra os nomes de citação
+                            for (String nomeCitacao : nomesCitacaoArray) {
+                                Citacao citacao = new Citacao();
+
+                                // Remova espaços em branco no início e no final do nome de citação
+                                nomeCitacao = nomeCitacao.trim();
+
+                                citacao.setNomeCitacao(nomeCitacao);
+                                
+                                citacao.setAutores(autoresList);
+
+                                citacaoList.add(citacao);
+                            }
+                            autor.setCitacoes(citacaoList);
+
+                            autoresList.add(autor);
+                        }
+                    }
+                    producao.addAutores(autoresList);
+                    
+                    producaoList.add(producao);
                 }
             }
 
-            allList.addAll(livroList);
-            
             /*********************************************************************************************************/
             /*                     Lendo todos os artigos que o pesquisador trabalhou na produção                    */
             /*********************************************************************************************************/
             
-            for(int j = 0; j< nodeList2.getLength(); j++){
-                producao = new Producao();
-                Tipo tipoproducao = Tipo.ARTIGO;
-                Node node = nodeList2.item(j);
+            tipoProducao = Tipo.ARTIGO;
+
+            // Obtenha a lista de elementos "ARTIGO-PUBLICADO"
+            nodeList = doc.getElementsByTagName("ARTIGO-PUBLICADO");
             
-                if(node.getNodeType() == Node.ELEMENT_NODE){
+            // Percorra os elementos "ARTIGO-PUBLICADO"
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                Producao producao = new Producao();
+
+                List<Autor> autoresList = new ArrayList<>();
+
+                node = nodeList.item(i);
+
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) node;
+
+                    String nome = element.getElementsByTagName("DADOS-BASICOS-DO-ARTIGO").item(0).getAttributes().getNamedItem("TITULO-DO-ARTIGO").getNodeValue();
+                    Integer ano = Integer.valueOf(element.getElementsByTagName("DADOS-BASICOS-DO-ARTIGO").item(0).getAttributes().getNamedItem("ANO-DO-ARTIGO").getNodeValue());
+
+                    producao.setNome(nome);
+                    producao.setAno(ano);
+                    producao.setTipoProducao(tipoProducao);
+
+                    // Obtenha a lista de elementos "AUTORES" dentro do elemento "ARTIGO-PUBLICADO"
+                    NodeList autoresNodeList = element.getElementsByTagName("AUTORES");
+
+                    // Percorra os elementos "AUTORES"
+                    for (int j = 0; j < autoresNodeList.getLength(); j++) {
+                        Autor autor = new Autor();
+
+                        Node autorNode = autoresNodeList.item(j);
+
+                        if (autorNode.getNodeType() == Node.ELEMENT_NODE) {
+                            Element autorElement = (Element) autorNode;
+                            String nomeAutor = autorElement.getAttribute("NOME-COMPLETO-DO-AUTOR");
+
+                            autor.setNome(nomeAutor);
+
+                            //Lendo os nomes para citação
+                            String nomesCitacao = autorElement.getAttribute("NOME-PARA-CITACAO");
+
+                            // Divida a string em nomes de citação separados por vírgula
+                            String[] nomesCitacaoArray = nomesCitacao.split(";");
+
+                            List<Citacao> citacaoList = new ArrayList<>();
+
+                            // Percorra os nomes de citação
+                            for (String nomeCitacao : nomesCitacaoArray) {
+                                Citacao citacao = new Citacao();
+
+                                // Remova espaços em branco no início e no final do nome de citação
+                                nomeCitacao = nomeCitacao.trim();
+
+                                citacao.setNomeCitacao(nomeCitacao);
+                                citacao.setAutores(autoresList);
+
+                                citacaoList.add(citacao);
+                            }
+                            autor.setCitacoes(citacaoList);
+
+                            autoresList.add(autor);
+                        }
+                    }
+                    producao.addAutores(autoresList);
                     
-                    String tituloProducao = element.getAttribute("TITULO-DO-ARTIGO");
-                    Integer anoArtigo = Integer.valueOf(element.getAttribute("ANO-DO-ARTIGO"));
-                    
-                    producao.setNome(tituloProducao);
-                    producao.setAno(anoArtigo);
-                    producao.setTipoProducao(tipoproducao);
-                    producao.addPesquisador(pesquisadorList);
-                    artigoList.add(producao);
+                    producaoList.add(producao);
                 }
             }
-            allList.addAll(artigoList);
             
             /*********************************************************************************************************/
             /*                                 Gravando toda a lista de produções                                    */
             /*********************************************************************************************************/
 
-            producaoController.saveAll(allList);
+            pesquisador.addProducao(producaoList);
             
-            /*********************************************************************************************************/
-            /*                                 Lendo todos os dados do pesquisador                                   */
-            /*********************************************************************************************************/
+            pesquisadorList.add(pesquisador);
             
-            for(int i=0; i< nodelist1.getLength(); i++){
-                pesquisador = new Pesquisador();
-                Node node = nodelist1.item(0);
-                Node parent = node.getParentNode();   
-             
-                if(node.getNodeType() == Node.ELEMENT_NODE){
-                    Element element = (Element) node;
-                    Element element2 = (Element) parent;
-
-                    String nome = element.getAttribute("NOME-COMPLETO");
-                    String ufNascimento = element.getAttribute("UF-NASCIMENTO");
-                    String identificador = element2.getAttribute("NUMERO-IDENTIFICADOR");
-
-                    pesquisador.setNome(nome);
-                    pesquisador.setUfNascimento(ufNascimento);
-                    pesquisador.setIdentificador(identificador);
-                    pesquisador.setInstituto(instituto);
-                    pesquisador.addProducao(allList);
-                    pesquisadorList.add(pesquisador);
-                }
-            }
-
             pesquisadorService.saveAll(pesquisadorList);
         
         } catch (Exception e) {

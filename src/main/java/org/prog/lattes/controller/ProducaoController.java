@@ -1,7 +1,6 @@
 package org.prog.lattes.controller;
 
 import org.prog.lattes.repository.ProducaoRepository;
-import org.prog.lattes.repository.ProducaoSpecifications;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,7 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.prog.lattes.model.Producao;
-import org.prog.lattes.model.Tipo;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
@@ -49,23 +47,23 @@ public class ProducaoController {
         Specification<Producao> spec = Specification.where(null);
 
         if (dataInicio != null) {
-            spec = spec.and(ProducaoSpecifications.filtrarPorDataInicio(dataInicio));
+            spec = spec.and(ProducaoRepository.filtrarPorDataInicio(dataInicio));
         }
         
         if (dataFim != null) {
-            spec = spec.and(ProducaoSpecifications.filtrarPorDataFim(dataFim));
+            spec = spec.and(ProducaoRepository.filtrarPorDataFim(dataFim));
         }
 
         if (instituto != null) {
-            spec = spec.and(ProducaoSpecifications.filtrarPorInstituto(instituto));
+            spec = spec.and(ProducaoRepository.filtrarPorInstituto(instituto));
         }
 
         if (pesquisador != null) {
-            spec = spec.and(ProducaoSpecifications.filtrarPorPesquisador(pesquisador));
+            spec = spec.and(ProducaoRepository.filtrarPorPesquisador(pesquisador));
         }
 
         if (tipoProducao != null) {
-            spec = spec.and(ProducaoSpecifications.filtrarPorTipoProducao(tipoProducao));
+            spec = spec.and(ProducaoRepository.filtrarPorTipoProducao(tipoProducao));
         }
 
         return producaoRepository.findAll(spec);
@@ -74,6 +72,11 @@ public class ProducaoController {
     @GetMapping("/count")
     public long count() {
         return producaoRepository.count();
+    }
+
+    @GetMapping("/count/ano/{ano}")
+    public long countProducaoPorAno(@PathVariable int ano) {
+        return producaoRepository.countProducaoPorAno(ano);
     }
 
     @GetMapping("/countArtigo")

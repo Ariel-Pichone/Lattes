@@ -172,10 +172,10 @@ GET http://localhost:8080/pesquisador/add/0814717344017544/instituto/5 HTTP/1.1
 GET http://localhost:8080/pesquisador/ HTTP/1.1
 
 ### Pesquisa o pesquisador pelo o nome em qualquer parte
-GET http://localhost:8080/pesquisador/nome/Batista HTTP/1.1
+GET http://localhost:8080/pesquisador/nome/Souza HTTP/1.1
 
 ### Procura um pesquisador baseado no identificador, porém é necessário que esteja cadastrado no bd 
-GET http://localhost:8080/pesquisador/identificador/0600549075776976 HTTP/1.1
+GET http://localhost:8080/pesquisador/identificador/0770145420421898 HTTP/1.1
 
 ### Excluir um pesquisador do banco de dados
 GET http://localhost:8080/pesquisador/excluir/29 HTTP/1.1
@@ -194,13 +194,27 @@ GET http://localhost:8080/producao/ HTTP/1.1
 GET http://localhost:8080/producao/filtro?dataInicio=2004&dataFim=2022&instituto=Miguel&pesquisador=Rodrigo&tipoProducao=ARTIGO HTTP/1.1
 
 ### Pesquisa as produções pelo ano
-GET http://localhost:8080/producao/ano/2022 HTTP/1.1
+GET http://localhost:8080/producao/ano/2002 HTTP/1.1
 
 ### Retorna a quantidade total de produções
 GET http://localhost:8080/producao/count HTTP/1.1
+
+### Retorna a quantidade total de produções em um determinado ano
+GET http://localhost:8080/producao/count/ano/2016 HTTP/1.1
 
 ### Retorna a quantidade total de artigos
 GET http://localhost:8080/producao/countArtigo HTTP/1.1
 
 ### Retorna a quantidade total de livros
 GET http://localhost:8080/producao/countLivro HTTP/1.1
+
+###########################################################################
+#                REQUISIÇÕES PARA OPERAÇÕES COM PESQUISADOR               #
+###########################################################################
+
+### Verifica se um autor já está cadastrado
+//Esse caminho não consegui testar pois o nome do autor tem espaço
+GET http://localhost:8080/autor/autorExiste/Lï¿½sia Mï¿½nica de Souza Gestinari HTTP/1.1
+
+### Pesquisa o ator pelo nome em qualquer parte
+GET http://localhost:8080/autor/nome/Lï¿½sia HTTP/1.1
