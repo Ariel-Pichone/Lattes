@@ -1,4 +1,4 @@
-package org.prog.lattes.repository;
+package org.prog.lattes.model;
 
 public interface TotalProducoesAno {
     Integer getAnoProducao();

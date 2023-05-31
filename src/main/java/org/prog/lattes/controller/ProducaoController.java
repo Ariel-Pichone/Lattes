@@ -1,8 +1,6 @@
 package org.prog.lattes.controller;
 
 import org.prog.lattes.repository.ProducaoRepository;
-import org.prog.lattes.repository.TotalProducoesAno;
-import org.prog.lattes.repository.TotalProducoesTipo;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.prog.lattes.model.Producao;
+import org.prog.lattes.model.TotalProducoesAno;
+import org.prog.lattes.model.TotalProducoesTipo;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 

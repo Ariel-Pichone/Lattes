@@ -178,7 +178,7 @@ GET http://localhost:8080/pesquisador/nome/Souza HTTP/1.1
 GET http://localhost:8080/pesquisador/identificador/0770145420421898 HTTP/1.1
 
 ### Excluir um pesquisador do banco de dados
-GET http://localhost:8080/pesquisador/excluir/29 HTTP/1.1
+GET http://localhost:8080/pesquisador/excluir/0770145420421898 HTTP/1.1 
 
 ### Retorna a quantidade total de pesquisadores
 GET http://localhost:8080/pesquisador/count HTTP/1.1
@@ -191,7 +191,7 @@ GET http://localhost:8080/pesquisador/count HTTP/1.1
 GET http://localhost:8080/producao/ HTTP/1.1
 
 ### Teste de produção 
-GET http://localhost:8080/producao/filtro?dataInicio=2004&dataFim=2022&instituto=Miguel&pesquisador=Rodrigo&tipoProducao=ARTIGO HTTP/1.1
+GET http://localhost:8080/producao/filtro?dataInicio=2004&dataFim=2022&instituto=Estácio&pesquisador=Gestinari&tipoProducao=ARTIGO HTTP/1.1
 
 ### Pesquisa as produções pelo ano
 GET http://localhost:8080/producao/ano/2002 HTTP/1.1

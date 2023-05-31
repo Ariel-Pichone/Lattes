@@ -2,6 +2,8 @@ package org.prog.lattes.repository;
 
 import java.util.List;
 import org.prog.lattes.model.Producao;
+import org.prog.lattes.model.TotalProducoesAno;
+import org.prog.lattes.model.TotalProducoesTipo;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

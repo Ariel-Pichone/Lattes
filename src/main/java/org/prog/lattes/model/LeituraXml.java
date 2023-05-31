@@ -226,6 +226,8 @@ public class LeituraXml {
                             autor.setCitacoes(citacaoList);
 
                             autoresList.add(autor);
+
+                            //fazer if para verificar se o autor está cadastrado
                         }
                     }
                     producao.addAutores(autoresList);

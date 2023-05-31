@@ -55,17 +55,21 @@ public class PesquisadorService {
     }
 
     @GetMapping("/excluir/{identificador}")
-    public void remover(@PathVariable("identificador") Long identificador) throws Exception{
-        var i = pesquisadorRepository.findById(identificador);
-
-        if (i.isPresent()) {
-            Pesquisador pesquisador = i.get();
-            pesquisadorRepository.delete(pesquisador);
-        } else {
-            throw new Exception("Identificador não encontrado");
+    public void excluir(@PathVariable("identificador") String identificador) throws Exception {
+        try {
+            Pesquisador pesquisador = pesquisadorRepository.findByIdentificador(identificador).get(0);
+            
+            if (pesquisador != null) {
+                pesquisadorRepository.delete(pesquisador);
+                System.out.println("Pesquisador excluído com sucesso.");
+            } else {
+                System.out.println("Pesquisador não encontrado com o ID fornecido.");
+            }
+        } catch (Exception e) {
+            System.out.println("Falha ao excluir o pesquisador. Erro: " + e.getMessage());
         }
     }
-
+    
     public void saveAll(List<Pesquisador> pesquisadorList) {
         pesquisadorRepository.saveAll(pesquisadorList);
     }
