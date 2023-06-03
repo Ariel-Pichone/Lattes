@@ -1,16 +1,21 @@
 package org.prog.lattes.convert;
 
 import java.io.File;
+
+import org.jvnet.hk2.annotations.Service;
 import org.prog.lattes.model.Instituto;
 import org.prog.lattes.model.LeituraXml;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+@Service
 @Component
 public class ReadXML{
 
-    @Autowired
-    private LeituraXml pesquisadorXml;
+    private final LeituraXml leituraXml;
+ 
+    public ReadXML(LeituraXml leituraXml) {
+        this.leituraXml = leituraXml;
+    }
 
     public void start(String identificador, Instituto instituto) throws Exception{
 
@@ -19,7 +24,7 @@ public class ReadXML{
         File file = new File(diretorio, identificador + ".xml");
 
         if(file.isFile()) {
-            pesquisadorXml.convert(file, instituto);
+            leituraXml.convert(file, instituto);
         } else {
             throw new Exception("Pesquisador não encontrado.");
         }

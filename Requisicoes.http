@@ -57,11 +57,14 @@ content-type: application/json
 }
 
 ### Apaga o instituto id 6:
-GET http://localhost:8080/instituto/6 HTTP/1.1
+DELETE http://localhost:8080/instituto/6 HTTP/1.1
 
 ### Apresenta lista de Institutos:
 GET http://localhost:8080/instituto/ HTTP/1.1
 content-type: application/json
+
+###  Listar os institutos de forma paginada:
+GET http://localhost:8080/instituto?page=0&size=5 HTTP/1.1
 
 ### Pesquisa o instituto pelo o nome em qualquer parte
 GET http://localhost:8080/instituto/nome/federal HTTP/1.1
@@ -78,91 +81,91 @@ GET http://localhost:8080/instituto/count HTTP/1.1
 ###########################################################################
 
 ### Adicionar um pesquisador com instituto no banco de dados 
-GET http://localhost:8080/pesquisador/add/0023809873085852/instituto/1 HTTP/1.1
+POST http://localhost:8080/pesquisador/add/0023809873085852/instituto/1 HTTP/1.1
 
 ### Adicionar um pesquisador com instituto no banco de dados 
-GET http://localhost:8080/pesquisador/add/0024160866319507/instituto/1 HTTP/1.1
+POST http://localhost:8080/pesquisador/add/0024160866319507/instituto/1 HTTP/1.1
 
 ### Adicionar um pesquisador com instituto no banco de dados 
-GET http://localhost:8080/pesquisador/add/0028876341054325/instituto/1 HTTP/1.1
+POST http://localhost:8080/pesquisador/add/0028876341054325/instituto/1 HTTP/1.1
 
 ### Adicionar um pesquisador com instituto no banco de dados 
-GET http://localhost:8080/pesquisador/add/0047810385809553/instituto/1 HTTP/1.1
+POST http://localhost:8080/pesquisador/add/0047810385809553/instituto/1 HTTP/1.1
 
 ### Adicionar um pesquisador com instituto no banco de dados 
-GET http://localhost:8080/pesquisador/add/0053636364868790/instituto/1 HTTP/1.1
+POST http://localhost:8080/pesquisador/add/0053636364868790/instituto/1 HTTP/1.1
 
 ### Adicionar um pesquisador com instituto no banco de dados 
-GET http://localhost:8080/pesquisador/add/0066576690749759/instituto/1 HTTP/1.1
+POST http://localhost:8080/pesquisador/add/0066576690749759/instituto/1 HTTP/1.1
 
 ### Adicionar um pesquisador com instituto no banco de dados 
-GET http://localhost:8080/pesquisador/add/0082487176176434/instituto/2 HTTP/1.1
+POST http://localhost:8080/pesquisador/add/0082487176176434/instituto/2 HTTP/1.1
 
 ### Adicionar um pesquisador com instituto no banco de dados 
-GET http://localhost:8080/pesquisador/add/0110662125645595/instituto/2 HTTP/1.1
+POST http://localhost:8080/pesquisador/add/0110662125645595/instituto/2 HTTP/1.1
 
 ### Adicionar um pesquisador com instituto no banco de dados 
-GET http://localhost:8080/pesquisador/add/0112621452737067/instituto/2 HTTP/1.1
+POST http://localhost:8080/pesquisador/add/0112621452737067/instituto/2 HTTP/1.1
 
 ### Adicionar um pesquisador com instituto no banco de dados 
-GET http://localhost:8080/pesquisador/add/0161902355523060/instituto/2 HTTP/1.1
+POST http://localhost:8080/pesquisador/add/0161902355523060/instituto/2 HTTP/1.1
 
 ### Adicionar um pesquisador com instituto no banco de dados 
-GET http://localhost:8080/pesquisador/add/0194631586754988/instituto/2 HTTP/1.1
+POST http://localhost:8080/pesquisador/add/0194631586754988/instituto/2 HTTP/1.1
 
 ### Adicionar um pesquisador com instituto no banco de dados 
-GET http://localhost:8080/pesquisador/add/0235080730138338/instituto/2 HTTP/1.1
+POST http://localhost:8080/pesquisador/add/0235080730138338/instituto/2 HTTP/1.1
 
 ### Adicionar um pesquisador com instituto no banco de dados 
-GET http://localhost:8080/pesquisador/add/0263660448893625/instituto/3 HTTP/1.1
+POST http://localhost:8080/pesquisador/add/0263660448893625/instituto/3 HTTP/1.1
 
 ### Adicionar um pesquisador com instituto no banco de dados 
-GET http://localhost:8080/pesquisador/add/0329773854976808/instituto/3 HTTP/1.1
+POST http://localhost:8080/pesquisador/add/0329773854976808/instituto/3 HTTP/1.1
 
 ### Adicionar um pesquisador com instituto no banco de dados 
-GET http://localhost:8080/pesquisador/add/0348923590713594/instituto/3 HTTP/1.1
+POST http://localhost:8080/pesquisador/add/0348923590713594/instituto/3 HTTP/1.1
 
 ### Adicionar um pesquisador com instituto no banco de dados 
-GET http://localhost:8080/pesquisador/add/0485361810192703/instituto/3 HTTP/1.1
+POST http://localhost:8080/pesquisador/add/0485361810192703/instituto/3 HTTP/1.1
 
 ### Adicionar um pesquisador com instituto no banco de dados 
-GET http://localhost:8080/pesquisador/add/0491984479926888/instituto/3 HTTP/1.1
+POST http://localhost:8080/pesquisador/add/0491984479926888/instituto/3 HTTP/1.1
 
 ### Adicionar um pesquisador com instituto no banco de dados 
-GET http://localhost:8080/pesquisador/add/0549723858731158/instituto/3 HTTP/1.1
+POST http://localhost:8080/pesquisador/add/0549723858731158/instituto/3 HTTP/1.1
 
 ### Adicionar um pesquisador com instituto no banco de dados 
-GET http://localhost:8080/pesquisador/add/0559800226477492/instituto/4 HTTP/1.1
+POST http://localhost:8080/pesquisador/add/0559800226477492/instituto/4 HTTP/1.1
 
 ### Adicionar um pesquisador com instituto no banco de dados 
-GET http://localhost:8080/pesquisador/add/0600549075776976/instituto/4 HTTP/1.1
+POST http://localhost:8080/pesquisador/add/0600549075776976/instituto/4 HTTP/1.1
 
 ### Adicionar um pesquisador com instituto no banco de dados 
-GET http://localhost:8080/pesquisador/add/0604237405440586/instituto/4 HTTP/1.1
+POST http://localhost:8080/pesquisador/add/0604237405440586/instituto/4 HTTP/1.1
 
 ### Adicionar um pesquisador com instituto no banco de dados 
-GET http://localhost:8080/pesquisador/add/0658455060876989/instituto/4 HTTP/1.1
+POST http://localhost:8080/pesquisador/add/0658455060876989/instituto/4 HTTP/1.1
 
 ### Adicionar um pesquisador com instituto no banco de dados 
-GET http://localhost:8080/pesquisador/add/0659726776097432/instituto/4 HTTP/1.1
+POST http://localhost:8080/pesquisador/add/0659726776097432/instituto/4 HTTP/1.1
 
 ### Adicionar um pesquisador com instituto no banco de dados 
-GET http://localhost:8080/pesquisador/add/0676650998291996/instituto/4 HTTP/1.1
+POST http://localhost:8080/pesquisador/add/0676650998291996/instituto/4 HTTP/1.1
 
 ### Adicionar um pesquisador com instituto no banco de dados 
-GET http://localhost:8080/pesquisador/add/0692400140993944/instituto/5 HTTP/1.1
+POST http://localhost:8080/pesquisador/add/0692400140993944/instituto/5 HTTP/1.1
 
 ### Adicionar um pesquisador com instituto no banco de dados 
-GET http://localhost:8080/pesquisador/add/0743793296062293/instituto/5 HTTP/1.1
+POST http://localhost:8080/pesquisador/add/0743793296062293/instituto/5 HTTP/1.1
 
 ### Adicionar um pesquisador com instituto no banco de dados 
-GET http://localhost:8080/pesquisador/add/0770145420421898/instituto/5 HTTP/1.1
+POST http://localhost:8080/pesquisador/add/0770145420421898/instituto/5 HTTP/1.1
 
 ### Adicionar um pesquisador com instituto no banco de dados 
-GET http://localhost:8080/pesquisador/add/0781779929562675/instituto/5 HTTP/1.1
+POST http://localhost:8080/pesquisador/add/0781779929562675/instituto/5 HTTP/1.1
 
 ### Adicionar um pesquisador com instituto no banco de dados 
-GET http://localhost:8080/pesquisador/add/0814717344017544/instituto/5 HTTP/1.1
+POST http://localhost:8080/pesquisador/add/0814717344017544/instituto/5 HTTP/1.1
 
 ###########################################################################
 #                REQUISIÇÕES PARA OPERAÇÕES COM PESQUISADOR               #
@@ -171,6 +174,9 @@ GET http://localhost:8080/pesquisador/add/0814717344017544/instituto/5 HTTP/1.1
 ###  Pegar todos os pesquisadores que estão cadastrados no banco de dados 
 GET http://localhost:8080/pesquisador/ HTTP/1.1
 
+###  Listar os pesquisadores de forma paginada 
+GET http://localhost:8080/pesquisador?page=0&size=5 HTTP/1.1
+
 ### Pesquisa o pesquisador pelo o nome em qualquer parte
 GET http://localhost:8080/pesquisador/nome/Souza HTTP/1.1
 
@@ -178,7 +184,7 @@ GET http://localhost:8080/pesquisador/nome/Souza HTTP/1.1
 GET http://localhost:8080/pesquisador/identificador/0770145420421898 HTTP/1.1
 
 ### Excluir um pesquisador do banco de dados
-GET http://localhost:8080/pesquisador/excluir/0770145420421898 HTTP/1.1 
+DELETE http://localhost:8080/pesquisador/excluir/0770145420421898 HTTP/1.1 
 
 ### Retorna a quantidade total de pesquisadores
 GET http://localhost:8080/pesquisador/count HTTP/1.1
@@ -189,6 +195,9 @@ GET http://localhost:8080/pesquisador/count HTTP/1.1
 
 ###  Pegar todos as produções que estão cadastrados no banco de dados 
 GET http://localhost:8080/producao/ HTTP/1.1
+
+###  Listar as Produções de forma paginada 
+GET http://localhost:8080/producao?page=0&size=5 HTTP/1.1
 
 ### Teste de produção 
 GET http://localhost:8080/producao/filtro?dataInicio=2004&dataFim=2022&instituto=Estácio&pesquisador=Gestinari&tipoProducao=ARTIGO HTTP/1.1
@@ -219,7 +228,6 @@ GET http://localhost:8080/producao/countLivro HTTP/1.1
 ###########################################################################
 
 ### Verifica se um autor já está cadastrado
-//Esse caminho não consegui testar pois o nome do autor tem espaço
 GET http://localhost:8080/autor/autorExiste/Lï¿½sia Mï¿½nica de Souza Gestinari HTTP/1.1
 
 ### Pesquisa o ator pelo nome em qualquer parte

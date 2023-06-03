@@ -7,6 +7,10 @@ public enum Tipo {
 
     private String nome;
     
+    public String getNome() {
+        return nome;
+    }
+    
     Tipo(String nome){
         this.nome = nome;
     }

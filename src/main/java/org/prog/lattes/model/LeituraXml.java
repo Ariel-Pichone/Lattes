@@ -14,7 +14,6 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import org.prog.lattes.controller.ProducaoController;
 import org.prog.lattes.service.PesquisadorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,22 +25,11 @@ public class LeituraXml {
     private PesquisadorService pesquisadorService;
 
     @Autowired
-    private ProducaoController producaoController;
-
-    public LeituraXml(){
-
-    }
-    
     public LeituraXml(PesquisadorService pesquisadorService){
         this.pesquisadorService = pesquisadorService;
     }
 
-    public LeituraXml(ProducaoController producaoController){
-        this.producaoController = producaoController;
-    }
-
     public void convert(File file, Instituto instituto) {
-
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();//DocumentBuilderFactory é usada para criar uma instância de DocumentBuilder
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();//o DocumentBuilder é usado para criar um novo documento e adicionar elementos a ele.     
@@ -49,14 +37,14 @@ public class LeituraXml {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             StringWriter stringWriter = new StringWriter();
-
+            
             transformer.transform(new DOMSource(doc), new StreamResult(stringWriter));
-
+            
             doc.getDocumentElement().normalize();
 
             List<Pesquisador> pesquisadorList = new ArrayList<>();
             List<Producao> producaoList = new ArrayList<>();
-                        
+            
             /*********************************************************************************************************/
             /*                                    Lendo os dados do pesquisador                                      */
             /*********************************************************************************************************/
@@ -245,7 +233,6 @@ public class LeituraXml {
             pesquisadorList.add(pesquisador);
             
             pesquisadorService.saveAll(pesquisadorList);
-        
         } catch (Exception e) {
            e.printStackTrace();
         }

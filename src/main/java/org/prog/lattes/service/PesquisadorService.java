@@ -6,56 +6,63 @@ import org.prog.lattes.model.Instituto;
 import org.prog.lattes.model.Pesquisador;
 import org.prog.lattes.repository.PesquisadorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-@CrossOrigin
-@RequestMapping("/pesquisador")
 @Service
+@Component
 public class PesquisadorService {
 
-    @Autowired
-    private static ReadXML readXML = new ReadXML();
+    private static ReadXML readXML;
 
     @Autowired
     PesquisadorRepository pesquisadorRepository;
 
-	public PesquisadorService(ReadXML readXML){ //Construtor, Injeção de dependencia 
+    @Autowired
+    public void setReadXML(ReadXML readXML) {
+        PesquisadorService.readXML = readXML;
+    }
+
+    public PesquisadorService(ReadXML readXML){ //Construtor, Injeção de dependencia 
 	    PesquisadorService.readXML = readXML;
 	}
 
-    @GetMapping("/")
-    public List<Pesquisador> getPesquisadores(){
+    @Autowired
+    public PesquisadorService(PesquisadorRepository pesquisadorRepository){
+        this.pesquisadorRepository = pesquisadorRepository;
+    }
+
+    public List<Pesquisador> listPesquisador(){
         return pesquisadorRepository.findAll();
     }
 
-    @GetMapping("/add/{identificador}/instituto/{instituto}")
-    public void addPesquisador(@PathVariable("identificador") String identificador, @PathVariable("instituto") Instituto instituto) throws Exception{        
+    public Page<Pesquisador> pagePesquisador(Pageable pageable){
+        return this.pesquisadorRepository.findAll(pageable);
+    }  
 
+    public List<Pesquisador> listPesquisadorPeloIdentificador(String identificador){
+        return pesquisadorRepository.findByIdentificador(identificador);
+    }
+
+    public List<Pesquisador> listPesquisadorPeloNome(String nome){
+        return pesquisadorRepository.findByNomeContainingIgnoreCase(nome);
+    }
+
+    public long countPesquisador() {
+        return pesquisadorRepository.count();
+    }
+
+    public void addPesquisador(String identificador, Instituto instituto) throws Exception{
         if(pesquisadorRepository.existsByIdentificador(identificador)){
             throw new Exception("Pesquisador já cadastrado no sistema");
-        }else{
+        }else{            
             readXML.start(identificador, instituto);
         }
     }
 
-    @GetMapping("/identificador/{identificador}")
-    public List<Pesquisador> getPesquisador(@PathVariable("identificador") String identificador){
-        return pesquisadorRepository.findByIdentificador(identificador);
-    }
-
-    @GetMapping("/nome/{nome}")
-    public List<Pesquisador> getPesquisadorNome(@PathVariable("nome") String nome){
-        return pesquisadorRepository.findByNomeContainingIgnoreCase(nome);
-    }
-
-    @GetMapping("/excluir/{identificador}")
-    public void excluir(@PathVariable("identificador") String identificador) throws Exception {
+    public void excluir(String identificador) throws Exception {
         try {
             Pesquisador pesquisador = pesquisadorRepository.findByIdentificador(identificador).get(0);
             
