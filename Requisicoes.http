@@ -64,7 +64,7 @@ GET http://localhost:8080/instituto/ HTTP/1.1
 content-type: application/json
 
 ###  Listar os institutos de forma paginada:
-GET http://localhost:8080/instituto?page=0&size=5 HTTP/1.1
+GET http://localhost:8080/instituto?page=0&size=2 HTTP/1.1
 
 ### Pesquisa o instituto pelo o nome em qualquer parte
 GET http://localhost:8080/instituto/nome/federal HTTP/1.1
@@ -212,7 +212,7 @@ GET http://localhost:8080/producao/count HTTP/1.1
 GET http://localhost:8080/producao/count/ano/2016 HTTP/1.1
 
 ### Retorna uma lista com a quantidade total de produções a cada ano
-GET http://localhost:8080/producao/countTotalProducoesPorAno HTTP/1.1
+GET http://localhost:8080/producao/countTotalProducoesPorAno?dataInicio=2005&dataFim=2014 HTTP/1.1
 
 ### Retorna uma lista com a quantidade total de produções de cada tipo
 GET http://localhost:8080/producao/countTotalProducoesPorTipo HTTP/1.1

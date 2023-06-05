@@ -1,5 +1,6 @@
 package org.prog.lattes.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,7 +13,10 @@ public class Instituto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
+    @Column(unique = true, nullable = false)
     private String nome;
+
+    @Column(unique = true, nullable = false)
     private String acronimo;
     
     public Instituto() {}

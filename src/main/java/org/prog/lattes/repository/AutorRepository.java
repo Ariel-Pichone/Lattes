@@ -13,5 +13,4 @@ public interface AutorRepository extends JpaRepository<Autor, Long>{
     boolean autorExiste(String nome);
 
     List<Autor> findByNomeContainingIgnoreCase(String nome);
-
 }

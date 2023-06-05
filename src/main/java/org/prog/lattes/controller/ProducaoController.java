@@ -4,6 +4,7 @@ import org.prog.lattes.service.ProducaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/producao")
 public class ProducaoController {
 
@@ -61,8 +63,13 @@ public class ProducaoController {
     }
 
     @GetMapping("/countTotalProducoesPorAno")
-    public List<TotalProducoesAno> countTotalProducoesPorAno() {
-        return producaoService.countTotalProducoesPorAno();
+    public List<TotalProducoesAno> countTotalProducoesPorAno(
+            @RequestParam(required = false) Integer dataInicio,
+            @RequestParam(required = false) Integer dataFim,
+            @RequestParam(required = false) String instituto,
+            @RequestParam(required = false) String pesquisador,
+            @RequestParam(required = false) String tipoProducao){
+        return producaoService.countTotalProducoesPorAno(dataInicio, dataFim, instituto, pesquisador, tipoProducao);
     }
 
     @GetMapping("/countTotalProducoesPorTipo")

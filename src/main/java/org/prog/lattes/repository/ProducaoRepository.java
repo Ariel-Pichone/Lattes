@@ -8,7 +8,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 public interface ProducaoRepository extends JpaRepository<Producao, Long>, JpaSpecificationExecutor<Producao>{
     
@@ -37,7 +36,7 @@ public interface ProducaoRepository extends JpaRepository<Producao, Long>, JpaSp
     List<Producao> findByAno(Integer ano);
 
     @Query("SELECT COUNT(p) FROM Producao p WHERE p.ano = :ano")
-    long countProducaoPorAno(@Param("ano") int ano);
+    long countProducaoPorAno(int ano);
     
     @Query(value = "SELECT p.ano AS anoProducao, COUNT(p.*) AS totalProducao "
          + "FROM producao AS p GROUP BY p.ano ORDER BY p.ano", nativeQuery = true)

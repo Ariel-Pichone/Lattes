@@ -1,8 +1,6 @@
 package org.prog.lattes.service;
 
-
 import java.util.List;
-
 import org.prog.lattes.model.Autor;
 import org.prog.lattes.repository.AutorRepository;
 import org.springframework.stereotype.Component;
@@ -25,9 +23,4 @@ public class AutorService {
     public List<Autor> listAutorPeloNome(String nome) {
         return autorRepository.findByNomeContainingIgnoreCase(nome);
     }
-
-
-
-
-
 }
