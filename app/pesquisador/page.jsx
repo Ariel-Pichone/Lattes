@@ -7,6 +7,7 @@ import { MdDelete } from '@react-icons/all-files/md/MdDelete';
 import { BiSearchAlt2 } from '@react-icons/all-files/bi/BiSearchAlt2';
 import { useForm } from 'react-hook-form';
 import Instituto from '../instituto/page';
+import { Pagination } from 'flowbite-react';
 // import * as ReactSelect from 'react-select';
 
 export default function Pesquisador() {
@@ -29,14 +30,14 @@ export default function Pesquisador() {
 
     switch (campo) {
       case 'Nome':
-        url = 'http://localhost:8080/pesquisador/nome/';
+        url = 'http://localhost:8080/pesquisador?nome=';
         break;
       case 'Identificador':
-        url = 'http://localhost:8080/pesquisador/identificador/';
+        url = 'http://localhost:8080/pesquisador?identificador=';
         break;
     }
 
-    fetch(`${url}` + termo)
+    fetch(url + termo)
       .then(console.log('pesquisa realizada com o campo' + campo))
       .then((res) => res.json())
       .then((data) => {
@@ -80,17 +81,14 @@ export default function Pesquisador() {
 
   useEffect(() => {
     setLoading(true);
-    fetch('http://localhost:8080/pesquisador/')
+    fetch(`http://localhost:8080/pesquisador`)  //?page=${XXXXXXXXXXXXXXX}?size=10
       .then((res) => res.json())
       .then((data) => {
         setData(data);
         setLoading(false);
       })
       .catch((err) => console.log(err));
-  }, []);
-
-  if (isLoading) return <p>Loading...</p>;
-  if (!data) return <p>No data</p>;
+  }, [showDeleteConfirmation, showCreateForm]);
 
   return (
     <div className="mx-2">
@@ -160,7 +158,7 @@ export default function Pesquisador() {
             </tr>
           </thead>
           <tbody>
-            {data.map((pesquisador) => (
+            {data?.content && data.content.map((pesquisador) => (
               <tr
                 key={pesquisador.identificador}
                 className="bg-white border-b dark:bg-gray-900 dark:border-gray-700"
@@ -186,6 +184,11 @@ export default function Pesquisador() {
           </tbody>
         </table>
       </div>
+
+      {/* Colocar aqui a paginação */}
+
+
+
 
       {/* MODAL DELETE CONFIRMATION */}
       <>

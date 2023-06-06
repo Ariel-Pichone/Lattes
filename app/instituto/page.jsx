@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { HiOutlineExclamationCircle } from '@react-icons/all-files/hi/HiOutlineExclamationCircle';
 import { MdDelete } from '@react-icons/all-files/md/MdDelete';
 import { useForm } from 'react-hook-form';
+import { Pagination } from 'flowbite-react';
 
 export default function Instituto() {
   const [data, setData] = useState(null);
@@ -25,17 +26,17 @@ export default function Instituto() {
 
     switch (campo) {
       case 'Todos':
-        url = 'http://localhost:8080/instituto/pesquisar/';
+        url = 'http://localhost:8080/instituto?nomeAcronimo=';
         break;
       case 'Nome':
-        url = 'http://localhost:8080/instituto/nome/';
+        url = 'http://localhost:8080/instituto?nome=';
         break;
       case 'Acrônimo':
-        url = 'http://localhost:8080/instituto/acronimo/';
+        url = 'http://localhost:8080/instituto?acronimo=';
         break;
     }
 
-    fetch(`${url}` + termo)
+    fetch(url + termo)
       .then(console.log('pesquisa realizada com o campo' + campo))
       .then((res) => res.json())
       .then((data) => {
@@ -74,7 +75,7 @@ export default function Instituto() {
 
   useEffect(() => {
     setLoading(true);
-    fetch('http://localhost:8080/instituto/')
+    fetch(`http://localhost:8080/instituto`)  //?page=${XXXXXXXXXXXXXXX}?size=10
       .then((res) => res.json())
       .then((data) => {
         setData(data);
@@ -82,9 +83,6 @@ export default function Instituto() {
       })
       .catch((err) => console.log(err));
   }, [showDeleteConfirmation, showCreateForm]);
-
-  // if (isLoading) return <p>Loading...</p>;
-  // if (!data) return <p>No data</p>;
 
   return (
     <div className="mx-2">
@@ -152,32 +150,36 @@ export default function Instituto() {
             </tr>
           </thead>
           <tbody>
-            {data &&
-              data.map((Instituto) => (
-                <tr
-                  key={Instituto.id}
-                  className="bg-white border-b dark:bg-gray-900 dark:border-gray-700"
+            {data?.content && data.content.map((Instituto) => (
+              <tr
+                key={Instituto.id}
+                className="bg-white border-b dark:bg-gray-900 dark:border-gray-700"
+              >
+                <th
+                  scope="row"
+                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 >
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  {Instituto.nome}
+                </th>
+                <td className="px-6 py-4">{Instituto.acronimo}</td>
+                <td className="px-6 py-4 space-x-3">
+                  <a
+                    onClick={() => handleDelete(Instituto)}
+                    className="font-medium text-red-600 dark:text-red-500 hover:underline cursor-pointer"
                   >
-                    {Instituto.nome}
-                  </th>
-                  <td className="px-6 py-4">{Instituto.acronimo}</td>
-                  <td className="px-6 py-4 space-x-3">
-                    <a
-                      onClick={() => handleDelete(Instituto)}
-                      className="font-medium text-red-600 dark:text-red-500 hover:underline cursor-pointer"
-                    >
-                      <MdDelete size={'2em'} />
-                    </a>
-                  </td>
-                </tr>
-              ))}
+                    <MdDelete size={'2em'} />
+                  </a>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
+
+      {/* Colocar aqui a paginação */}
+
+
+
 
       {/* MODAL DELETE CONFIRMATION */}
       <>
