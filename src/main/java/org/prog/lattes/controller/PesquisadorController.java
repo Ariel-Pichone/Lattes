@@ -1,5 +1,7 @@
 package org.prog.lattes.controller;
 
+import java.util.List;
+
 import org.prog.lattes.model.Instituto;
 import org.prog.lattes.model.Pesquisador;
 import org.prog.lattes.service.PesquisadorService;
@@ -33,6 +35,11 @@ public class PesquisadorController {
             @RequestParam(required = false) String nome,
             Pageable pageable) {        
         return pesquisadorService.buscarComFiltroDinamico(identificador, nome, pageable);
+    }
+
+    @GetMapping("/instituto/{instituto}")
+    public List<Pesquisador> listPesquisadorPorInstituto(@PathVariable("instituto") Long instituto){
+        return pesquisadorService.listPesquisadorPorInstituto(instituto);
     }
 
     @GetMapping("/count")

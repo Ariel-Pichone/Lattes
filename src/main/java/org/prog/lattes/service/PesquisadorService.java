@@ -43,6 +43,10 @@ public class PesquisadorService {
         return pesquisadorRepository.findAll(spec, pageable);
     }
 
+    public List<Pesquisador> listPesquisadorPorInstituto(Long instituto){
+        return pesquisadorRepository.listPesquisadorPorInstituto(instituto);
+    }
+
     public long countPesquisador() {
         return pesquisadorRepository.count();
     }
