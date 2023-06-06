@@ -266,7 +266,7 @@ export default function Home() {
         </Card>
 
         <Card
-          href="#"
+          href="/grafo"
           className="row-span-1 bg-zinc-800 text-zinc-400 hover:bg-zinc-900"
         >
           <h3 className="text-3xl font-normal  dark:text-gray-400">Grafos</h3>
