@@ -186,14 +186,14 @@ GET http://localhost:8080/pesquisador?nome=Salvador HTTP/1.1
 ### Procura um pesquisador baseado no identificador, porém é necessário que esteja cadastrado no bd 
 GET http://localhost:8080/pesquisador?identificador=0814717344017544 HTTP/1.1
 
+###  Pegar todos os pesquisadores que estão no instituto 1: 
+GET http://localhost:8080/pesquisador?instituto=1 HTTP/1.1
+
 ### Excluir um pesquisador do banco de dados
 DELETE http://localhost:8080/pesquisador/excluir/0770145420421898 HTTP/1.1 
 
 ### Retorna a quantidade total de pesquisadores
 GET http://localhost:8080/pesquisador/count HTTP/1.1
-
-###  Pegar todos os pesquisadores que estão no instituto 1: 
-GET http://localhost:8080/pesquisador/instituto/1 HTTP/1.1
 
 ###########################################################################
 #                  REQUISIÇÕES PARA OPERAÇÕES COM PRODUÇÃO                #

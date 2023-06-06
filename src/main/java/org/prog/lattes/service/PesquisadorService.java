@@ -29,7 +29,11 @@ public class PesquisadorService {
         this.pesquisadorRepository = pesquisadorRepository;
     }
 
-    public Page<Pesquisador> buscarComFiltroDinamico(String identificador, String nome, Pageable pageable) {
+    public Page<Pesquisador> buscarComFiltroDinamico(
+            String identificador,
+            String nome,
+            Long instituto,
+            Pageable pageable) {
         Specification<Pesquisador> spec = Specification.where(null);
         
         if (identificador != null) {
@@ -40,11 +44,11 @@ public class PesquisadorService {
             spec = spec.and(PesquisadorRepository.filtrarPorNome(nome));
         }
     
-        return pesquisadorRepository.findAll(spec, pageable);
-    }
+        if (instituto != null) {
+            spec = spec.and(PesquisadorRepository.filtrarPorInstituto(instituto));
+        }
 
-    public List<Pesquisador> listPesquisadorPorInstituto(Long instituto){
-        return pesquisadorRepository.listPesquisadorPorInstituto(instituto);
+        return pesquisadorRepository.findAll(spec, pageable);
     }
 
     public long countPesquisador() {
