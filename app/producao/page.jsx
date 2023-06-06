@@ -15,10 +15,6 @@ export default function Producao() {
   const { register, handleSubmit } = useForm();
   const [pageNumber, setPageNumber] = useState(0);
 
-  const handlePageChange = (pageNumber) => {
-    fetchDataFromAPI(pageNumber);
-  };
-
   function pesquisarProducao({
     dataInicio,
     dataFim,
@@ -141,38 +137,39 @@ export default function Producao() {
             </tr>
           </thead>
           <tbody>
-            {data?.content && data.content.map((producao) => (
-              <tr
-                key={producao.id}
-                className="bg-white border-b dark:bg-gray-900 dark:border-gray-700"
-              >
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white max-w-sm overflow-hidden"
+            {data?.content &&
+              data.content.map((producao) => (
+                <tr
+                  key={producao.id}
+                  className="bg-white border-b dark:bg-gray-900 dark:border-gray-700"
                 >
-                  {producao.nome}
-                </th>
-                <td className="px-6 py-4">{producao.ano}</td>
-                <td className="px-6 py-4">{producao.tipoProducao}</td>
-              </tr>
-            ))}
+                  <th
+                    scope="row"
+                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white max-w-sm overflow-hidden"
+                  >
+                    {producao.nome}
+                  </th>
+                  <td className="px-6 py-4">{producao.ano}</td>
+                  <td className="px-6 py-4">{producao.tipoProducao}</td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
 
       {/* Paginação */}
+
       <div className="flex items-center justify-center text-center">
         <Pagination
-          currentPage={pageNumber}//data?.number}
+          currentPage={pageNumber} //data?.number
           layout="pagination"
           nextLabel="Próxima"
-          onPageChange={handlePageChange}
+          onPageChange={(page) => setPageNumber(page - 1)}
           previousLabel="Anterior"
           showIcons
-          totalPages={100}//data?.totalPages}
+          totalPages={data && data.totalPages} //data?.totalPages
         />
       </div>
-
     </div>
   );
 }

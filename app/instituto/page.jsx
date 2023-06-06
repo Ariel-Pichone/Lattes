@@ -17,10 +17,6 @@ export default function Instituto() {
   const { register, handleSubmit } = useForm();
   const [pageNumber, setPageNumber] = useState(0);
 
-  const handlePageChange = (pageNumber) => {
-    fetchDataFromAPI(pageNumber);
-  };
-
   function handleDelete(instituto) {
     setObjToDelete(instituto), setShowDeleteConfirmation(true);
   }
@@ -81,7 +77,7 @@ export default function Instituto() {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:8080/instituto?page=${pageNumber}&size=5`) 
+    fetch(`http://localhost:8080/instituto?page=${pageNumber}&size=5`)
       .then((res) => res.json())
       .then((data) => {
         setData(data);
@@ -156,42 +152,44 @@ export default function Instituto() {
             </tr>
           </thead>
           <tbody>
-            {data?.content && data.content.map((Instituto) => (
-              <tr
-                key={Instituto.id}
-                className="bg-white border-b dark:bg-gray-900 dark:border-gray-700"
-              >
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+            {data?.content &&
+              data.content.map((Instituto) => (
+                <tr
+                  key={Instituto.id}
+                  className="bg-white border-b dark:bg-gray-900 dark:border-gray-700"
                 >
-                  {Instituto.nome}
-                </th>
-                <td className="px-6 py-4">{Instituto.acronimo}</td>
-                <td className="px-6 py-4 space-x-3">
-                  <a
-                    onClick={() => handleDelete(Instituto)}
-                    className="font-medium text-red-600 dark:text-red-500 hover:underline cursor-pointer"
+                  <th
+                    scope="row"
+                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                   >
-                    <MdDelete size={'2em'} />
-                  </a>
-                </td>
-              </tr>
-            ))}
+                    {Instituto.nome}
+                  </th>
+                  <td className="px-6 py-4">{Instituto.acronimo}</td>
+                  <td className="px-6 py-4 space-x-3">
+                    <a
+                      onClick={() => handleDelete(Instituto)}
+                      className="font-medium text-red-600 dark:text-red-500 hover:underline cursor-pointer"
+                    >
+                      <MdDelete size={'2em'} />
+                    </a>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
 
       {/* Paginação */}
+
       <div className="flex items-center justify-center text-center">
         <Pagination
-          currentPage={pageNumber}//data?.number}
+          currentPage={pageNumber} //data?.number
           layout="pagination"
           nextLabel="Próxima"
-          onPageChange={handlePageChange}
+          onPageChange={(page) => setPageNumber(page - 1)}
           previousLabel="Anterior"
           showIcons
-          totalPages={100}//data?.totalPages}
+          totalPages={data && data.totalPages} //data?.totalPages
         />
       </div>
 
