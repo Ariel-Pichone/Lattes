@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { HiOutlineExclamationCircle } from '@react-icons/all-files/hi/HiOutlineExclamationCircle';
 import { MdDelete } from '@react-icons/all-files/md/MdDelete';
 import { useForm } from 'react-hook-form';
+import React from 'react';
 import { Pagination } from 'flowbite-react';
 
 export default function Instituto() {
@@ -14,6 +15,11 @@ export default function Instituto() {
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [objToDelete, setObjToDelete] = useState({});
   const { register, handleSubmit } = useForm();
+  const [pageNumber, setPageNumber] = useState(0);
+
+  const handlePageChange = (pageNumber) => {
+    fetchDataFromAPI(pageNumber);
+  };
 
   function handleDelete(instituto) {
     setObjToDelete(instituto), setShowDeleteConfirmation(true);
@@ -75,14 +81,14 @@ export default function Instituto() {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:8080/instituto`)  //?page=${XXXXXXXXXXXXXXX}?size=10
+    fetch(`http://localhost:8080/instituto?page=${pageNumber}&size=5`) 
       .then((res) => res.json())
       .then((data) => {
         setData(data);
         setLoading(false);
       })
       .catch((err) => console.log(err));
-  }, [showDeleteConfirmation, showCreateForm]);
+  }, [showDeleteConfirmation, showCreateForm, pageNumber]);
 
   return (
     <div className="mx-2">
@@ -176,10 +182,18 @@ export default function Instituto() {
         </table>
       </div>
 
-      {/* Colocar aqui a paginação */}
-
-
-
+      {/* Paginação */}
+      <div className="flex items-center justify-center text-center">
+        <Pagination
+          currentPage={pageNumber}//data?.number}
+          layout="pagination"
+          nextLabel="Próxima"
+          onPageChange={handlePageChange}
+          previousLabel="Anterior"
+          showIcons
+          totalPages={100}//data?.totalPages}
+        />
+      </div>
 
       {/* MODAL DELETE CONFIRMATION */}
       <>

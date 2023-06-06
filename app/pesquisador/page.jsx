@@ -7,6 +7,7 @@ import { MdDelete } from '@react-icons/all-files/md/MdDelete';
 import { BiSearchAlt2 } from '@react-icons/all-files/bi/BiSearchAlt2';
 import { useForm } from 'react-hook-form';
 import Instituto from '../instituto/page';
+import React from 'react';
 import { Pagination } from 'flowbite-react';
 // import * as ReactSelect from 'react-select';
 
@@ -18,6 +19,11 @@ export default function Pesquisador() {
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [objToDelete, setObjToDelete] = useState({});
   const { register, handleSubmit } = useForm();
+  const [pageNumber, setPageNumber] = useState(0);
+
+  const handlePageChange = (pageNumber) => {
+    fetchDataFromAPI(pageNumber);
+  };
 
   function handleDelete(pesquisador) {
     setObjToDelete(pesquisador), setShowDeleteConfirmation(true);
@@ -81,14 +87,14 @@ export default function Pesquisador() {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:8080/pesquisador`)  //?page=${XXXXXXXXXXXXXXX}?size=10
+    fetch(`http://localhost:8080/pesquisador?page=${pageNumber}&size=10`)
       .then((res) => res.json())
       .then((data) => {
         setData(data);
         setLoading(false);
       })
       .catch((err) => console.log(err));
-  }, [showDeleteConfirmation, showCreateForm]);
+  }, [showDeleteConfirmation, showCreateForm, pageNumber]);
 
   return (
     <div className="mx-2">
@@ -185,10 +191,18 @@ export default function Pesquisador() {
         </table>
       </div>
 
-      {/* Colocar aqui a paginação */}
-
-
-
+      {/* Paginação */}
+      <div className="flex items-center justify-center text-center">
+        <Pagination
+          currentPage={pageNumber}//data?.number}
+          layout="pagination"
+          nextLabel="Próxima"
+          onPageChange={handlePageChange}
+          previousLabel="Anterior"
+          showIcons
+          totalPages={100}//data?.totalPages}
+        />
+      </div>
 
       {/* MODAL DELETE CONFIRMATION */}
       <>

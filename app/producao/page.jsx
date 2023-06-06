@@ -3,6 +3,7 @@
 import { Button, Label, Modal, Select, TextInput } from 'flowbite-react';
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import React from 'react';
 import { Pagination } from 'flowbite-react';
 
 export default function Producao() {
@@ -12,6 +13,11 @@ export default function Producao() {
   const [producaoList, setProducaoList] = useState(null);
   const [isLoading, setLoading] = useState(true);
   const { register, handleSubmit } = useForm();
+  const [pageNumber, setPageNumber] = useState(0);
+
+  const handlePageChange = (pageNumber) => {
+    fetchDataFromAPI(pageNumber);
+  };
 
   function pesquisarProducao({
     dataInicio,
@@ -32,7 +38,7 @@ export default function Producao() {
 
   useEffect(() => {
     setLoading(true);
-    fetch('http://localhost:8080/producao')      //?page=${XXXXXXXXXXXXXXX}?size=10
+    fetch(`http://localhost:8080/producao?page=${pageNumber}&size=10`)
       .then((res) => res.json())
       .then((data) => {
         setData(data);
@@ -40,7 +46,7 @@ export default function Producao() {
       })
       .catch((err) => console.log(err));
 
-    fetch('http://localhost:8080/instituto')      //?page=${XXXXXXXXXXXXXXX}?size=10
+    fetch(`http://localhost:8080/instituto?page=${pageNumber}&size=10`)
       .then((res) => res.json())
       .then((instituto) => {
         setInstituto(instituto);
@@ -48,14 +54,14 @@ export default function Producao() {
       })
       .catch((err) => console.log(err));
 
-    fetch('http://localhost:8080/pesquisador')   //?page=${XXXXXXXXXXXXXXX}?size=10
+    fetch(`http://localhost:8080/pesquisador?page=${pageNumber}&size=10`)
       .then((res) => res.json())
       .then((pesquisador) => {
         setPesquisador(pesquisador);
         setLoading(false);
       })
       .catch((err) => console.log(err));
-  }, []);                                      ///////////////////
+  }, [pageNumber]);
 
   return (
     <div className="mx-2">
@@ -154,7 +160,18 @@ export default function Producao() {
         </table>
       </div>
 
-      {/* Colocar aqui a paginação */}
+      {/* Paginação */}
+      <div className="flex items-center justify-center text-center">
+        <Pagination
+          currentPage={pageNumber}//data?.number}
+          layout="pagination"
+          nextLabel="Próxima"
+          onPageChange={handlePageChange}
+          previousLabel="Anterior"
+          showIcons
+          totalPages={100}//data?.totalPages}
+        />
+      </div>
 
     </div>
   );
