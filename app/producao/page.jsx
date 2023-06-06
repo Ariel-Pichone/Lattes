@@ -86,8 +86,8 @@ export default function Producao() {
           <div className="mr-4" id="select">
             <Select {...register('instituto')} name="instituto" required={true}>
               <option value="">Instituto</option>
-              {instituto &&
-                instituto.map((instituto) => (
+              {instituto?.content &&
+                instituto.content.map((instituto) => (
                   <option value={instituto.nome}>{instituto.nome}</option>
                 ))}
             </Select>
@@ -95,8 +95,8 @@ export default function Producao() {
           <div className="mr-4" id="select">
             <Select {...register('pesquisador')} name="pesquisador">
               <option value="">Pesquisador</option>
-              {pesquisador &&
-                pesquisador.map((pesquisador) => (
+              {pesquisador?.content &&
+                pesquisador.content.map((pesquisador) => (
                   <option value={pesquisador.id}>{pesquisador.nome}</option>
                 ))}
             </Select>
@@ -135,7 +135,7 @@ export default function Producao() {
             </tr>
           </thead>
           <tbody>
-            {data?.content && data.map((producao) => (
+            {data?.content && data.content.map((producao) => (
               <tr
                 key={producao.id}
                 className="bg-white border-b dark:bg-gray-900 dark:border-gray-700"
