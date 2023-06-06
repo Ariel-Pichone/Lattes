@@ -3,6 +3,7 @@
 import { Button, Label, Modal, Select, TextInput } from 'flowbite-react';
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { Pagination } from 'flowbite-react';
 
 export default function Producao() {
   const [data, setData] = useState(null);
@@ -31,7 +32,7 @@ export default function Producao() {
 
   useEffect(() => {
     setLoading(true);
-    fetch('http://localhost:8080/producao/')
+    fetch('http://localhost:8080/producao')      //?page=${XXXXXXXXXXXXXXX}?size=10
       .then((res) => res.json())
       .then((data) => {
         setData(data);
@@ -39,7 +40,7 @@ export default function Producao() {
       })
       .catch((err) => console.log(err));
 
-    fetch('http://localhost:8080/instituto/')
+    fetch('http://localhost:8080/instituto')      //?page=${XXXXXXXXXXXXXXX}?size=10
       .then((res) => res.json())
       .then((instituto) => {
         setInstituto(instituto);
@@ -47,17 +48,14 @@ export default function Producao() {
       })
       .catch((err) => console.log(err));
 
-    fetch('http://localhost:8080/pesquisador/')
+    fetch('http://localhost:8080/pesquisador')   //?page=${XXXXXXXXXXXXXXX}?size=10
       .then((res) => res.json())
       .then((pesquisador) => {
         setPesquisador(pesquisador);
         setLoading(false);
       })
       .catch((err) => console.log(err));
-  }, []);
-
-  if (isLoading) return <p>Loading...</p>;
-  if (!data) return <p>No data</p>;
+  }, []);                                      ///////////////////
 
   return (
     <div className="mx-2">
@@ -137,7 +135,7 @@ export default function Producao() {
             </tr>
           </thead>
           <tbody>
-            {data.map((producao) => (
+            {data?.content && data.map((producao) => (
               <tr
                 key={producao.id}
                 className="bg-white border-b dark:bg-gray-900 dark:border-gray-700"
@@ -155,6 +153,9 @@ export default function Producao() {
           </tbody>
         </table>
       </div>
+
+      {/* Colocar aqui a paginação */}
+
     </div>
   );
 }
