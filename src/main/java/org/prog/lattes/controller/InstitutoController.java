@@ -1,7 +1,5 @@
-
 package org.prog.lattes.controller;
 
-import java.util.List;
 import org.prog.lattes.model.Instituto;
 import org.prog.lattes.service.InstitutoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -28,34 +27,19 @@ public class InstitutoController {
         this.institutoService = institutoService;
     }
 
-    @GetMapping("/")
-    public List<Instituto> listInstituto(){
-        return institutoService.listInstituto();
-    }
-    
     @GetMapping
-    public Page<Instituto> pageInstituto(Pageable pageable) {
-        return institutoService.pageInstituto(pageable);
+    public Page<Instituto> buscarComFiltroDinamico(
+            @RequestParam(required = false) String nome,
+            @RequestParam(required = false) String acronimo,
+            Pageable pageable) {        
+        return institutoService.buscarComFiltroDinamico(nome, acronimo, pageable);
     }
 
-    // @GetMapping
-    // public List<Instituto> listInstitutos(Pageable pageable) {
-    //     return institutoService.findAll(pageable).getContent();
-    // }
-
-    @GetMapping("/nome/{nome}")
-    public List<Instituto> listInstitutoPeloNome(@PathVariable("nome") String nome) {
-        return institutoService.listInstitutoPeloNome(nome);
-    }
-
-    @GetMapping("/acronimo/{acronimo}")
-    public List<Instituto> listInstitutoPeloAcronimo(@PathVariable("acronimo") String acronimo) {
-        return institutoService.listInstitutoPeloAcronimo(acronimo);
-    }
-
-    @GetMapping("/pesquisar/{texto}")
-    public List<Instituto> listInstitutoQualquerCampo(@PathVariable("texto") String texto) {
-        return institutoService.listInstitutoQualquerCampo(texto);
+    @GetMapping("/nomeacronimo")
+    public Page<Instituto> buscarPorNomeEAcronimo(
+            @RequestParam(required = false) String string,
+            Pageable pageable) {        
+        return institutoService.buscarPorNomeOuAcronimo(string, pageable);
     }
 
     @GetMapping("/count")

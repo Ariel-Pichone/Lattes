@@ -1,6 +1,5 @@
 package org.prog.lattes.controller;
 
-import java.util.List;
 import org.prog.lattes.model.Instituto;
 import org.prog.lattes.model.Pesquisador;
 import org.prog.lattes.service.PesquisadorService;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -27,24 +27,12 @@ public class PesquisadorController {
         this.pesquisadorService = pesquisadorService;
     }
 
-    @GetMapping("/")
-    public List<Pesquisador> listPesquisador(){
-        return pesquisadorService.listPesquisador();
-    }
-
     @GetMapping
-    public Page<Pesquisador> pagePesquisador(Pageable pageable) {
-        return pesquisadorService.pagePesquisador(pageable);
-    }
-
-    @GetMapping("/identificador/{identificador}")
-    public List<Pesquisador> listPesquisadorPeloIdentificador(@PathVariable("identificador") String identificador){
-        return pesquisadorService.listPesquisadorPeloIdentificador(identificador);
-    }
-
-    @GetMapping("/nome/{nome}")
-    public List<Pesquisador> listPesquisadorPeloNome(@PathVariable("nome") String nome){
-        return pesquisadorService.listPesquisadorPeloNome(nome);
+    public Page<Pesquisador> buscarComFiltroDinamico(
+            @RequestParam(required = false) String identificador,
+            @RequestParam(required = false) String nome,
+            Pageable pageable) {        
+        return pesquisadorService.buscarComFiltroDinamico(identificador, nome, pageable);
     }
 
     @GetMapping("/count")

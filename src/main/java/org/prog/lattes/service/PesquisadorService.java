@@ -8,6 +8,7 @@ import org.prog.lattes.repository.PesquisadorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +17,7 @@ import org.springframework.stereotype.Service;
 public class PesquisadorService {
 
     private static ReadXML readXML;
-
-    @Autowired
+    
     PesquisadorRepository pesquisadorRepository;
 
     @Autowired
@@ -25,29 +25,22 @@ public class PesquisadorService {
         PesquisadorService.readXML = readXML;
     }
 
-    public PesquisadorService(ReadXML readXML){ //Construtor, Injeção de dependencia 
-	    PesquisadorService.readXML = readXML;
-	}
-
-    @Autowired
     public PesquisadorService(PesquisadorRepository pesquisadorRepository){
         this.pesquisadorRepository = pesquisadorRepository;
     }
 
-    public List<Pesquisador> listPesquisador(){
-        return pesquisadorRepository.findAll();
-    }
-
-    public Page<Pesquisador> pagePesquisador(Pageable pageable){
-        return this.pesquisadorRepository.findAll(pageable);
-    }  
-
-    public List<Pesquisador> listPesquisadorPeloIdentificador(String identificador){
-        return pesquisadorRepository.findByIdentificador(identificador);
-    }
-
-    public List<Pesquisador> listPesquisadorPeloNome(String nome){
-        return pesquisadorRepository.findByNomeContainingIgnoreCase(nome);
+    public Page<Pesquisador> buscarComFiltroDinamico(String identificador, String nome, Pageable pageable) {
+        Specification<Pesquisador> spec = Specification.where(null);
+        
+        if (identificador != null) {
+            spec = spec.and(PesquisadorRepository.filtrarPorIdentificador(identificador));
+        }
+        
+        if (nome != null) {
+            spec = spec.and(PesquisadorRepository.filtrarPorNome(nome));
+        }
+    
+        return pesquisadorRepository.findAll(spec, pageable);
     }
 
     public long countPesquisador() {

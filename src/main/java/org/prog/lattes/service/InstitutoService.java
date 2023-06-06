@@ -1,10 +1,10 @@
 package org.prog.lattes.service;
 
-import java.util.List;
 import org.prog.lattes.model.Instituto;
 import org.prog.lattes.repository.InstitutoRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -18,26 +18,29 @@ public class InstitutoService {
         this.institutoRepository = institutoRepository;
     }
     
-    public List<Instituto> listInstituto(){
-        return this.institutoRepository.findAll();
+    public Page<Instituto> buscarComFiltroDinamico(String nome, String acronimo, Pageable pageable) {
+        Specification<Instituto> spec = Specification.where(null);
+        
+        if (nome != null) {
+            spec = spec.and(InstitutoRepository.filtrarPorNome(nome));
+        }
+        
+        if (acronimo != null) {
+            spec = spec.and(InstitutoRepository.filtrarPorAcronimo(acronimo));
+        }
+    
+        return institutoRepository.findAll(spec, pageable);
     }
 
-    public Page<Instituto> pageInstituto(Pageable pageable){
-        // Sort sort = Sort.by("nome").ascending();
-        // pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
-        return this.institutoRepository.findAll(pageable);
-    }
+    public Page<Instituto> buscarPorNomeOuAcronimo(String string, Pageable pageable) {
+        Specification<Instituto> spec = Specification.where(null);
+        
+        if (string != null) {
+            spec = spec.or(InstitutoRepository.filtrarPorNome(string));
+            spec = spec.or(InstitutoRepository.filtrarPorAcronimo(string));
+        }
 
-    public List<Instituto> listInstitutoPeloNome(String nome) {
-        return institutoRepository.findByNomeContainingIgnoreCase(nome);
-    }
-
-    public List<Instituto> listInstitutoPeloAcronimo(String acronimo) {
-        return institutoRepository.findByAcronimoContainingIgnoreCase(acronimo);
-    }
-
-    public List<Instituto> listInstitutoQualquerCampo(String texto) {
-        return institutoRepository.findByNomeContainingIgnoreCaseOrAcronimoContainingIgnoreCase(texto, texto);
+        return institutoRepository.findAll(spec, pageable);
     }
 
     public long countInstituto() {

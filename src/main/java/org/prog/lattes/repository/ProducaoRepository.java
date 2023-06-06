@@ -30,7 +30,7 @@ public interface ProducaoRepository extends JpaRepository<Producao, Long>, JpaSp
     }
 
     public static Specification<Producao> filtrarPorTipoProducao(String tipoProducao) {
-        return (root, query, builder) -> builder.equal(builder.lower(root.get("tipoProducao")), tipoProducao.toLowerCase());
+        return (root, query, builder) -> builder.like(builder.lower(root.get("tipoProducao")), "%" + tipoProducao.toLowerCase() + "%");
     }
     
     List<Producao> findByAno(Integer ano);

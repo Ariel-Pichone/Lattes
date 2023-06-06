@@ -2,15 +2,23 @@ package org.prog.lattes.repository;
 
 import java.util.List;
 import org.prog.lattes.model.Pesquisador;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PesquisadorRepository extends JpaRepository<Pesquisador, String> {
+public interface PesquisadorRepository extends JpaRepository<Pesquisador, String>, JpaSpecificationExecutor<Pesquisador> {
+
+    public static Specification<Pesquisador> filtrarPorIdentificador(String identificador) {
+        return (root, query, builder) -> builder.like(builder.lower(root.get("identificador")), "%" + identificador + "%");
+    }
+    
+    public static Specification<Pesquisador> filtrarPorNome(String nome) {
+        return (root, query, builder) -> builder.like(builder.lower(root.get("nome")), "%" + nome.toLowerCase() + "%");
+    }
 
     List<Pesquisador> findByIdentificador(String identificador);
-    
-    List<Pesquisador> findByNomeContainingIgnoreCase(String nome);
-    
+      
     Boolean existsByIdentificador(String identificador);
 }

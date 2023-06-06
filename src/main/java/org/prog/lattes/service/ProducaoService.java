@@ -1,12 +1,7 @@
 package org.prog.lattes.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
-
-import org.hibernate.mapping.Collection;
 import org.prog.lattes.model.Producao;
 import org.prog.lattes.model.Tipo;
 import org.prog.lattes.model.TotalProducoesAno;
@@ -17,9 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.Root;
 
 @Service
 @Component
@@ -43,7 +35,7 @@ public class ProducaoService {
         return producaoRepository.findByAno(ano);
     }
 
-    public List<Producao> buscarComFiltroDinamico(Integer dataInicio, Integer dataFim, String instituto, String pesquisador, String tipoProducao) {
+    public Page<Producao> buscarComFiltroDinamico(Integer dataInicio, Integer dataFim, String instituto, String pesquisador, String tipoProducao, Pageable pageable) {
         
         Specification<Producao> spec = Specification.where(null);
 
@@ -67,7 +59,7 @@ public class ProducaoService {
             spec = spec.and(ProducaoRepository.filtrarPorTipoProducao(tipoProducao));
         }
 
-        return producaoRepository.findAll(spec);
+        return producaoRepository.findAll(spec, pageable);
     }
 
     public long countProducao() {
@@ -78,9 +70,10 @@ public class ProducaoService {
         return producaoRepository.countProducaoPorAno(ano);
     }
 
-    public List<TotalProducoesAno> countTotalProducoesPorAno(Integer dataInicio, Integer dataFim, String instituto, String pesquisador, String tipoProducao) {
+    public List<TotalProducoesAno> countTotalProducoesPorAno(Integer dataInicio, Integer dataFim, String instituto, String pesquisador, String tipoProducao, Pageable pageable) {
         
-        List<Producao> producoesFiltradas = buscarComFiltroDinamico(dataInicio, dataFim, instituto, pesquisador, tipoProducao);
+        Page<Producao> page = buscarComFiltroDinamico(dataInicio, dataFim, instituto, pesquisador, tipoProducao, pageable);
+        List<Producao> producoesFiltradas = page.getContent();
         
         List<TotalProducoesAno> totalPorAno = producoesFiltradas.stream()
         .collect(Collectors.groupingBy(

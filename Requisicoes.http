@@ -59,18 +59,21 @@ content-type: application/json
 ### Apaga o instituto id 6:
 DELETE http://localhost:8080/instituto/6 HTTP/1.1
 
-### Apresenta lista de Institutos:
-GET http://localhost:8080/instituto/ HTTP/1.1
+### Apresenta uma página de Institutos:
+GET http://localhost:8080/instituto HTTP/1.1
 content-type: application/json
 
 ###  Listar os institutos de forma paginada:
 GET http://localhost:8080/instituto?page=0&size=2 HTTP/1.1
 
 ### Pesquisa o instituto pelo o nome em qualquer parte
-GET http://localhost:8080/instituto/nome/federal HTTP/1.1
+GET http://localhost:8080/instituto?nome=federal HTTP/1.1
 
 ### Pesquisa o instituto pelo o acronimo em qualquer parte 
-GET http://localhost:8080/instituto/acronimo/UFF HTTP/1.1
+GET http://localhost:8080/instituto?acronimo=UFF HTTP/1.1
+
+### Pesquisa o instituto pelo o acronimo em qualquer parte 
+GET http://localhost:8080/instituto/nomeacronimo?string=UFF HTTP/1.1
 
 ### Retorna a quantidade total de institutos
 GET http://localhost:8080/instituto/count HTTP/1.1
@@ -172,16 +175,16 @@ POST http://localhost:8080/pesquisador/add/0814717344017544/instituto/5 HTTP/1.1
 ###########################################################################
 
 ###  Pegar todos os pesquisadores que estão cadastrados no banco de dados 
-GET http://localhost:8080/pesquisador/ HTTP/1.1
+GET http://localhost:8080/pesquisador HTTP/1.1
 
 ###  Listar os pesquisadores de forma paginada 
 GET http://localhost:8080/pesquisador?page=0&size=5 HTTP/1.1
 
 ### Pesquisa o pesquisador pelo o nome em qualquer parte
-GET http://localhost:8080/pesquisador/nome/Souza HTTP/1.1
+GET http://localhost:8080/pesquisador?nome=Salvador HTTP/1.1
 
 ### Procura um pesquisador baseado no identificador, porém é necessário que esteja cadastrado no bd 
-GET http://localhost:8080/pesquisador/identificador/0770145420421898 HTTP/1.1
+GET http://localhost:8080/pesquisador?identificador=0814717344017544 HTTP/1.1
 
 ### Excluir um pesquisador do banco de dados
 DELETE http://localhost:8080/pesquisador/excluir/0770145420421898 HTTP/1.1 

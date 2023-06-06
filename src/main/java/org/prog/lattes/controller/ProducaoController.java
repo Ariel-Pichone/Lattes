@@ -43,13 +43,14 @@ public class ProducaoController {
     }
 
     @GetMapping("/filtro")
-    public List<Producao> buscarComFiltroDinamico(
+    public Page<Producao> buscarComFiltroDinamico(
             @RequestParam(required = false) Integer dataInicio,
             @RequestParam(required = false) Integer dataFim,
             @RequestParam(required = false) String instituto,
             @RequestParam(required = false) String pesquisador,
-            @RequestParam(required = false) String tipoProducao) {
-        return producaoService.buscarComFiltroDinamico(dataInicio, dataFim, instituto, pesquisador, tipoProducao);
+            @RequestParam(required = false) String tipoProducao, 
+            Pageable pageable) {
+        return producaoService.buscarComFiltroDinamico(dataInicio, dataFim, instituto, pesquisador, tipoProducao, pageable);
     }
 
     @GetMapping("/count")
@@ -68,8 +69,9 @@ public class ProducaoController {
             @RequestParam(required = false) Integer dataFim,
             @RequestParam(required = false) String instituto,
             @RequestParam(required = false) String pesquisador,
-            @RequestParam(required = false) String tipoProducao){
-        return producaoService.countTotalProducoesPorAno(dataInicio, dataFim, instituto, pesquisador, tipoProducao);
+            @RequestParam(required = false) String tipoProducao,
+            Pageable pageable){
+        return producaoService.countTotalProducoesPorAno(dataInicio, dataFim, instituto, pesquisador, tipoProducao, pageable);
     }
 
     @GetMapping("/countTotalProducoesPorTipo")
