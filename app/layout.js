@@ -25,6 +25,8 @@ export default function RootLayout({ children }) {
             <Link className="text-xl mr-6" href="/producao">
               Produção
             </Link>
+            <Link className="text-xl mr-6" href="/grafo">
+            </Link>
           </nav>
         </header>
         <main className="md:container md:mx-auto md:mb-5">{children}</main>
