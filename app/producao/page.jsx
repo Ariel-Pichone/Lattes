@@ -12,27 +12,21 @@ export default function Producao() {
   const [isLoading, setLoading] = useState(true);
   const { register, handleSubmit } = useForm();
 
-  function pesquisarProducao(data) {
-    const termo = data.termo;
-    const campo = data.campo;
-    let url = '';
-
-    // switch (campo) {
-    //   case 'Nome':
-    //     url = 'http://localhost:8080/pesquisador/nome/';
-    //     break;
-    //   case 'Identificador':
-    //     url = 'http://localhost:8080/pesquisador/';
-    //     break;
-    // }
-
-    // fetch(`${url}` + termo)
-    //   .then(console.log('pesquisa realizada com o campo' + campo))
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     setData(data);
-    //   })
-    //   .catch((err) => console.log(err));
+  function pesquisarProducao({
+    dataInicio,
+    dataFim,
+    instituto,
+    pesquisador,
+    tipoProducao,
+  }) {
+    fetch(
+      `http://localhost:8080/producao/filtro?dataInicio=${dataInicio}&dataFim=${dataFim}&instituto=${instituto}&pesquisador=${pesquisador}&tipoProducao=${tipoProducao}`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data);
+      })
+      .catch((err) => console.log(err));
   }
 
   useEffect(() => {
@@ -78,7 +72,6 @@ export default function Producao() {
             <TextInput
               {...register('dataInicio')}
               className="w-23"
-              id="termo"
               name="dataInicio"
               placeholder="Data Início"
             />
@@ -87,33 +80,22 @@ export default function Producao() {
             <TextInput
               {...register('dataFim')}
               className="w-23"
-              id="termo"
               name="dataFim"
               placeholder="Data Fim"
             />
           </div>
 
           <div className="mr-4" id="select">
-            <Select
-              {...register('instituto')}
-              id="camp"
-              name="instituto"
-              required={true}
-            >
+            <Select {...register('instituto')} name="instituto" required={true}>
               <option value="">Instituto</option>
               {instituto &&
                 instituto.map((instituto) => (
-                  <option value={instituto.id}>{instituto.nome}</option>
+                  <option value={instituto.nome}>{instituto.nome}</option>
                 ))}
             </Select>
           </div>
           <div className="mr-4" id="select">
-            <Select
-              {...register('pesquisador')}
-              id="campo"
-              name="pesquisador"
-              required={true}
-            >
+            <Select {...register('pesquisador')} name="pesquisador">
               <option value="">Pesquisador</option>
               {pesquisador &&
                 pesquisador.map((pesquisador) => (
@@ -122,13 +104,8 @@ export default function Producao() {
             </Select>
           </div>
           <div className="mr-4" id="select">
-            <Select
-              {...register('tipoProducao')}
-              id="campo"
-              name="tipoProducao"
-              required={true}
-            >
-              <option>Tipo Prod.</option>
+            <Select {...register('tipoProducao')} name="tipoProducao">
+              <option value="">Tipo Prod.</option>
               <option>Artigo</option>
               <option>Livro</option>
             </Select>

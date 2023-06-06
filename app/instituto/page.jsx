@@ -66,7 +66,7 @@ export default function Instituto() {
   }
 
   function deleteInstituto(id) {
-    fetch(`http://localhost:8080/instituto/${id}`)
+    fetch(`http://localhost:8080/instituto/${id}`, { method: 'DELETE' })
       .then(console.log('deleted'))
       .then(setShowDeleteConfirmation(!showDeleteConfirmation))
       .catch((err) => console.log(err));

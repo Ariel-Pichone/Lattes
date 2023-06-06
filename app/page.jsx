@@ -2,10 +2,12 @@
 
 import { Inter } from 'next/font/google';
 import styles from './page.module.css';
-import { Button, Label, Modal, Select, TextInput } from 'flowbite-react';
+import { Button, Label, Modal, Select, TextInput, Card } from 'flowbite-react';
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import BarChart from './components/BarChart';
+import DoughnutChart from './components/DoughnutChart';
+import { Doughnut } from 'react-chartjs-2';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -15,8 +17,17 @@ export default function Home() {
     labels: null,
     datasets: [],
   });
+  const [dataDoughnut, setDataDoughnut] = useState({
+    labels: null,
+    datasets: [],
+  });
+
   const [pesquisador, setPesquisador] = useState(null);
   const [instituto, setInstituto] = useState(null);
+  const [totalInstitutos, setTotalInstitutos] = useState(0);
+  const [totalPesquisadores, setTotalPesquisadores] = useState(0);
+  const [countTotalProducoesPorTipo, setCountTotalProducoesPorTipo] =
+    useState(null);
   const [isLoading, setLoading] = useState(true);
   const { register, handleSubmit } = useForm();
 
@@ -27,47 +38,52 @@ export default function Home() {
   }
 
   function agruparPorAno(data) {
-    var totalPorAno = {};
-
-    // Iterar sobre os dados e calcular o total de pesquisas por ano
-    for (var i = 0; i < data.length; i++) {
-      var ano = data[i].ano;
-      if (totalPorAno[ano]) {
-        totalPorAno[ano]++;
-      } else {
-        totalPorAno[ano] = 1;
-      }
-    }
-
-    var listaObjetos = [];
-    for (var ano in totalPorAno) {
-      var objeto = {
-        ano: ano,
-        total: totalPorAno[ano],
-      };
-      listaObjetos.push(objeto);
-    }
-
     setDataBar({
-      labels: listaObjetos.map((data) => data.ano),
+      labels: data.map((data) => data.anoProducao),
       datasets: [
         {
           label: 'Total prod.',
-          data: listaObjetos.map((data) => data.total),
+          data: data.map((data) => data.totalProducao),
           backgroundColor: ['#1a56db'],
         },
       ],
     });
+  }
 
-    // Exibir o total de pesquisas por ano
-    // for (var ano in totalPorAno) {
-    //   console.log('Ano: ' + ano + ', Total de pesquisas: ' + totalPorAno[ano]);
-    // }
+  function insertDataDoughnut(countTotalProducoesPorTipo) {
+    setDataDoughnut({
+      labels: countTotalProducoesPorTipo.map((data) => data.tipoProducao),
+      datasets: [
+        {
+          label: 'total Prod.',
+          data: countTotalProducoesPorTipo.map((data) => data.totalProducao),
+          backgroundColor: ['#1a56db', 'rgba(54, 162, 235, 0.2)'],
+        },
+      ],
+    });
+  }
+
+  function pesquisarProducao({
+    dataInicio,
+    dataFim,
+    instituto,
+    pesquisador,
+    tipoProducao,
+  }) {
+    fetch(
+      `http://localhost:8080/producao/filtro?dataInicio=${dataInicio}&dataFim=${dataFim}&instituto=${instituto}&pesquisador=${pesquisador}&tipoProducao=${tipoProducao}`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data);
+        console.log(data);
+      })
+      .catch((err) => console.log(err));
   }
 
   useEffect(() => {
     setLoading(true);
-    fetch('http://localhost:8080/producao/')
+    fetch(`http://localhost:8080/producao/countTotalProducoesPorAno`)
       .then((res) => res.json())
       .then((data) => {
         setData(data);
@@ -88,6 +104,32 @@ export default function Home() {
       .then((res) => res.json())
       .then((pesquisador) => {
         setPesquisador(pesquisador);
+        setLoading(false);
+      })
+      .catch((err) => console.log(err));
+
+    fetch('http://localhost:8080/instituto/count')
+      .then((res) => res.json())
+      .then((totalInstitutos) => {
+        setTotalInstitutos(totalInstitutos);
+        setLoading(false);
+      })
+      .catch((err) => console.log(err));
+
+    fetch('http://localhost:8080/pesquisador/count')
+      .then((res) => res.json())
+      .then((totalPesquisador) => {
+        setTotalPesquisadores(totalPesquisador);
+        setLoading(false);
+      })
+      .catch((err) => console.log(err));
+
+    fetch('http://localhost:8080/producao/countTotalProducoesPorTipo')
+      .then((res) => res.json())
+      .then((countTotalProducoesPorTipo) => {
+        setCountTotalProducoesPorTipo(countTotalProducoesPorTipo);
+        insertDataDoughnut(countTotalProducoesPorTipo);
+        // console.log(dataDoughnut);
         setLoading(false);
       })
       .catch((err) => console.log(err));
@@ -122,12 +164,7 @@ export default function Home() {
           </div>
 
           <div className="mr-4" id="select">
-            <Select
-              {...register('instituto')}
-              id="camp"
-              name="instituto"
-              required={true}
-            >
+            <Select {...register('instituto')} id="camp" name="instituto">
               <option value="">Instituto</option>
               {instituto &&
                 instituto.map((instituto) => (
@@ -136,12 +173,7 @@ export default function Home() {
             </Select>
           </div>
           <div className="mr-4" id="select">
-            <Select
-              {...register('pesquisador')}
-              id="campo"
-              name="pesquisador"
-              required={true}
-            >
+            <Select {...register('pesquisador')} id="campo" name="pesquisador">
               <option value="">Pesquisador</option>
               {pesquisador &&
                 pesquisador.map((pesquisador) => (
@@ -154,12 +186,35 @@ export default function Home() {
               {...register('tipoProducao')}
               id="campo"
               name="tipoProducao"
-              required={true}
             >
-              <option>Tipo Prod.</option>
+              <option value="">Tipo Prod.</option>
               <option>Artigo</option>
               <option>Livro</option>
             </Select>
+
+            {/* <Controller
+        render={({ field: { onChange, value } }) => (
+          <Select
+            options={[
+              { value: "", label: "Tipo Prod." },
+              { value: "Artigo", label: "Artigo" },
+              { value: "Livro", label: "Livro" }
+            ]}
+            onChange={(e) => {
+              // onChange's arg will send value into hook form
+              onChange(e.value);
+            }}
+            value={{
+              // make sure we remain the corect format for the controlled component
+              value: value,
+              label: value
+            }}
+          />
+        )}
+        name="tipoProducao"
+        control={control}
+        defaultValue={null}
+      /> */}
           </div>
           <div className="flex justify-between items-center">
             <button
@@ -171,8 +226,54 @@ export default function Home() {
           </div>
         </form>
       </div>
-      <div className="w-1/2">
-        <BarChart chartData={dataBar} />
+      <div className=" pb-16">
+        <BarChart chartData={dataBar} className="w-full" />
+      </div>
+
+      <div className="grid gap-x-8 gap-y-4 grid-cols-4">
+        <Card
+          href="/producao"
+          className="row-span-1 bg-zinc-800 text-zinc-400 hover:bg-zinc-900"
+        >
+          <h3 className="text-3xl font-normal  dark:text-gray-400">
+            Total Produção
+          </h3>
+          <DoughnutChart dataDoughnut={dataDoughnut} />
+        </Card>
+
+        <Card
+          href="/instituto"
+          className="row-span-1 bg-zinc-800 text-zinc-400 hover:bg-zinc-900"
+        >
+          <h3 className="text-3xl font-normal  dark:text-gray-400">
+            Institutos
+          </h3>
+          <p className="text-5xl font-bold tracking-tight  dark:text-white">
+            {totalInstitutos}
+          </p>
+        </Card>
+
+        <Card
+          href="/pesquisador"
+          className="row-span-1 bg-zinc-800 text-zinc-400 hover:bg-zinc-900"
+        >
+          <h3 className="text-3xl font-normal  dark:text-gray-400">
+            Pesquisadores
+          </h3>
+          <p className="text-5xl font-bold tracking-tight  dark:text-white">
+            {totalPesquisadores}
+          </p>
+        </Card>
+
+        <Card
+          href="#"
+          className="row-span-1 bg-zinc-800 text-zinc-400 hover:bg-zinc-900"
+        >
+          <h3 className="text-3xl font-normal  dark:text-gray-400">Grafos</h3>
+          <p className="text-5xl font-bold tracking-tight dark:text-white">
+            GRAFOS
+          </p>
+        </Card>
       </div>
     </div>
   );

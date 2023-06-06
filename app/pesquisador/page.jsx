@@ -32,7 +32,7 @@ export default function Pesquisador() {
         url = 'http://localhost:8080/pesquisador/nome/';
         break;
       case 'Identificador':
-        url = 'http://localhost:8080/pesquisador/';
+        url = 'http://localhost:8080/pesquisador/identificador/';
         break;
     }
 
@@ -49,7 +49,8 @@ export default function Pesquisador() {
     console.log(data);
 
     fetch(
-      `http://localhost:8080/pesquisador/add/${data.pesquisador}/instituto/${data.instituto}`
+      `http://localhost:8080/pesquisador/add/${data.pesquisador}/instituto/${data.instituto}`,
+      { method: 'POST' }
     )
       .then(console.log('Adicionado'))
       .then((res) => console.log(res))
@@ -57,8 +58,10 @@ export default function Pesquisador() {
       .catch((err) => console.log(err));
   }
 
-  function deletePesquisador(id) {
-    fetch(`http://localhost:8080/pesquisador/excluir/${id}`)
+  function deletePesquisador(identificador) {
+    fetch(`http://localhost:8080/pesquisador/excluir/${identificador}`, {
+      method: 'DELETE',
+    })
       .then(console.log('deleted'))
       .then(setShowDeleteConfirmation(!showDeleteConfirmation))
       .catch((err) => console.log(err));
@@ -159,7 +162,7 @@ export default function Pesquisador() {
           <tbody>
             {data.map((pesquisador) => (
               <tr
-                key={pesquisador.id}
+                key={pesquisador.identificador}
                 className="bg-white border-b dark:bg-gray-900 dark:border-gray-700"
               >
                 <th
@@ -204,7 +207,7 @@ export default function Pesquisador() {
               <div className="flex justify-center gap-4">
                 <Button
                   color="failure"
-                  onClick={() => deletePesquisador(objToDelete.id)}
+                  onClick={() => deletePesquisador(objToDelete.identificador)}
                 >
                   Sim, tenho ceteza
                 </Button>
