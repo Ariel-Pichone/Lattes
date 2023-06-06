@@ -71,11 +71,12 @@ export default function Home() {
     tipoProducao,
   }) {
     fetch(
-      `http://localhost:8080/producao/filtro?dataInicio=${dataInicio}&dataFim=${dataFim}&instituto=${instituto}&pesquisador=${pesquisador}&tipoProducao=${tipoProducao}`
+      `http://localhost:8080/producao/countTotalProducoesPorAno?${dataInicio}&dataFim=${dataFim}&instituto=${instituto}&pesquisador=${pesquisador}&tipoProducao=${tipoProducao}&size=30000`
     )
       .then((res) => res.json())
       .then((data) => {
         setData(data);
+        agruparPorAno(data);
         console.log(data);
       })
       .catch((err) => console.log(err));
@@ -83,7 +84,7 @@ export default function Home() {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:8080/producao/countTotalProducoesPorAno`)
+    fetch(`http://localhost:8080/producao/countTotalProducoesPorAno?size=30000`)
       .then((res) => res.json())
       .then((data) => {
         setData(data);
@@ -92,18 +93,18 @@ export default function Home() {
       })
       .catch((err) => console.log(err));
 
-    fetch('http://localhost:8080/instituto/')
+    fetch('http://localhost:8080/instituto')
       .then((res) => res.json())
       .then((instituto) => {
-        setInstituto(instituto);
+        setInstituto(instituto.content);
         setLoading(false);
       })
       .catch((err) => console.log(err));
 
-    fetch('http://localhost:8080/pesquisador/')
+    fetch('http://localhost:8080/pesquisador')
       .then((res) => res.json())
       .then((pesquisador) => {
-        setPesquisador(pesquisador);
+        setPesquisador(pesquisador.content);
         setLoading(false);
       })
       .catch((err) => console.log(err));
@@ -168,7 +169,7 @@ export default function Home() {
               <option value="">Instituto</option>
               {instituto &&
                 instituto.map((instituto) => (
-                  <option value={instituto.id}>{instituto.nome}</option>
+                  <option value={instituto.nome}>{instituto.nome}</option>
                 ))}
             </Select>
           </div>
@@ -177,7 +178,7 @@ export default function Home() {
               <option value="">Pesquisador</option>
               {pesquisador &&
                 pesquisador.map((pesquisador) => (
-                  <option value={pesquisador.id}>{pesquisador.nome}</option>
+                  <option value={pesquisador.nome}>{pesquisador.nome}</option>
                 ))}
             </Select>
           </div>
