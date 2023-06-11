@@ -31,15 +31,9 @@ public class InstitutoController {
     public Page<Instituto> buscarComFiltroDinamico(
             @RequestParam(required = false) String nome,
             @RequestParam(required = false) String acronimo,
+            @RequestParam(required = false) String nomeAcronimo,
             Pageable pageable) {        
-        return institutoService.buscarComFiltroDinamico(nome, acronimo, pageable);
-    }
-
-    @GetMapping("/nomeacronimo")
-    public Page<Instituto> buscarPorNomeEAcronimo(
-            @RequestParam(required = false) String string,
-            Pageable pageable) {        
-        return institutoService.buscarPorNomeOuAcronimo(string, pageable);
+        return institutoService.buscarComFiltroDinamico(nome, acronimo, nomeAcronimo, pageable);
     }
 
     @GetMapping("/count")

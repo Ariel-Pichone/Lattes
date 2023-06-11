@@ -8,7 +8,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
-
+import org.springframework.stereotype.Repository;
+@Repository
 public interface ProducaoRepository extends JpaRepository<Producao, Long>, JpaSpecificationExecutor<Producao>{
     
     public static Specification<Producao> filtrarPorDataInicio(Integer dataInicio) {

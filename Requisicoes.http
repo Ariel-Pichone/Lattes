@@ -64,7 +64,7 @@ GET http://localhost:8080/instituto HTTP/1.1
 content-type: application/json
 
 ###  Listar os institutos de forma paginada:
-GET http://localhost:8080/instituto?page=0&size=2 HTTP/1.1
+GET http://localhost:8080/instituto?page=0&size=1 HTTP/1.1
 
 ### Pesquisa o instituto pelo o nome em qualquer parte
 GET http://localhost:8080/instituto?nome=federal HTTP/1.1
@@ -73,7 +73,7 @@ GET http://localhost:8080/instituto?nome=federal HTTP/1.1
 GET http://localhost:8080/instituto?acronimo=UFF HTTP/1.1
 
 ### Pesquisa o instituto pelo o acronimo em qualquer parte 
-GET http://localhost:8080/instituto/nomeacronimo?string=UFF HTTP/1.1
+GET http://localhost:8080/instituto?nomeacronimo=UFF HTTP/1.1
 
 ### Retorna a quantidade total de institutos
 GET http://localhost:8080/instituto/count HTTP/1.1
