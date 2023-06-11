@@ -25,10 +25,11 @@ export default function Producao() {
     tipoProducao,
   }) {
     //tem um erro aqui pois quando fazemos uma pesquisa colocando data inicio e data fim o resultado da busca é colocado em uma variável não nula e fica resto da consulta anterior
-    fetch(`http://localhost:8080/producao?dataInicio=${dataInicio}&dataFim=${dataFim}&instituto=${instituto}&pesquisador=${pesquisador}&tipoProducao=${tipoProducao}&page=${pageNumber}&size=10`)
+    fetch(`http://localhost:8080/producao?dataInicio=${dataInicio}&dataFim=${dataFim}&instituto=${instituto}&pesquisador=${pesquisador}&tipoProducao=${tipoProducao}&page=${pageNumber}`)
       .then((res) => res.json())
       .then((data) => {
         setData(data);
+        setLoading(false); //////////////////////////////////////
       })
       .catch((err) => console.log(err));
   }
@@ -36,7 +37,7 @@ export default function Producao() {
    useEffect(() => {
     setLoading(true);
     
-    fetch(`http://localhost:8080/producao?page=${pageNumber}&size=10`)
+    fetch(`http://localhost:8080/producao?page=${pageNumber}`)
       .then((res) => res.json())
       .then((data) => {
         setData(data);

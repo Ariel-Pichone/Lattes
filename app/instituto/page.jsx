@@ -77,7 +77,7 @@ export default function Instituto() {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:8080/instituto?page=${pageNumber}&size=10`)
+    fetch(`http://localhost:8080/instituto?page=${pageNumber}`)
       .then((res) => res.json())
       .then((data) => {
         setData(data);

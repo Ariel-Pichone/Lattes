@@ -83,7 +83,7 @@ export default function Pesquisador() {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:8080/pesquisador?page=${pageNumber}&size=10`)
+    fetch(`http://localhost:8080/pesquisador?page=${pageNumber}`)
       .then((res) => res.json())
       .then((data) => {
         setData(data);
