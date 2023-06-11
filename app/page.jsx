@@ -30,7 +30,8 @@ export default function Home() {
   const [countTotalProducoesPorTipo, setCountTotalProducoesPorTipo] =
     useState(null);
   const [isLoading, setLoading] = useState(true);
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, formState: { errors }, watch,} = useForm();
+  const dataInicio = watch('dataInicio');
 
   function pesquisarProducao(data) {
     const termo = data.termo;
@@ -158,19 +159,25 @@ export default function Home() {
             <TextInput
               {...register('dataInicio')}
               className="w-23"
-              id="termo"
+              id="dataInicio"
               name="dataInicio"
               placeholder="Data Início"
+              type="number"
             />
           </div>
           <div className="block mr-4">
             <TextInput
-              {...register('dataFim')}
+              {...register('dataFim', {
+                validate: (value) => value >= dataInicio || 'Data Fim deve ser maior ou igual a Data Início',
+              })}
               className="w-23"
-              id="termo"
+              id="dataFim"
               name="dataFim"
               placeholder="Data Fim"
+              type="number"
+              disabled={!dataInicio}
             />
+            {errors.dataFim && <span>{errors.dataFim.message}</span>}
           </div>
 
           <div className="mr-4" id="select">

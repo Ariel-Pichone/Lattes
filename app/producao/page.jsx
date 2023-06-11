@@ -13,7 +13,8 @@ export default function Producao() {
   const [instituto, setInstituto] = useState(null);
   const [producaoList, setProducaoList] = useState(null);
   const [isLoading, setLoading] = useState(true);
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, formState: { errors }, watch,} = useForm();
+  const dataInicio = watch('dataInicio');
   const [pageNumber, setPageNumber] = useState(0);
 
   function pesquisarProducao({
@@ -23,9 +24,8 @@ export default function Producao() {
     pesquisador,
     tipoProducao,
   }) {
-    fetch(
-      `http://localhost:8080/producao/filtro?dataInicio=${dataInicio}&dataFim=${dataFim}&instituto=${instituto}&pesquisador=${pesquisador}&tipoProducao=${tipoProducao}`
-    )
+    //tem um erro aqui pois quando fazemos uma pesquisa colocando data inicio e data fim o resultado da busca é colocado em uma variável não nula e fica resto da consulta anterior
+    fetch(`http://localhost:8080/producao?dataInicio=${dataInicio}&dataFim=${dataFim}&instituto=${instituto}&pesquisador=${pesquisador}&tipoProducao=${tipoProducao}&page=${pageNumber}&size=10`)
       .then((res) => res.json())
       .then((data) => {
         setData(data);
@@ -33,8 +33,9 @@ export default function Producao() {
       .catch((err) => console.log(err));
   }
 
-  useEffect(() => {
+   useEffect(() => {
     setLoading(true);
+    
     fetch(`http://localhost:8080/producao?page=${pageNumber}&size=10`)
       .then((res) => res.json())
       .then((data) => {
@@ -81,21 +82,29 @@ export default function Producao() {
             <TextInput
               {...register('dataInicio')}
               className="w-23"
+              id="dataInicio"
               name="dataInicio"
               placeholder="Data Início"
+              type="number"
             />
           </div>
           <div className="block mr-4">
             <TextInput
-              {...register('dataFim')}
+              {...register('dataFim', {
+                validate: (value) => value >= dataInicio || 'Data Fim deve ser maior ou igual a Data Início',
+              })}
               className="w-23"
+              id="dataFim"
               name="dataFim"
               placeholder="Data Fim"
+              type="number"
+              disabled={!dataInicio}
             />
+            {errors.dataFim && <span>{errors.dataFim.message}</span>}
           </div>
 
           <div className="mr-4" id="select">
-            <Select {...register('instituto')} name="instituto" required={true}> {/* temos que olhar esse required pois está obrigando preencher um instituti para fazer a pesquisa */}
+            <Select {...register('instituto')} name="instituto" > {/*required={true}> temos que olhar esse required pois está obrigando preencher um instituti para fazer a pesquisa */}
               <option value="">Instituto</option>
               {instituto?.content &&
                 instituto.content.map((instituto) => (
