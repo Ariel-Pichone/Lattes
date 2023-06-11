@@ -13,8 +13,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class Producao {
 
     @Id
@@ -29,7 +35,7 @@ public class Producao {
     private Integer ano;
 
     @Enumerated(EnumType.STRING)
-    private Tipo tipoProducao;
+    private TipoProducao tipoProducao;
     
     @ManyToMany (mappedBy = "producoes")
     private List<Pesquisador> pesquisadores;
@@ -41,50 +47,8 @@ public class Producao {
         inverseJoinColumns = @JoinColumn(name = "autor_id"))
     private List<Autor> autores;
 
-    public Producao(){}
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public Integer getAno() {
-        return ano;
-    }
-
-    public void setAno(Integer ano) {
-        this.ano = ano;
-    }
-
-    public Tipo getTipoProducao() {
-        return tipoProducao;
-    }
-
-    public void setTipoProducao(Tipo tipoProducao) {
-        this.tipoProducao = tipoProducao;
-    }
-
-    public List<Pesquisador> getPesquisadores() {
-        return pesquisadores;
-    }
-
     public void addPesquisador(List<Pesquisador> pesquisadores) {
         this.pesquisadores = pesquisadores;
-    }
-    
-    public void setPesquisadores(List<Pesquisador> pesquisadores) {
-        this.pesquisadores = pesquisadores;
-    }
-
-    public List<Autor> getAutores() {
-        return this.autores;
     }
 
     public void addAutores(List<Autor> autores) {

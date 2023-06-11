@@ -199,38 +199,26 @@ GET http://localhost:8080/pesquisador/count HTTP/1.1
 #                  REQUISIÇÕES PARA OPERAÇÕES COM PRODUÇÃO                #
 ###########################################################################
 
-###  Pegar todos as produções que estão cadastrados no banco de dados 
-GET http://localhost:8080/producao/ HTTP/1.1
-
 ###  Listar as Produções de forma paginada 
-GET http://localhost:8080/producao?page=0&size=5 HTTP/1.1
+GET http://localhost:8080/producao?page=0&size=10 HTTP/1.1
 
 ### Teste de produção 
 GET http://localhost:8080/producao/filtro?dataInicio=2004&dataFim=2022&instituto=Estácio&pesquisador=Gestinari&tipoProducao=ARTIGO HTTP/1.1
 
 ### Pesquisa as produções pelo ano
-GET http://localhost:8080/producao/ano/2002 HTTP/1.1
+GET http://localhost:8080/producao/?ano=2002 HTTP/1.1
 
 ### Retorna a quantidade total de produções
 GET http://localhost:8080/producao/count HTTP/1.1
 
-### Retorna a quantidade total de produções em um determinado ano
-GET http://localhost:8080/producao/count/ano/2016 HTTP/1.1
-
 ### Retorna uma lista com a quantidade total de produções a cada ano
-GET http://localhost:8080/producao/countTotalProducoesPorAno?dataInicio=2005&dataFim=2014 HTTP/1.1
+GET http://localhost:8080/producao/countTotalProducoesPorAno?dataInicio=2000&dataFim=2005 HTTP/1.1
 
 ### Retorna uma lista com a quantidade total de produções de cada tipo
 GET http://localhost:8080/producao/countTotalProducoesPorTipo HTTP/1.1
 
-### Retorna a quantidade total de artigos
-GET http://localhost:8080/producao/countArtigo HTTP/1.1
-
-### Retorna a quantidade total de livros
-GET http://localhost:8080/producao/countLivro HTTP/1.1
-
 ###########################################################################
-#                REQUISIÇÕES PARA OPERAÇÕES COM PESQUISADOR               #
+#                   REQUISIÇÕES PARA OPERAÇÕES COM AUTOR                  #
 ###########################################################################
 
 ### Verifica se um autor já está cadastrado

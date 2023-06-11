@@ -3,7 +3,9 @@ package org.prog.lattes.service;
 import org.prog.lattes.model.Instituto;
 import org.prog.lattes.repository.InstitutoRepository;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,9 @@ public class InstitutoService {
     }
     
     public Page<Instituto> buscarComFiltroDinamico(String nome, String acronimo, String nomeAcronimo, Pageable pageable) {
+        //Usado para ordenar a pagina pelo nome do instituto de forma crescente
+        PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("nome"));
+
         Specification<Instituto> spec = Specification.where(null);
         
         if (nome != null) {
@@ -34,7 +39,7 @@ public class InstitutoService {
             spec = spec.or(InstitutoRepository.filtrarPorAcronimo(nomeAcronimo));
         }
     
-        return institutoRepository.findAll(spec, pageable);
+        return institutoRepository.findAll(spec, pageRequest);
     }
 
     public long countInstituto() {

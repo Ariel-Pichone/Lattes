@@ -26,7 +26,7 @@ public class LeituraXml {
         this.pesquisadorService = pesquisadorService;
     }
 
-    public void lerProducao(File file,  Node node, List<Producao> producaoList, Tipo tipoProducao, NodeList nodeList, String tagProducao, String tagNome, String tagAno){
+    public void lerProducao(File file,  Node node, List<Producao> producaoList, TipoProducao tipoProducao, NodeList nodeList, String tagProducao, String tagNome, String tagAno){
         for (int i = 0; i < nodeList.getLength(); i++) {
             Producao producao = new Producao();
 
@@ -142,7 +142,7 @@ public class LeituraXml {
             /*                     Lendo todos os livros que o pesquisador trabalhou na produção                     */
             /*********************************************************************************************************/
             
-            Tipo tipoProducao = Tipo.LIVRO;
+            TipoProducao tipoProducao = TipoProducao.LIVRO;
 
             // Obtenha a lista de elementos "LIVRO-PUBLICADO-OU-ORGANIZADO"
             NodeList nodeList = doc.getElementsByTagName("LIVRO-PUBLICADO-OU-ORGANIZADO");
@@ -158,7 +158,7 @@ public class LeituraXml {
             /*                     Lendo todos os artigos que o pesquisador trabalhou na produção                    */
             /*********************************************************************************************************/
             
-            tipoProducao = Tipo.ARTIGO;
+            tipoProducao = TipoProducao.ARTIGO;
 
             // Obtenha a lista de elementos "ARTIGO-PUBLICADO"
             nodeList = doc.getElementsByTagName("ARTIGO-PUBLICADO");
@@ -173,7 +173,7 @@ public class LeituraXml {
             /*       Lendo todos os capitulos de livro publicados que o pesquisador trabalhou na produção            */
             /*********************************************************************************************************/
             
-            tipoProducao = Tipo.CAPITULO_LIVRO;
+            tipoProducao = TipoProducao.CAPITULO_LIVRO;
 
             // Obtenha a lista de elementos "CAPITULO-DE-LIVRO-PUBLICADO"
             nodeList = doc.getElementsByTagName("CAPITULO-DE-LIVRO-PUBLICADO");
@@ -188,7 +188,7 @@ public class LeituraXml {
             /*       Lendo todos os capitulos de livro publicados que o pesquisador trabalhou na produção            */
             /*********************************************************************************************************/
             
-            tipoProducao = Tipo.CAPITULO_LIVRO;
+            tipoProducao = TipoProducao.CAPITULO_LIVRO;
 
             // Obtenha a lista de elementos "CAPITULO-DE-LIVRO-PUBLICADO"
             nodeList = doc.getElementsByTagName("CAPITULO-DE-LIVRO-PUBLICADO");
@@ -203,7 +203,7 @@ public class LeituraXml {
             /*               Lendo todas as orientações de mestrado que o pesquisador realizou                       */
             /*********************************************************************************************************/
             
-            tipoProducao = Tipo.ORIENTACOES_MESTRADO;
+            tipoProducao = TipoProducao.ORIENTACOES_MESTRADO;
 
             // Obtenha a lista de elementos "ORIENTACOES-CONCLUIDAS-PARA-MESTRADO"
             nodeList = doc.getElementsByTagName("ORIENTACOES-CONCLUIDAS-PARA-MESTRADO");
@@ -218,7 +218,7 @@ public class LeituraXml {
             /*                  Lendo todas as orientações de TCC que o pesquisador realizou                         */
             /*********************************************************************************************************/
             
-            tipoProducao = Tipo.ORIENTACOES_TCC;
+            tipoProducao = TipoProducao.ORIENTACOES_TCC;
 
             // Obtenha a lista de elementos "OUTRAS-ORIENTACOES-CONCLUIDAS"
             nodeList = doc.getElementsByTagName("OUTRAS-ORIENTACOES-CONCLUIDAS");
@@ -233,7 +233,7 @@ public class LeituraXml {
             /*                  Lendo todos os trabalhos em eventos que o pesquisador parcipou                       */
             /*********************************************************************************************************/
             
-            tipoProducao = Tipo.TRABALHO_EVENTO;
+            tipoProducao = TipoProducao.TRABALHO_EVENTO;
 
             // Obtenha a lista de elementos "TRABALHO-EM-EVENTOS"
             nodeList = doc.getElementsByTagName("TRABALHO-EM-EVENTOS");

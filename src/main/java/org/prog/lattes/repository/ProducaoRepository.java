@@ -2,13 +2,15 @@ package org.prog.lattes.repository;
 
 import java.util.List;
 import org.prog.lattes.model.Producao;
-import org.prog.lattes.model.TotalProducoesAno;
 import org.prog.lattes.model.TotalProducoesTipo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
 @Repository
 public interface ProducaoRepository extends JpaRepository<Producao, Long>, JpaSpecificationExecutor<Producao>{
     
@@ -34,22 +36,9 @@ public interface ProducaoRepository extends JpaRepository<Producao, Long>, JpaSp
         return (root, query, builder) -> builder.like(builder.lower(root.get("tipoProducao")), "%" + tipoProducao.toLowerCase() + "%");
     }
     
-    List<Producao> findByAno(Integer ano);
-
-    @Query("SELECT COUNT(p) FROM Producao p WHERE p.ano = :ano")
-    long countProducaoPorAno(int ano);
-    
-    @Query(value = "SELECT p.ano AS anoProducao, COUNT(p.*) AS totalProducao "
-         + "FROM producao AS p GROUP BY p.ano ORDER BY p.ano", nativeQuery = true)
-    List<TotalProducoesAno> countTotalProducoesPorAno();
+    Page<Producao> findByAno(Integer ano, Pageable pageable);
 
     @Query(value = "SELECT p.tipo_producao AS tipoProducao, COUNT(p.*) AS totalProducao "
          + "FROM producao AS p GROUP BY p.tipo_producao ORDER BY p.tipo_producao", nativeQuery = true)
     List<TotalProducoesTipo> countTotalProducoesPorTipo();
-
-    @Query("SELECT COUNT(p) FROM Producao p WHERE p.tipoProducao = 'ARTIGO'")
-    long countArtigo();
-
-    @Query("SELECT COUNT(p) FROM Producao p WHERE p.tipoProducao = 'LIVRO'")
-    long countLivro();
 }

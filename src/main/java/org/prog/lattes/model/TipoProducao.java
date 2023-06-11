@@ -1,6 +1,6 @@
 package org.prog.lattes.model;
 
-public enum Tipo {
+public enum TipoProducao {
     ARTIGO("Artigo"),
     CAPITULO_LIVRO("Capitulo de Livro"), 
     LIVRO("Livro"),
@@ -14,7 +14,7 @@ public enum Tipo {
         return nome;
     }
     
-    Tipo(String nome){
+    TipoProducao(String nome){
         this.nome = nome;
     }
 }

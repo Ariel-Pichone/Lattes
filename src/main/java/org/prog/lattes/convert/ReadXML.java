@@ -1,7 +1,6 @@
 package org.prog.lattes.convert;
 
 import java.io.File;
-
 import org.jvnet.hk2.annotations.Service;
 import org.prog.lattes.model.Instituto;
 import org.prog.lattes.model.LeituraXml;

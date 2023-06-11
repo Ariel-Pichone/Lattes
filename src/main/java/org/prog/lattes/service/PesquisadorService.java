@@ -7,7 +7,9 @@ import org.prog.lattes.model.Pesquisador;
 import org.prog.lattes.repository.PesquisadorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -29,11 +31,10 @@ public class PesquisadorService {
         this.pesquisadorRepository = pesquisadorRepository;
     }
 
-    public Page<Pesquisador> buscarComFiltroDinamico(
-            String identificador,
-            String nome,
-            Long instituto,
-            Pageable pageable) {
+    public Page<Pesquisador> buscarComFiltroDinamico(String identificador, String nome, Long instituto, Pageable pageable) {
+        //Usado para ordenar a pagina pelo nome do instituto de forma crescente
+        PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("nome"));
+
         Specification<Pesquisador> spec = Specification.where(null);
         
         if (identificador != null) {
@@ -48,7 +49,7 @@ public class PesquisadorService {
             spec = spec.and(PesquisadorRepository.filtrarPorInstituto(instituto));
         }
 
-        return pesquisadorRepository.findAll(spec, pageable);
+        return pesquisadorRepository.findAll(spec, pageRequest);
     }
 
     public long countPesquisador() {

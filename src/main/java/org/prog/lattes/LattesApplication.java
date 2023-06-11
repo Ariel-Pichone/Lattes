@@ -10,6 +10,12 @@ import org.springframework.context.ApplicationContext;
 @SpringBootApplication
 public class LattesApplication {
 
+	public static void main(String[] args) {
+		SpringApplication.run(LattesApplication.class, args);
+		// ApplicationContext context = SpringApplication.run(LattesApplication.class, args);
+		// carregarDados(context);
+	}
+
 	public static void carregarDados(ApplicationContext context){
 			
 		InstitutoService institutoService = context.getBean(InstitutoService.class);
@@ -67,10 +73,5 @@ public class LattesApplication {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	public static void main(String[] args) {
-		ApplicationContext context = SpringApplication.run(LattesApplication.class, args);
-		carregarDados(context);
 	}
 }
