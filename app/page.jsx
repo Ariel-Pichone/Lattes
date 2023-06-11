@@ -24,6 +24,7 @@ export default function Home() {
 
   const [pesquisador, setPesquisador] = useState(null);
   const [instituto, setInstituto] = useState(null);
+  const [tipoProducao, setTipoProducao] = useState(null);
   const [totalInstitutos, setTotalInstitutos] = useState(0);
   const [totalPesquisadores, setTotalPesquisadores] = useState(0);
   const [countTotalProducoesPorTipo, setCountTotalProducoesPorTipo] =
@@ -71,7 +72,7 @@ export default function Home() {
     tipoProducao,
   }) {
     fetch(
-      `http://localhost:8080/producao/countTotalProducoesPorAno?${dataInicio}&dataFim=${dataFim}&instituto=${instituto}&pesquisador=${pesquisador}&tipoProducao=${tipoProducao}&size=30000`
+      `http://localhost:8080/producao/countTotalProducoesPorAno?dataInicio=${dataInicio}&dataFim=${dataFim}&instituto=${instituto}&pesquisador=${pesquisador}&tipoProducao=${tipoProducao}`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -84,7 +85,7 @@ export default function Home() {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:8080/producao/countTotalProducoesPorAno?size=30000`)
+    fetch(`http://localhost:8080/producao/countTotalProducoesPorAno`)
       .then((res) => res.json())
       .then((data) => {
         setData(data);
@@ -101,10 +102,18 @@ export default function Home() {
       })
       .catch((err) => console.log(err));
 
-    fetch('http://localhost:8080/pesquisador')
+    fetch('http://localhost:8080/pesquisador') //deve retornar apenas os pesquisadores que estão no instituto
       .then((res) => res.json())
       .then((pesquisador) => {
         setPesquisador(pesquisador.content);
+        setLoading(false);
+      })
+      .catch((err) => console.log(err));
+
+    fetch('http://localhost:8080/tipoProducao')
+      .then((res) => res.json())
+      .then((tipoProducao) => {
+        setTipoProducao(tipoProducao);
         setLoading(false);
       })
       .catch((err) => console.log(err));
@@ -183,40 +192,14 @@ export default function Home() {
             </Select>
           </div>
           <div className="mr-4" id="select">
-            <Select
-              {...register('tipoProducao')}
-              id="campo"
-              name="tipoProducao"
-            >
+            <Select {...register('tipoProducao')} name="tipoProducao">
               <option value="">Tipo Prod.</option>
-              <option>Artigo</option>
-              <option>Livro</option>
+              {tipoProducao && tipoProducao.content.map((tipo) => (
+                <option key={tipo} value={tipo}>{tipo}</option>
+              ))}
             </Select>
-
-            {/* <Controller
-        render={({ field: { onChange, value } }) => (
-          <Select
-            options={[
-              { value: "", label: "Tipo Prod." },
-              { value: "Artigo", label: "Artigo" },
-              { value: "Livro", label: "Livro" }
-            ]}
-            onChange={(e) => {
-              // onChange's arg will send value into hook form
-              onChange(e.value);
-            }}
-            value={{
-              // make sure we remain the corect format for the controlled component
-              value: value,
-              label: value
-            }}
-          />
-        )}
-        name="tipoProducao"
-        control={control}
-        defaultValue={null}
-      /> */}
           </div>
+
           <div className="flex justify-between items-center">
             <button
               type="submit"

@@ -77,7 +77,7 @@ export default function Instituto() {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:8080/instituto?page=${pageNumber}&size=5`)
+    fetch(`http://localhost:8080/instituto?page=${pageNumber}&size=10`)
       .then((res) => res.json())
       .then((data) => {
         setData(data);
@@ -183,13 +183,13 @@ export default function Instituto() {
 
       <div className="flex items-center justify-center text-center">
         <Pagination
-          currentPage={pageNumber} //data?.number
+          currentPage={pageNumber}
           layout="pagination"
           nextLabel="Próxima"
           onPageChange={(page) => setPageNumber(page - 1)}
           previousLabel="Anterior"
           showIcons
-          totalPages={data && data.totalPages} //data?.totalPages
+          totalPages={data && data.totalPages}
         />
       </div>
 

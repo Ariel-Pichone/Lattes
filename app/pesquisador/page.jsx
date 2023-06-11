@@ -191,13 +191,13 @@ export default function Pesquisador() {
       {/* Paginação */}
       <div className="flex items-center justify-center text-center">
         <Pagination
-          currentPage={pageNumber} //data?.number
+          currentPage={pageNumber}
           layout="pagination"
           nextLabel="Próxima"
           onPageChange={(page) => setPageNumber(page - 1)}
           previousLabel="Anterior"
           showIcons
-          totalPages={data && data.totalPages} //data?.totalPages
+          totalPages={data && data.totalPages}
         />
       </div>
 

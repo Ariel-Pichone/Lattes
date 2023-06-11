@@ -9,6 +9,7 @@ import { Pagination } from 'flowbite-react';
 export default function Producao() {
   const [data, setData] = useState(null);
   const [pesquisador, setPesquisador] = useState(null);
+  const [tipoProducao, setTipoProducao] = useState(null);
   const [instituto, setInstituto] = useState(null);
   const [producaoList, setProducaoList] = useState(null);
   const [isLoading, setLoading] = useState(true);
@@ -42,7 +43,7 @@ export default function Producao() {
       })
       .catch((err) => console.log(err));
 
-    fetch(`http://localhost:8080/instituto?page=${pageNumber}&size=10`)
+    fetch('http://localhost:8080/instituto')
       .then((res) => res.json())
       .then((instituto) => {
         setInstituto(instituto);
@@ -50,10 +51,18 @@ export default function Producao() {
       })
       .catch((err) => console.log(err));
 
-    fetch(`http://localhost:8080/pesquisador?page=${pageNumber}&size=10`)
+    fetch('http://localhost:8080/pesquisador')
       .then((res) => res.json())
       .then((pesquisador) => {
         setPesquisador(pesquisador);
+        setLoading(false);
+      })
+      .catch((err) => console.log(err));
+
+    fetch('http://localhost:8080/tipoProducao')
+      .then((res) => res.json())
+      .then((tipoProducao) => {
+        setTipoProducao(tipoProducao);
         setLoading(false);
       })
       .catch((err) => console.log(err));
@@ -86,7 +95,7 @@ export default function Producao() {
           </div>
 
           <div className="mr-4" id="select">
-            <Select {...register('instituto')} name="instituto" required={true}>
+            <Select {...register('instituto')} name="instituto" required={true}> {/* temos que olhar esse required pois está obrigando preencher um instituti para fazer a pesquisa */}
               <option value="">Instituto</option>
               {instituto?.content &&
                 instituto.content.map((instituto) => (
@@ -106,8 +115,9 @@ export default function Producao() {
           <div className="mr-4" id="select">
             <Select {...register('tipoProducao')} name="tipoProducao">
               <option value="">Tipo Prod.</option>
-              <option>Artigo</option>
-              <option>Livro</option>
+              {tipoProducao && tipoProducao.content.map((tipo) => (
+                <option key={tipo} value={tipo}>{tipo}</option>
+              ))}
             </Select>
           </div>
           <div className="flex justify-between items-center">
@@ -158,16 +168,15 @@ export default function Producao() {
       </div>
 
       {/* Paginação */}
-
       <div className="flex items-center justify-center text-center">
         <Pagination
-          currentPage={pageNumber} //data?.number
+          currentPage={pageNumber}
           layout="pagination"
           nextLabel="Próxima"
           onPageChange={(page) => setPageNumber(page - 1)}
           previousLabel="Anterior"
           showIcons
-          totalPages={data && data.totalPages} //data?.totalPages
+          totalPages={data && data.totalPages}
         />
       </div>
     </div>
