@@ -26,17 +26,17 @@ public class ProducaoController {
         this.producaoService = producaoService;
     }
 
-    @GetMapping
-    public Page<Producao> pageProducao(Pageable pageable) {
-        return producaoService.pageProducao(pageable);
-    }
+    // @GetMapping
+    // public Page<Producao> pageProducao(Pageable pageable) {
+    //     return producaoService.pageProducao(pageable);
+    // }
 
     @GetMapping("/")
     public Page<Producao> pageProducaoPeloAno(@RequestParam(required = true) Integer ano, Pageable pageable) {
         return producaoService.pageProducaoPeloAno(ano, pageable);
     }
 
-    @GetMapping("/filtro")
+    @GetMapping
     public Page<Producao> buscarComFiltroDinamico(
             @RequestParam(required = false) Integer dataInicio,
             @RequestParam(required = false) Integer dataFim,

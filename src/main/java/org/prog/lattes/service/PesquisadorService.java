@@ -32,7 +32,7 @@ public class PesquisadorService {
     }
 
     public Page<Pesquisador> buscarComFiltroDinamico(String identificador, String nome, Long instituto, Pageable pageable) {
-        //Usado para ordenar a pagina pelo nome do instituto de forma crescente
+        //Usado para ordenar a pagina pelo nome do pesquisador de forma crescente
         PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("nome"));
 
         Specification<Pesquisador> spec = Specification.where(null);

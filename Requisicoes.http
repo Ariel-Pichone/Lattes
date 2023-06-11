@@ -203,7 +203,10 @@ GET http://localhost:8080/pesquisador/count HTTP/1.1
 GET http://localhost:8080/producao?page=0&size=10 HTTP/1.1
 
 ### Teste de produção 
-GET http://localhost:8080/producao/filtro?dataInicio=2004&dataFim=2022&instituto=Estácio&pesquisador=Gestinari&tipoProducao=ARTIGO HTTP/1.1
+GET http://localhost:8080/producao?dataInicio=2004&dataFim=2022&instituto=Estácio&pesquisador=Gestinari&tipoProducao=ARTIGO HTTP/1.1
+
+### Teste de produção 
+GET http://localhost:8080/producao?dataInicio=2000&dataFim=2000?page=0&size=10 HTTP/1.1
 
 ### Pesquisa as produções pelo ano
 GET http://localhost:8080/producao/?ano=2002 HTTP/1.1
