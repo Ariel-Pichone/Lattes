@@ -226,3 +226,10 @@ GET http://localhost:8080/autor/autorExiste/Lï¿½sia Mï¿½nica de Souza Gest
 
 ### Pesquisa o ator pelo nome em qualquer parte
 GET http://localhost:8080/autor/nome/Lï¿½sia HTTP/1.1
+
+###########################################################################
+#            REQUISIÇÕES PARA OPERAÇÕES COM TIPO DE PRODUÇÃO              #
+###########################################################################
+
+### Retorna uma página contendo os tipos de produção existentes no enum
+GET http://localhost:8080/tipoProducao HTTP/1.1
