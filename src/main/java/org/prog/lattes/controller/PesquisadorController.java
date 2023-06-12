@@ -1,5 +1,7 @@
 package org.prog.lattes.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.prog.lattes.model.Instituto;
 import org.prog.lattes.model.Pesquisador;
 import org.prog.lattes.service.PesquisadorService;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin
 @RequestMapping("/pesquisador")
+@Tag(name = "Rotas Pesquisadores")
 public class PesquisadorController {
 
     @Autowired
@@ -36,16 +39,19 @@ public class PesquisadorController {
         return pesquisadorService.buscarComFiltroDinamico(identificador, nome, instituto, pageable);
     }
 
+    @Operation(summary = "Busca a quantidade de Pesquisadores Cadastrados")
     @GetMapping("/count")
     public long countPesquisador() {
         return pesquisadorService.countPesquisador();
     }
 
+    @Operation(summary = "Cadastra um novo pesquisador")
     @PostMapping("/add/{identificador}/instituto/{instituto}")
     public void addPesquisador(@PathVariable("identificador") String identificador, @PathVariable("instituto") Instituto instituto) throws Exception {
         pesquisadorService.addPesquisador(identificador, instituto);
     }
 
+    @Operation(summary = "Deleta um Pesquisador cadastrado")
     @DeleteMapping("/excluir/{identificador}")
     public void excluir(@PathVariable("identificador") String identificador) throws Exception {
         pesquisadorService.excluir(identificador);
