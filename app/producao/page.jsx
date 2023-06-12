@@ -45,7 +45,7 @@ export default function Producao() {
       })
       .catch((err) => console.log(err));
 
-    fetch('http://localhost:8080/instituto')
+    fetch('http://localhost:8080/instituto/list')
       .then((res) => res.json())
       .then((instituto) => {
         setInstituto(instituto);
@@ -53,7 +53,7 @@ export default function Producao() {
       })
       .catch((err) => console.log(err));
 
-    fetch('http://localhost:8080/pesquisador')
+    fetch('http://localhost:8080/pesquisador/list')
       .then((res) => res.json())
       .then((pesquisador) => {
         setPesquisador(pesquisador);
@@ -107,8 +107,7 @@ export default function Producao() {
           <div className="mr-4" id="select">
             <Select {...register('instituto')} name="instituto" > {/*required={true}> temos que olhar esse required pois está obrigando preencher um instituti para fazer a pesquisa */}
               <option value="">Instituto</option>
-              {instituto?.content &&
-                instituto.content.map((instituto) => (
+              {instituto && instituto.map((instituto) => (
                   <option value={instituto.nome}>{instituto.nome}</option>
                 ))}
             </Select>
@@ -116,8 +115,7 @@ export default function Producao() {
           <div className="mr-4" id="select">
             <Select {...register('pesquisador')} name="pesquisador">
               <option value="">Pesquisador</option>
-              {pesquisador?.content &&
-                pesquisador.content.map((pesquisador) => (
+              {pesquisador && pesquisador.map((pesquisador) => (
                   <option value={pesquisador.id}>{pesquisador.nome}</option>
                 ))}
             </Select>
@@ -125,7 +123,7 @@ export default function Producao() {
           <div className="mr-4" id="select">
             <Select {...register('tipoProducao')} name="tipoProducao">
               <option value="">Tipo Prod.</option>
-              {tipoProducao && tipoProducao.content.map((tipo) => (
+              {tipoProducao && tipoProducao.map((tipo) => (
                 <option key={tipo} value={tipo}>{tipo}</option>
               ))}
             </Select>

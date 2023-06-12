@@ -22,8 +22,8 @@ export default function Home() {
     datasets: [],
   });
 
-  const [pesquisador, setPesquisador] = useState(null);
   const [instituto, setInstituto] = useState(null);
+  const [pesquisador, setPesquisador] = useState(null);
   const [tipoProducao, setTipoProducao] = useState(null);
   const [totalInstitutos, setTotalInstitutos] = useState(0);
   const [totalPesquisadores, setTotalPesquisadores] = useState(0);
@@ -95,18 +95,18 @@ export default function Home() {
       })
       .catch((err) => console.log(err));
 
-    fetch('http://localhost:8080/instituto')
+    fetch('http://localhost:8080/instituto/list')
       .then((res) => res.json())
       .then((instituto) => {
-        setInstituto(instituto.content);
+        setInstituto(instituto);
         setLoading(false);
       })
       .catch((err) => console.log(err));
 
-    fetch('http://localhost:8080/pesquisador') //deve retornar apenas os pesquisadores que estão no instituto
+    fetch('http://localhost:8080/pesquisador/list') //deve retornar apenas os pesquisadores que estão no instituto
       .then((res) => res.json())
       .then((pesquisador) => {
-        setPesquisador(pesquisador.content);
+        setPesquisador(pesquisador);
         setLoading(false);
       })
       .catch((err) => console.log(err));
@@ -183,8 +183,7 @@ export default function Home() {
           <div className="mr-4" id="select">
             <Select {...register('instituto')} id="camp" name="instituto">
               <option value="">Instituto</option>
-              {instituto &&
-                instituto.map((instituto) => (
+              {instituto && instituto.map((instituto) => (
                   <option value={instituto.nome}>{instituto.nome}</option>
                 ))}
             </Select>
@@ -192,8 +191,7 @@ export default function Home() {
           <div className="mr-4" id="select">
             <Select {...register('pesquisador')} id="campo" name="pesquisador">
               <option value="">Pesquisador</option>
-              {pesquisador &&
-                pesquisador.map((pesquisador) => (
+              {pesquisador && pesquisador.map((pesquisador) => (
                   <option value={pesquisador.nome}>{pesquisador.nome}</option>
                 ))}
             </Select>
@@ -201,7 +199,7 @@ export default function Home() {
           <div className="mr-4" id="select">
             <Select {...register('tipoProducao')} name="tipoProducao">
               <option value="">Tipo Prod.</option>
-              {tipoProducao && tipoProducao.content.map((tipo) => (
+              {tipoProducao && tipoProducao.map((tipo) => (
                 <option key={tipo} value={tipo}>{tipo}</option>
               ))}
             </Select>
