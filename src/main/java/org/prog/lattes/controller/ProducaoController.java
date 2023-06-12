@@ -1,5 +1,7 @@
 package org.prog.lattes.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.prog.lattes.service.ProducaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +19,7 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @RequestMapping("/producao")
+@Tag(name = "Rotas de Produções")
 public class ProducaoController {
 
     @Autowired
@@ -31,6 +34,7 @@ public class ProducaoController {
     //     return producaoService.pageProducao(pageable);
     // }
 
+    @Operation(summary = "Busca a produção Baseado no ano")
     @GetMapping("/")
     public Page<Producao> pageProducaoPeloAno(@RequestParam(required = true) Integer ano, Pageable pageable) {
         return producaoService.pageProducaoPeloAno(ano, pageable);
@@ -47,6 +51,7 @@ public class ProducaoController {
         return producaoService.buscarComFiltroDinamico(dataInicio, dataFim, instituto, pesquisador, tipoProducao, pageable);
     }
 
+    @Operation(summary = "Busca a quantidades de produções em um determinado ano")
     @GetMapping("/countTotalProducoesPorAno")
     public List<TotalProducoesAno> countTotalProducoesPorAno(
             @RequestParam(required = false) Integer dataInicio,
@@ -57,11 +62,13 @@ public class ProducaoController {
         return producaoService.countTotalProducoesPorAno(dataInicio, dataFim, instituto, pesquisador, tipoProducao);
     }
 
+    @Operation(summary = "Busca a quantidade total de produções")
      @GetMapping("/count")
     public long countProducao() {
         return producaoService.countProducao();
     }
-    
+
+    @Operation(summary = "Busca a quantidade de Produções por tipo")
     @GetMapping("/countTotalProducoesPorTipo")
     public List<TotalProducoesTipo> countTotalProducoesPorTipo() {
         return producaoService.countTotalProducoesPorTipo();

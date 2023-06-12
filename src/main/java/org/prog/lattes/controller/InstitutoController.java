@@ -1,5 +1,7 @@
 package org.prog.lattes.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.prog.lattes.model.Instituto;
 import org.prog.lattes.service.InstitutoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin
 @RequestMapping("/instituto")
+@Tag(name = "Rotas de Instituto")
 public class InstitutoController {
     
     @Autowired
@@ -36,16 +39,19 @@ public class InstitutoController {
         return institutoService.buscarComFiltroDinamico(nome, acronimo, nomeAcronimo, pageable);
     }
 
+    @Operation(summary = "Busca a quantidade de Institutos Cadastrados")
     @GetMapping("/count")
     public long countInstituto() {
         return institutoService.countInstituto();
     }
-    
+
+    @Operation(summary = "Cadastra um Instituto")
     @PostMapping("/")
     public void gravar(@RequestBody Instituto instituto) {
         institutoService.gravar(instituto);
     }
 
+    @Operation(summary = "Exclui um Instituto")
     @DeleteMapping("/{id}")
     public void remover(@PathVariable("id") Long id) throws Exception {
         institutoService.remover(id);

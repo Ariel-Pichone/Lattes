@@ -1,6 +1,9 @@
 package org.prog.lattes.controller;
 
 import java.util.List;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.prog.lattes.model.Autor;
 import org.prog.lattes.service.AutorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin
 @RequestMapping("/autor")
+@Tag(name = "Rotas de Autores")
 public class AutorController {
     
     @Autowired
@@ -22,11 +26,13 @@ public class AutorController {
         this.autorService = autorService;
     }
 
+    @Operation(summary = "Verfica a existência de Autor", description = "Retorna um valor Boolean")
     @GetMapping("/autorExiste/{nome}")
     public boolean autorExiste(@PathVariable("nome") String nome) {
         return autorService.autorExiste(nome);
     }
 
+    @Operation(summary = "Busca um autor pelo o nome")
     @GetMapping("/nome/{nome}")
     public List<Autor> listAutorPeloNome(@PathVariable("nome") String nome) {
         return autorService.listAutorPeloNome(nome);
