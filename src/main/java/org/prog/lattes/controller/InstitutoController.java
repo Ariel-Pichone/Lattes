@@ -2,6 +2,9 @@ package org.prog.lattes.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
+import java.util.List;
+
 import org.prog.lattes.model.Instituto;
 import org.prog.lattes.service.InstitutoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +40,14 @@ public class InstitutoController {
             @RequestParam(required = false) String nomeAcronimo,
             Pageable pageable) {        
         return institutoService.buscarComFiltroDinamico(nome, acronimo, nomeAcronimo, pageable);
+    }
+
+     @GetMapping("/list")
+    public List<Instituto> listBuscarComFiltroDinamico(
+            @RequestParam(required = false) String nome,
+            @RequestParam(required = false) String acronimo,
+            @RequestParam(required = false) String nomeAcronimo) {
+        return institutoService.listBuscarComFiltroDinamico(nome, acronimo, nomeAcronimo);
     }
 
     @Operation(summary = "Busca a quantidade de Institutos Cadastrados")

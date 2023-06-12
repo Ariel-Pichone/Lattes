@@ -66,6 +66,9 @@ content-type: application/json
 ###  Listar os institutos de forma paginada:
 GET http://localhost:8080/instituto?page=0&size=1 HTTP/1.1
 
+###  Listar os institutos de forma lista:
+GET http://localhost:8080/instituto/list HTTP/1.1
+
 ### Pesquisa o instituto pelo o nome em qualquer parte
 GET http://localhost:8080/instituto?nome=federal HTTP/1.1
 
@@ -174,11 +177,11 @@ POST http://localhost:8080/pesquisador/add/0814717344017544/instituto/5 HTTP/1.1
 #                REQUISIÇÕES PARA OPERAÇÕES COM PESQUISADOR               #
 ###########################################################################
 
-###  Pegar todos os pesquisadores que estão cadastrados no banco de dados 
-GET http://localhost:8080/pesquisador HTTP/1.1
-
 ###  Listar os pesquisadores de forma paginada 
 GET http://localhost:8080/pesquisador?page=0&size=5 HTTP/1.1
+
+###  Listar os pesquisadores de forma de lista
+GET http://localhost:8080/pesquisador/list HTTP/1.1
 
 ### Pesquisa o pesquisador pelo o nome em qualquer parte
 GET http://localhost:8080/pesquisador?nome=Salvador HTTP/1.1
@@ -236,3 +239,10 @@ GET http://localhost:8080/autor/nome/Lï¿½sia HTTP/1.1
 
 ### Retorna uma página contendo os tipos de produção existentes no enum
 GET http://localhost:8080/tipoProducao HTTP/1.1
+
+###########################################################################
+#            REQUISIÇÕES PARA OPERAÇÕES COM TIPO DE VERTICE               #
+###########################################################################
+
+### Retorna uma página contendo os tipos de produção existentes no enum
+GET http://localhost:8080/tipoVertice HTTP/1.1

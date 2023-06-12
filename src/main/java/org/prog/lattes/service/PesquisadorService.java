@@ -1,5 +1,6 @@
 package org.prog.lattes.service;
 
+import java.util.Collections;
 import java.util.List;
 import org.prog.lattes.convert.ReadXML;
 import org.prog.lattes.model.Instituto;
@@ -31,10 +32,7 @@ public class PesquisadorService {
         this.pesquisadorRepository = pesquisadorRepository;
     }
 
-    public Page<Pesquisador> buscarComFiltroDinamico(String identificador, String nome, Long instituto, Pageable pageable) {
-        //Usado para ordenar a pagina pelo nome do pesquisador de forma crescente
-        PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("nome"));
-
+    public Specification<Pesquisador> querySpecification(String identificador, String nome, Long instituto){
         Specification<Pesquisador> spec = Specification.where(null);
         
         if (identificador != null) {
@@ -49,7 +47,26 @@ public class PesquisadorService {
             spec = spec.and(PesquisadorRepository.filtrarPorInstituto(instituto));
         }
 
+        return spec;
+    }
+
+    public Page<Pesquisador> buscarComFiltroDinamico(String identificador, String nome, Long instituto, Pageable pageable) {
+        //Usado para ordenar a pagina pelo nome do pesquisador de forma crescente
+        PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("nome"));
+
+        Specification<Pesquisador> spec = querySpecification(identificador, nome, instituto);
+
         return pesquisadorRepository.findAll(spec, pageRequest);
+    }
+
+    public List<Pesquisador> listBuscarComFiltroDinamico(String identificador, String nome, Long instituto) {
+        Specification<Pesquisador> spec = querySpecification(identificador, nome, instituto);
+
+        List<Pesquisador> listPesquisador = pesquisadorRepository.findAll(spec);
+
+        Collections.sort(listPesquisador, (p1, p2) -> p1.getNome().compareTo(p2.getNome()));
+        
+        return listPesquisador;
     }
 
     public long countPesquisador() {

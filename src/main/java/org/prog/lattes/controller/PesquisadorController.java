@@ -2,6 +2,9 @@ package org.prog.lattes.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
+import java.util.List;
+
 import org.prog.lattes.model.Instituto;
 import org.prog.lattes.model.Pesquisador;
 import org.prog.lattes.service.PesquisadorService;
@@ -37,6 +40,14 @@ public class PesquisadorController {
             @RequestParam(required = false) Long instituto,
             Pageable pageable) {        
         return pesquisadorService.buscarComFiltroDinamico(identificador, nome, instituto, pageable);
+    }
+
+    @GetMapping("/list")
+    public List<Pesquisador> buscarComFiltroDinamico(
+            @RequestParam(required = false) String identificador,
+            @RequestParam(required = false) String nome,
+            @RequestParam(required = false) Long instituto) {
+        return pesquisadorService.listBuscarComFiltroDinamico(identificador, nome, instituto);
     }
 
     @Operation(summary = "Busca a quantidade de Pesquisadores Cadastrados")
