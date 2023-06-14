@@ -26,6 +26,7 @@ export default function RootLayout({ children }) {
               Produção
             </Link>
             <Link className="text-xl mr-6" href="/grafo">
+              Grafo
             </Link>
           </nav>
         </header>
