@@ -41,4 +41,36 @@ public interface ProducaoRepository extends JpaRepository<Producao, Long>, JpaSp
     @Query(value = "SELECT p.tipo_producao AS tipoProducao, COUNT(p.*) AS totalProducao "
          + "FROM producao AS p GROUP BY p.tipo_producao ORDER BY p.tipo_producao", nativeQuery = true)
     List<TotalProducoesTipo> countTotalProducoesPorTipo();
+
+    // public static List<GrafoPesquisador> grafoPesquisador() {
+    //     String jpql = "SELECT DISTINCT p.id, pr.id, pr.nome FROM Producao p " +
+    //             "JOIN p.pesquisadores pr";
+
+    //     List<GrafoPesquisador> resultados;
+
+    //     try {
+    //         TypedQuery<Object[]> query = em.createQuery(jpql, Object[].class);
+    //         List<Object[]> rows = query.getResultList();
+
+    //         resultados = new ArrayList<>();
+
+    //         for (Object[] row : rows) {
+    //             Long idPesquisador1 = (Long) row[0];
+    //             Long idPesquisador2 = (Long) row[1];
+    //             String nomeProducao = (String) row[2];
+
+    //             GrafoPesquisador grafoPesquisador = new GrafoPesquisador();
+    //             grafoPesquisador.setIdPesquisador1(idPesquisador1);
+    //             grafoPesquisador.setIdPesquisador2(idPesquisador2);
+    //             grafoPesquisador.setNomeProducao(nomeProducao);
+
+    //             resultados.add(grafoPesquisador);
+    //         }
+
+    //         return resultados;
+    //     } catch (NoResultException e) {
+    //         // Trate o caso em que nenhum resultado é encontrado, se necessário
+    //         return Collections.emptyList();
+    //     }
+    // }
 }

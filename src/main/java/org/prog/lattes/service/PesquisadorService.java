@@ -96,7 +96,7 @@ public class PesquisadorService {
         }
     }
     
-    public void saveAll(List<Pesquisador> pesquisadorList) {
-        pesquisadorRepository.saveAll(pesquisadorList);
+    public void save(Pesquisador pesquisador) {
+        pesquisadorRepository.save(pesquisador);
     }
 }

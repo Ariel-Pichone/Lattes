@@ -15,18 +15,21 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.prog.lattes.service.PesquisadorService;
+import org.prog.lattes.service.ProducaoService;
 import org.springframework.stereotype.Component;
 
 @Component  //Carregar o xml, ler o xml, alimentar um objeto de pesquisador
 public class LeituraXml {
 
     private PesquisadorService pesquisadorService;
+    private ProducaoService producaoService;
 
-    public LeituraXml(PesquisadorService pesquisadorService){
+    public LeituraXml(PesquisadorService pesquisadorService, ProducaoService producaoService){
         this.pesquisadorService = pesquisadorService;
+        this.producaoService = producaoService;
     }
 
-    public void lerProducao(File file,  Node node, List<Producao> producaoList, TipoProducao tipoProducao, NodeList nodeList, String tagProducao, String tagNome, String tagAno){
+    public void lerProducao(File file,  Node node, List<Producao> producaoList, TipoProducao tipoProducao, NodeList nodeList, String tagProducao, String tagNome, String tagAno, Pesquisador pesquisador){
         for (int i = 0; i < nodeList.getLength(); i++) {
             Producao producao = new Producao();
 
@@ -43,6 +46,7 @@ public class LeituraXml {
                 producao.setNome(nome);
                 producao.setAno(ano);
                 producao.setTipoProducao(tipoProducao);
+                producao.setPesquisador(pesquisador);
 
                 // Obtenha a lista de elementos "AUTORES" dentro do elemento "LIVRO-PUBLICADO-OU-ORGANIZADO"
                 NodeList autoresNodeList = element.getElementsByTagName("AUTORES");
@@ -85,7 +89,7 @@ public class LeituraXml {
                         autoresList.add(autor);
                     }
                 }
-                producao.addAutores(autoresList);
+                producao.setAutores(autoresList);
                 
                 producaoList.add(producao);
             }
@@ -105,7 +109,6 @@ public class LeituraXml {
             
             doc.getDocumentElement().normalize();
 
-            List<Pesquisador> pesquisadorList = new ArrayList<>();
             List<Producao> producaoList = new ArrayList<>();
             
             /*********************************************************************************************************/
@@ -152,7 +155,7 @@ public class LeituraXml {
             String tagAno = "ANO";
 
             // Percorra os elementos "LIVRO-PUBLICADO-OU-ORGANIZADO"
-            lerProducao(file,  node, producaoList, tipoProducao, nodeList, tagProducao, tagNome, tagAno);
+            lerProducao(file,  node, producaoList, tipoProducao, nodeList, tagProducao, tagNome, tagAno, pesquisador);
 
             /*********************************************************************************************************/
             /*                     Lendo todos os artigos que o pesquisador trabalhou na produção                    */
@@ -167,7 +170,7 @@ public class LeituraXml {
             tagNome = "TITULO-DO-ARTIGO";
             tagAno = "ANO-DO-ARTIGO";
 
-            lerProducao(file,  node, producaoList, tipoProducao, nodeList, tagProducao, tagNome, tagAno);
+            lerProducao(file,  node, producaoList, tipoProducao, nodeList, tagProducao, tagNome, tagAno, pesquisador);
             
             /*********************************************************************************************************/
             /*       Lendo todos os capitulos de livro publicados que o pesquisador trabalhou na produção            */
@@ -182,7 +185,7 @@ public class LeituraXml {
             tagNome = "TITULO-DO-CAPITULO-DO-LIVRO";
             tagAno = "ANO";
 
-            lerProducao(file,  node, producaoList, tipoProducao, nodeList, tagProducao, tagNome, tagAno);
+            lerProducao(file,  node, producaoList, tipoProducao, nodeList, tagProducao, tagNome, tagAno, pesquisador);
 
             /*********************************************************************************************************/
             /*       Lendo todos os capitulos de livro publicados que o pesquisador trabalhou na produção            */
@@ -197,7 +200,7 @@ public class LeituraXml {
             tagNome = "TITULO-DO-CAPITULO-DO-LIVRO";
             tagAno = "ANO";
 
-            lerProducao(file,  node, producaoList, tipoProducao, nodeList, tagProducao, tagNome, tagAno);
+            lerProducao(file,  node, producaoList, tipoProducao, nodeList, tagProducao, tagNome, tagAno, pesquisador);
 
             /*********************************************************************************************************/
             /*               Lendo todas as orientações de mestrado que o pesquisador realizou                       */
@@ -212,7 +215,7 @@ public class LeituraXml {
             tagNome = "TITULO";
             tagAno = "ANO";
             
-            //lerProducao(file,  node, producaoList, tipoProducao, nodeList, tagProducao, tagNome, tagAno);
+            //lerProducao(file,  node, producaoList, tipoProducao, nodeList, tagProducao, tagNome, tagAno, pesquisador);
             
             /*********************************************************************************************************/
             /*                  Lendo todas as orientações de TCC que o pesquisador realizou                         */
@@ -227,7 +230,7 @@ public class LeituraXml {
             tagNome = "TITULO";
             tagAno = "ANO";
             
-            //lerProducao(file,  node, producaoList, tipoProducao, nodeList, tagProducao, tagNome, tagAno);
+            //lerProducao(file,  node, producaoList, tipoProducao, nodeList, tagProducao, tagNome, tagAno, pesquisador);
 
             /*********************************************************************************************************/
             /*                  Lendo todos os trabalhos em eventos que o pesquisador parcipou                       */
@@ -242,17 +245,16 @@ public class LeituraXml {
             tagNome = "TITULO-DO-TRABALHO";
             tagAno = "ANO-DO-TRABALHO";
             
-            lerProducao(file,  node, producaoList, tipoProducao, nodeList, tagProducao, tagNome, tagAno);
+            lerProducao(file,  node, producaoList, tipoProducao, nodeList, tagProducao, tagNome, tagAno, pesquisador);
 
             /*********************************************************************************************************/
             /*                                 Gravando toda a lista de produções                                    */
             /*********************************************************************************************************/
 
-            pesquisador.addProducao(producaoList);
-            
-            pesquisadorList.add(pesquisador);
-            
-            pesquisadorService.saveAll(pesquisadorList);
+            pesquisadorService.save(pesquisador);
+
+            producaoService.saveAll(producaoList);
+
         } catch (Exception e) {
            e.printStackTrace();
         }

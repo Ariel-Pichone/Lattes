@@ -29,13 +29,6 @@ public class ProducaoService {
         this.producaoRepository = producaoRepository;
     }
 
-    // public Page<Producao> pageProducao(Pageable pageable){
-    //     //Usado para ordenar a pagina pelo nome da produção de forma crescente
-    //     PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("nome"));
-
-    //     return this.producaoRepository.findAll(pageRequest);
-    // }
-
     public Page<Producao> pageProducaoPeloAno(Integer ano, Pageable pageable) {
         //Usado para ordenar a pagina pelo nome da produção de forma crescente
         PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("nome"));

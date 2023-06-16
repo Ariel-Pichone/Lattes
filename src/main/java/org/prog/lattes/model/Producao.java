@@ -13,6 +13,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,6 +23,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Producao {
 
     @Id
@@ -37,8 +40,8 @@ public class Producao {
     @Enumerated(EnumType.STRING)
     private TipoProducao tipoProducao;
     
-    @ManyToMany (mappedBy = "producoes")
-    private List<Pesquisador> pesquisadores;
+    @ManyToOne
+    private Pesquisador pesquisador;
 
     @JsonIgnore
     @ManyToMany (cascade = CascadeType.ALL)
@@ -46,14 +49,6 @@ public class Producao {
         joinColumns = @JoinColumn(name = "producao_id"),
         inverseJoinColumns = @JoinColumn(name = "autor_id"))
     private List<Autor> autores;
-
-    public void addPesquisador(List<Pesquisador> pesquisadores) {
-        this.pesquisadores = pesquisadores;
-    }
-
-    public void addAutores(List<Autor> autores) {
-        this.autores = autores;
-    }
 
     @Override
     public String toString() {

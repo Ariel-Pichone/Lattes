@@ -2,9 +2,7 @@ package org.prog.lattes.service;
 
 import java.util.Collections;
 import java.util.List;
-
 import org.prog.lattes.model.Instituto;
-import org.prog.lattes.model.Pesquisador;
 import org.prog.lattes.repository.InstitutoRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

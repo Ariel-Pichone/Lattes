@@ -2,9 +2,7 @@ package org.prog.lattes.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
 import java.util.List;
-
 import org.prog.lattes.model.Instituto;
 import org.prog.lattes.model.Pesquisador;
 import org.prog.lattes.service.PesquisadorService;
