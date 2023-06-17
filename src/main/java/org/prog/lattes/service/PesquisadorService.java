@@ -3,6 +3,8 @@ package org.prog.lattes.service;
 import java.util.Collections;
 import java.util.List;
 import org.prog.lattes.convert.ReadXML;
+import org.prog.lattes.model.GrafoInstituto;
+import org.prog.lattes.model.GrafoPesquisador;
 import org.prog.lattes.model.Instituto;
 import org.prog.lattes.model.Pesquisador;
 import org.prog.lattes.repository.PesquisadorRepository;
@@ -83,7 +85,7 @@ public class PesquisadorService {
 
     public void excluir(String identificador) throws Exception {
         try {
-            Pesquisador pesquisador = pesquisadorRepository.findByIdentificador(identificador).get(0);
+            Pesquisador pesquisador = pesquisadorRepository.findByIdentificador(identificador);
             
             if (pesquisador != null) {
                 pesquisadorRepository.delete(pesquisador);
@@ -98,5 +100,9 @@ public class PesquisadorService {
     
     public void save(Pesquisador pesquisador) {
         pesquisadorRepository.save(pesquisador);
+    }
+
+    public List<GrafoInstituto> grafoInstituto(){
+        return pesquisadorRepository.grafoInstituto();
     }
 }

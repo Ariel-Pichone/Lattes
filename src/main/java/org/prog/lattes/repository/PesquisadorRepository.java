@@ -1,11 +1,15 @@
 package org.prog.lattes.repository;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import org.prog.lattes.model.GrafoInstituto;
 import org.prog.lattes.model.Instituto;
 import org.prog.lattes.model.Pesquisador;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import jakarta.persistence.criteria.Join;
 
@@ -27,7 +31,27 @@ public interface PesquisadorRepository extends JpaRepository<Pesquisador, String
         };
     }
 
-    List<Pesquisador> findByIdentificador(String identificador);
+    Pesquisador findByIdentificador(String identificador);
       
     Boolean existsByIdentificador(String identificador);
+
+    @Query(value = "SELECT p1.pesquisador AS pesquisador1, p2.pesquisador AS pesquisador2, p1.nome AS nomeProducao " +
+            "FROM producao p1 " +
+            "INNER JOIN producao p2 ON p1.nome = p2.nome " +
+            "AND p1.pesquisador != p2.pesquisador;", nativeQuery = true)
+    List<Object[]> findGrafoInstituto();
+
+    default List<GrafoInstituto> grafoInstituto() {
+        List<Object[]> results = findGrafoInstituto();
+        List<GrafoInstituto> graph = new ArrayList<>();
+
+        for (Object[] row : results) {
+            GrafoInstituto grafoInstituto = new GrafoInstituto();
+            grafoInstituto.setInstituto1((Instituto) findByIdentificador((String) row[0]).getInstituto());
+            grafoInstituto.setInstituto2((Instituto) findByIdentificador((String) row[1]).getInstituto());
+            grafoInstituto.setNomeProducao((String) row[2]);
+            graph.add(grafoInstituto);
+        }
+        return graph;
+    }
 }

@@ -32,7 +32,7 @@ public class LattesApplication {
 		Instituto instituto4 = new Instituto("Faculdade Católica Salesiana", "SALESIANA");
 		institutoService.gravar(instituto4);
 		
-		Instituto instituto5 = new Instituto("Universidade Estácio de Sá", "Universidade Estácio de Sá");
+		Instituto instituto5 = new Instituto("Universidade Estácio de Sá", "Estácio");
 		institutoService.gravar(instituto5);
 		
 		Instituto instituto6 = new Instituto("Teste", "TESTE");

@@ -3,6 +3,9 @@ package org.prog.lattes.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+
+import org.prog.lattes.model.GrafoInstituto;
+import org.prog.lattes.model.GrafoPesquisador;
 import org.prog.lattes.model.Instituto;
 import org.prog.lattes.model.Pesquisador;
 import org.prog.lattes.service.PesquisadorService;
@@ -64,5 +67,10 @@ public class PesquisadorController {
     @DeleteMapping("/excluir/{identificador}")
     public void excluir(@PathVariable("identificador") String identificador) throws Exception {
         pesquisadorService.excluir(identificador);
+    }
+
+    @GetMapping("/grafoInstituto")
+    public List<GrafoInstituto> grafoInstituto() {
+        return pesquisadorService.grafoInstituto();
     }
 }

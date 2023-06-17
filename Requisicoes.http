@@ -253,3 +253,6 @@ GET http://localhost:8080/tipoVertice HTTP/1.1
 
 ### Retorna uma lista contendo as produções realizadas por mais de um pesquisador cadastrado
 GET http://localhost:8080/producao/grafoPesquisador HTTP/1.1
+
+### Retorna uma lista contendo as produções realizadas por mais de um instituto
+GET http://localhost:8080/pesquisador/grafoInstituto HTTP/1.1

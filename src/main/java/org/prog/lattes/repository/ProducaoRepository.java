@@ -67,7 +67,6 @@ public interface ProducaoRepository extends JpaRepository<Producao, Long>, JpaSp
             grafoPesquisador.setNomeProducao((String) row[2]);
             graph.add(grafoPesquisador);
         }
-
         return graph;
     }
 }
