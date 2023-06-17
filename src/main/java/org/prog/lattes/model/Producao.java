@@ -41,6 +41,7 @@ public class Producao {
     private TipoProducao tipoProducao;
     
     @ManyToOne
+    @JoinColumn(name = "pesquisador")
     private Pesquisador pesquisador;
 
     @JsonIgnore

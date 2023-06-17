@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.prog.lattes.model.GrafoPesquisador;
 import org.prog.lattes.model.Producao;
 import org.prog.lattes.model.TipoProducao;
 import org.prog.lattes.model.TotalProducoesAno;
@@ -118,5 +119,9 @@ public class ProducaoService {
 
     public void saveAll(List<Producao> producaoList){
         producaoRepository.saveAll(producaoList);
+    }
+
+    public List<GrafoPesquisador> grafoPesquisador(){
+        return producaoRepository.grafoPesquisador();
     }
 }

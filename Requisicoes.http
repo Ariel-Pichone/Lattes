@@ -246,3 +246,10 @@ GET http://localhost:8080/tipoProducao HTTP/1.1
 
 ### Retorna uma página contendo os tipos de produção existentes no enum
 GET http://localhost:8080/tipoVertice HTTP/1.1
+
+###########################################################################
+#       REQUISIÇÕES PARA OPERAÇÕES COM TIPO DE GRAFO-PESQUISADOR          #
+###########################################################################
+
+### Retorna uma lista contendo as produções realizadas por mais de um pesquisador cadastrado
+GET http://localhost:8080/producao/grafoPesquisador HTTP/1.1

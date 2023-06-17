@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GrafoPesquisador {
-    private Long idPesquisador1;
-    private Long idPesquisador2;
+    private String pesquisador1;
+    private String pesquisador2;
     private String nomeProducao;
 }

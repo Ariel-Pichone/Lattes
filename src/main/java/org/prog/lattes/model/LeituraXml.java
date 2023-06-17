@@ -188,21 +188,6 @@ public class LeituraXml {
             lerProducao(file,  node, producaoList, tipoProducao, nodeList, tagProducao, tagNome, tagAno, pesquisador);
 
             /*********************************************************************************************************/
-            /*       Lendo todos os capitulos de livro publicados que o pesquisador trabalhou na produção            */
-            /*********************************************************************************************************/
-            
-            tipoProducao = TipoProducao.CAPITULO_LIVRO;
-
-            // Obtenha a lista de elementos "CAPITULO-DE-LIVRO-PUBLICADO"
-            nodeList = doc.getElementsByTagName("CAPITULO-DE-LIVRO-PUBLICADO");
-            
-            tagProducao = "DADOS-BASICOS-DO-CAPITULO";
-            tagNome = "TITULO-DO-CAPITULO-DO-LIVRO";
-            tagAno = "ANO";
-
-            lerProducao(file,  node, producaoList, tipoProducao, nodeList, tagProducao, tagNome, tagAno, pesquisador);
-
-            /*********************************************************************************************************/
             /*               Lendo todas as orientações de mestrado que o pesquisador realizou                       */
             /*********************************************************************************************************/
             

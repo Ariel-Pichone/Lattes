@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.prog.lattes.model.GrafoPesquisador;
 import org.prog.lattes.model.Producao;
 import org.prog.lattes.model.TotalProducoesAno;
 import org.prog.lattes.model.TotalProducoesTipo;
@@ -72,5 +73,10 @@ public class ProducaoController {
     @GetMapping("/countTotalProducoesPorTipo")
     public List<TotalProducoesTipo> countTotalProducoesPorTipo() {
         return producaoService.countTotalProducoesPorTipo();
+    }
+
+    @GetMapping("/grafoPesquisador")
+    public List<GrafoPesquisador> grafoPesquisador() {
+        return producaoService.grafoPesquisador();
     }
 }

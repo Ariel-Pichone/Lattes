@@ -13,7 +13,7 @@ public class LattesApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(LattesApplication.class, args);
 		// ApplicationContext context = SpringApplication.run(LattesApplication.class, args);
-	    // carregarDados(context);
+		// carregarDados(context);
 	}
 
 	public static void carregarDados(ApplicationContext context){

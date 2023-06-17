@@ -1,6 +1,8 @@
 package org.prog.lattes.repository;
 
+import java.util.ArrayList;
 import java.util.List;
+import org.prog.lattes.model.GrafoPesquisador;
 import org.prog.lattes.model.Producao;
 import org.prog.lattes.model.TotalProducoesTipo;
 import org.springframework.data.domain.Page;
@@ -36,41 +38,36 @@ public interface ProducaoRepository extends JpaRepository<Producao, Long>, JpaSp
         return (root, query, builder) -> builder.like(builder.lower(root.get("tipoProducao")), "%" + tipoProducao.toLowerCase() + "%");
     }
     
-    Page<Producao> findByAno(Integer ano, Pageable pageable);
+    public Page<Producao> findByAno(Integer ano, Pageable pageable);
 
     @Query(value = "SELECT p.tipo_producao AS tipoProducao, COUNT(p.*) AS totalProducao "
          + "FROM producao AS p GROUP BY p.tipo_producao ORDER BY p.tipo_producao", nativeQuery = true)
-    List<TotalProducoesTipo> countTotalProducoesPorTipo();
+    public List<TotalProducoesTipo> countTotalProducoesPorTipo();
 
-    // public static List<GrafoPesquisador> grafoPesquisador() {
-    //     String jpql = "SELECT DISTINCT p.id, pr.id, pr.nome FROM Producao p " +
-    //             "JOIN p.pesquisadores pr";
+    // @Query(value = "SELECT p1.pesquisador AS pesquisador1, p2.pesquisador AS pesquisador2, p1.nome AS nomeProducao " +
+    //     "FROM producao p1 " +
+    //     "INNER JOIN producao p2 ON p1.nome = p2.nome " +
+    //     "AND p1.pesquisador != p2.pesquisador;", nativeQuery = true)
+    // List<GrafoPesquisador> grafoPesquisador();
 
-    //     List<GrafoPesquisador> resultados;
+    @Query(value = "SELECT p1.pesquisador AS pesquisador1, p2.pesquisador AS pesquisador2, p1.nome AS nomeProducao " +
+            "FROM producao p1 " +
+            "INNER JOIN producao p2 ON p1.nome = p2.nome " +
+            "AND p1.pesquisador != p2.pesquisador;", nativeQuery = true)
+    List<Object[]> findGrafoPesquisador();
 
-    //     try {
-    //         TypedQuery<Object[]> query = em.createQuery(jpql, Object[].class);
-    //         List<Object[]> rows = query.getResultList();
+    default List<GrafoPesquisador> grafoPesquisador() {
+        List<Object[]> results = findGrafoPesquisador();
+        List<GrafoPesquisador> graph = new ArrayList<>();
 
-    //         resultados = new ArrayList<>();
+        for (Object[] row : results) {
+            GrafoPesquisador grafoPesquisador = new GrafoPesquisador();
+            grafoPesquisador.setPesquisador1((String) row[0]);
+            grafoPesquisador.setPesquisador2((String) row[1]);
+            grafoPesquisador.setNomeProducao((String) row[2]);
+            graph.add(grafoPesquisador);
+        }
 
-    //         for (Object[] row : rows) {
-    //             Long idPesquisador1 = (Long) row[0];
-    //             Long idPesquisador2 = (Long) row[1];
-    //             String nomeProducao = (String) row[2];
-
-    //             GrafoPesquisador grafoPesquisador = new GrafoPesquisador();
-    //             grafoPesquisador.setIdPesquisador1(idPesquisador1);
-    //             grafoPesquisador.setIdPesquisador2(idPesquisador2);
-    //             grafoPesquisador.setNomeProducao(nomeProducao);
-
-    //             resultados.add(grafoPesquisador);
-    //         }
-
-    //         return resultados;
-    //     } catch (NoResultException e) {
-    //         // Trate o caso em que nenhum resultado é encontrado, se necessário
-    //         return Collections.emptyList();
-    //     }
-    // }
+        return graph;
+    }
 }
