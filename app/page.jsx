@@ -60,7 +60,12 @@ export default function Home() {
         {
           label: 'total Prod.',
           data: countTotalProducoesPorTipo.map((data) => data.totalProducao),
-          backgroundColor: ['#1a56db', 'rgba(54, 162, 235, 0.2)'],
+          backgroundColor: ['#f17f14', 
+                            'rgba(9, 243, 29, 0.603)',
+                            'rgba(233, 13, 13, 0.932)',
+                            'rgba(235, 105, 54, 0.2)',
+                            'rgba(238, 223, 13, 0.925)',
+                            'rgba(223, 16, 241, 0.938)'],
         },
       ],
     });
@@ -166,7 +171,7 @@ export default function Home() {
       })
       .catch((err) => console.log(err));
 
-    // Fazer achamada para buscar o número de pesquisadores cadastrados
+    // Fazer a chamada para buscar o número de pesquisadores cadastrados
     fetch('http://localhost:8080/pesquisador/count')
       .then((res) => res.json())
       .then((totalPesquisador) => {
@@ -255,8 +260,9 @@ export default function Home() {
           </div>
         </form>
       </div>
-      <div className=" pb-16">
-        <BarChart chartData={dataBar} className="w-full" />
+      
+      <div className="pb-8 w-full" >
+        <BarChart chartData={dataBar}/>
       </div>
 
       <div className="grid gap-x-8 gap-y-4 grid-cols-4">
