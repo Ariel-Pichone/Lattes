@@ -24,10 +24,17 @@ public interface PesquisadorRepository extends JpaRepository<Pesquisador, String
         return (root, query, builder) -> builder.like(builder.lower(root.get("nome")), "%" + nome.toLowerCase() + "%");
     }
 
-    public static Specification<Pesquisador> filtrarPorInstituto(Long instituto) {
+    public static Specification<Pesquisador> filtrarPorInstituto(Long institutoId) {
         return (root, query, builder) -> {
             Join<Pesquisador, Instituto> join = root.join("instituto");
-            return builder.equal(join.get("id"), instituto);
+            return builder.equal(join.get("id"), institutoId);
+        };
+    }
+
+    public static Specification<Pesquisador> filtrarPorInstitutoNome(String institutoNome) {
+        return (root, query, builder) -> {
+            Join<Pesquisador, Instituto> join = root.join("instituto");
+            return builder.equal(join.get("nome"), institutoNome);
         };
     }
 

@@ -15,11 +15,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@Data
 @Getter
 @Setter
 @NoArgsConstructor
@@ -37,11 +39,11 @@ public class Producao {
     @Column(nullable = false)
     private Integer ano;
 
-    @Enumerated(EnumType.STRING)
-    private TipoProducao tipoProducao;
+    @Column(nullable = false)
+    private String tipoProducao;
     
     @ManyToOne
-    @JoinColumn(name = "pesquisador")
+    @JoinColumn(name = "pesquisador", nullable = false)
     private Pesquisador pesquisador;
 
     @JsonIgnore

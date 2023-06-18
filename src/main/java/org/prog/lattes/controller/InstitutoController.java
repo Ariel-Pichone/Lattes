@@ -2,11 +2,10 @@ package org.prog.lattes.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
 import java.util.List;
-
 import org.prog.lattes.model.Instituto;
 import org.prog.lattes.service.InstitutoService;
+import org.prog.lattes.view.InstitutoView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,7 +33,7 @@ public class InstitutoController {
     }
 
     @GetMapping
-    public Page<Instituto> buscarComFiltroDinamico(
+    public Page<InstitutoView> buscarComFiltroDinamico(
             @RequestParam(required = false) String nome,
             @RequestParam(required = false) String acronimo,
             @RequestParam(required = false) String nomeAcronimo,
@@ -42,8 +41,8 @@ public class InstitutoController {
         return institutoService.buscarComFiltroDinamico(nome, acronimo, nomeAcronimo, pageable);
     }
 
-     @GetMapping("/list")
-    public List<Instituto> listBuscarComFiltroDinamico(
+    @GetMapping("/list")
+    public List<InstitutoView> listBuscarComFiltroDinamico(
             @RequestParam(required = false) String nome,
             @RequestParam(required = false) String acronimo,
             @RequestParam(required = false) String nomeAcronimo) {

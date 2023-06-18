@@ -12,7 +12,9 @@ import org.prog.lattes.model.TipoProducao;
 import org.prog.lattes.model.TotalProducoesAno;
 import org.prog.lattes.model.TotalProducoesTipo;
 import org.prog.lattes.repository.ProducaoRepository;
+import org.prog.lattes.view.ProducaoView;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.PageRequest;
@@ -30,20 +32,43 @@ public class ProducaoService {
         this.producaoRepository = producaoRepository;
     }
 
-    public Page<Producao> pageProducaoPeloAno(Integer ano, Pageable pageable) {
-        //Usado para ordenar a pagina pelo nome da produção de forma crescente
-        PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("nome"));
+    // public Page<ProducaoView> pageProducaoPeloAno(Integer ano, Pageable pageable) {
+    //     //Usado para ordenar a pagina pelo nome da produção de forma crescente
+    //     PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("nome"));
         
-        return producaoRepository.findByAno(ano, pageRequest);
+    //     return producaoRepository.findByAno(ano, pageRequest);
+    // }
+
+    public Specification<Producao> querySpecification(Integer anoInicio, Integer anoFim, String instituto, String pesquisador, String tipoProducao, Integer ano){
+        Specification<Producao> spec = Specification.where(null);
+        if (anoInicio != null) {
+            spec = spec.and(ProducaoRepository.filtrarPorAnoInicio(anoInicio));
+        }
+        if (anoFim != null) {
+            spec = spec.and(ProducaoRepository.filtrarPorAnoFim(anoFim));
+        }
+        if (instituto != null) {
+            spec = spec.and(ProducaoRepository.filtrarPorInstituto(instituto));
+        }
+        if (pesquisador != null) {
+            spec = spec.and(ProducaoRepository.filtrarPorPesquisador(pesquisador));
+        }
+        if (tipoProducao != null) {
+            spec = spec.and(ProducaoRepository.filtrarPorTipoProducao(tipoProducao));
+        }
+        if (ano != null) {
+            spec = spec.and(ProducaoRepository.filtrarPorAno(ano));
+        }
+        return spec;
     }
 
-    public Specification<Producao> querySpecification(Integer dataInicio, Integer dataFim, String instituto, String pesquisador, String tipoProducao){
+    public Specification<Producao> querySpecification(Integer anoInicio, Integer anoFim, String instituto, String pesquisador, String tipoProducao){
         Specification<Producao> spec = Specification.where(null);
-        if (dataInicio != null) {
-            spec = spec.and(ProducaoRepository.filtrarPorDataInicio(dataInicio));
+        if (anoInicio != null) {
+            spec = spec.and(ProducaoRepository.filtrarPorAnoInicio(anoInicio));
         }
-        if (dataFim != null) {
-            spec = spec.and(ProducaoRepository.filtrarPorDataFim(dataFim));
+        if (anoFim != null) {
+            spec = spec.and(ProducaoRepository.filtrarPorAnoFim(anoFim));
         }
         if (instituto != null) {
             spec = spec.and(ProducaoRepository.filtrarPorInstituto(instituto));
@@ -57,41 +82,58 @@ public class ProducaoService {
         return spec;
     }
 
-    public Page<Producao> buscarComFiltroDinamico(Integer dataInicio, Integer dataFim, String instituto, String pesquisador, String tipoProducao, Pageable pageable) {
+    public Page<ProducaoView> buscarComFiltroDinamico(Integer anoInicio, Integer anoFim, String instituto, String pesquisador, String tipoProducao, Integer ano, Pageable pageable) {
         //Usado para ordenar a pagina pelo nome da produção de forma crescente
         PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("nome"));
 
-        Specification<Producao> spec = querySpecification(dataInicio, dataFim, instituto, pesquisador, tipoProducao);
+        Specification<Producao> spec = querySpecification(anoInicio, anoFim, instituto, pesquisador, tipoProducao, ano);
 
-        return producaoRepository.findAll(spec, pageRequest);
+        Page<Producao> producoesPage = producaoRepository.findAll(spec, pageRequest);
+
+        List<ProducaoView> producoesView = producoesPage
+                .stream()
+                .map(this::convertToProducaoView)
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(producoesView, pageRequest, producoesPage.getTotalElements());
     }
 
-    public List<TotalProducoesAno> countTotalProducoesPorAno(Integer dataInicio, Integer dataFim, String instituto, String pesquisador, String tipoProducao) {
-        Specification<Producao> spec = querySpecification(dataInicio, dataFim, instituto, pesquisador, tipoProducao);
+    private ProducaoView convertToProducaoView(Producao producao) {
+        ProducaoView producaoView = new ProducaoView();
+        producaoView.setId(producao.getId());
+        producaoView.setNome(producao.getNome());
+        producaoView.setAno(producao.getAno());
+        producaoView.setTipoProducao(producao.getTipoProducao());
+        producaoView.setPesquisador(producao.getPesquisador().getNome());
+        return producaoView;
+    }
+
+    public List<TotalProducoesAno> countTotalProducoesPorAno(Integer anoInicio, Integer anoFim, String instituto, String pesquisador, String tipoProducao) {
+        Specification<Producao> spec = querySpecification(anoInicio, anoFim, instituto, pesquisador, tipoProducao);
 
         List<Producao> producoesFiltradas = producaoRepository.findAll(spec);
         
         List<TotalProducoesAno> totalPorAno = new ArrayList<>();
 
-        Map<Integer, Map<TipoProducao, Long>> producoesAgrupadas = producoesFiltradas.stream()
-        .collect(Collectors.groupingBy(Producao::getAno,
+        Map<Integer, Map<String, Long>> producoesAgrupadas = producoesFiltradas.stream()
+            .collect(Collectors.groupingBy(Producao::getAno,
                 Collectors.groupingBy(Producao::getTipoProducao,
                 Collectors.counting())));
 
-        for (Map.Entry<Integer, Map<TipoProducao, Long>> entry : producoesAgrupadas.entrySet()) {
+        for (Map.Entry<Integer, Map<String, Long>> entry : producoesAgrupadas.entrySet()) {
             Integer anoProducao = entry.getKey();
-            Map<TipoProducao, Long> producoesPorTipo = entry.getValue();
+            Map<String, Long> producoesPorTipo = entry.getValue();
 
             TotalProducoesAno totalProducoesAno = new TotalProducoesAno();
             totalProducoesAno.setAnoProducao(anoProducao);
 
             // Obtenha os totais para cada tipo de produção e defina-os no objeto TotalProducoesAno
-            totalProducoesAno.setArtigo(producoesPorTipo.getOrDefault(TipoProducao.ARTIGO, 0L));
-            totalProducoesAno.setCapituloLivro(producoesPorTipo.getOrDefault(TipoProducao.CAPITULO_LIVRO, 0L));
-            totalProducoesAno.setLivro(producoesPorTipo.getOrDefault(TipoProducao.LIVRO, 0L));
-            totalProducoesAno.setOrientacaoMestrado(producoesPorTipo.getOrDefault(TipoProducao.ORIENTACOES_MESTRADO, 0L));
-            totalProducoesAno.setOrientacaoTCC(producoesPorTipo.getOrDefault(TipoProducao.ORIENTACOES_TCC, 0L));
-            totalProducoesAno.setTrabalhoEvento(producoesPorTipo.getOrDefault(TipoProducao.TRABALHO_EVENTO, 0L));
+            totalProducoesAno.setArtigo(producoesPorTipo.getOrDefault(TipoProducao.ARTIGO.getNome(), 0L));
+            totalProducoesAno.setCapituloLivro(producoesPorTipo.getOrDefault(TipoProducao.CAPITULO_LIVRO.getNome(), 0L));
+            totalProducoesAno.setLivro(producoesPorTipo.getOrDefault(TipoProducao.LIVRO.getNome(), 0L));
+            totalProducoesAno.setOrientacaoMestrado(producoesPorTipo.getOrDefault(TipoProducao.ORIENTACOES_MESTRADO.getNome(), 0L));
+            totalProducoesAno.setOrientacaoTCC(producoesPorTipo.getOrDefault(TipoProducao.ORIENTACOES_TCC.getNome(), 0L));
+            totalProducoesAno.setTrabalhoEvento(producoesPorTipo.getOrDefault(TipoProducao.TRABALHO_EVENTO.getNome(), 0L));
 
             // Calcule o total de produção para o ano e defina-o no objeto TotalProducoesAno
             long totalProducao = totalProducoesAno.getArtigo() + totalProducoesAno.getCapituloLivro()

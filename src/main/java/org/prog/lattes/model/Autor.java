@@ -11,8 +11,18 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Autor {
     
     @Id
@@ -34,37 +44,6 @@ public class Autor {
         joinColumns = @JoinColumn(name = "autor_id"),
         inverseJoinColumns = @JoinColumn(name = "citacao_id"))
     private List<Citacao> citacoes;
-
-    public Autor() {
-    }
-
-    public Long getId() {
-        return this.id;
-    }
-
-    public String getNome() {
-        return this.nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public List<Citacao> getCitacoes() {
-        return this.citacoes;
-    }
-
-    public void setCitacoes(List<Citacao> citacoes) {
-        this.citacoes = citacoes;
-    }
-
-    public List<Producao> getProducoes() {
-        return this.producoes;
-    }
-
-    public void setProducoes(List<Producao> producoes) {
-        this.producoes = producoes;
-    }
 
     @Override
     public String toString() {

@@ -180,8 +180,8 @@ POST http://localhost:8080/pesquisador/add/0814717344017544/instituto/5 HTTP/1.1
 ###  Listar os pesquisadores de forma paginada 
 GET http://localhost:8080/pesquisador?page=0&size=5 HTTP/1.1
 
-###  Listar os pesquisadores de forma de lista
-GET http://localhost:8080/pesquisador/list HTTP/1.1
+###  Listar os pesquisadores que estão no instituto 1 em forma de lista
+GET http://localhost:8080/pesquisador/list?instituto=1 HTTP/1.1
 
 ### Pesquisa o pesquisador pelo o nome em qualquer parte
 GET http://localhost:8080/pesquisador?nome=Salvador HTTP/1.1
@@ -206,13 +206,22 @@ GET http://localhost:8080/pesquisador/count HTTP/1.1
 GET http://localhost:8080/producao?page=0&size=10 HTTP/1.1
 
 ### Teste de produção 
-GET http://localhost:8080/producao?dataInicio=2004&dataFim=2022&instituto=Estácio&pesquisador=Gestinari&tipoProducao=ARTIGO HTTP/1.1
+GET http://localhost:8080/producao?anoInicio=2004&anoFim=2022&instituto=Estácio&pesquisador=Gestinari&tipoProducao=Trabalho em Evento HTTP/1.1
 
 ### Teste de produção 
-GET http://localhost:8080/producao?dataInicio=2000&dataFim=2000?page=0&size=10 HTTP/1.1
+GET http://localhost:8080/producao?anoInicio=2000&anoFim=2000&page=0&size=10 HTTP/1.1
 
 ### Pesquisa as produções pelo ano
-GET http://localhost:8080/producao/?ano=2002 HTTP/1.1
+GET http://localhost:8080/producao?ano=2002 HTTP/1.1
+
+### Pesquisa as produções pelo instituto
+GET http://localhost:8080/producao?instituto=Faculdade Católica Salesiana HTTP/1.1
+
+### Pesquisa as produções pelo pesquisador
+GET http://localhost:8080/producao?pesquisador=Rute Ramos da Silva Costa HTTP/1.1
+
+### Pesquisa as produções pelo tipo de produção
+GET http://localhost:8080/producao?tipoProducao=Trabalho em Evento HTTP/1.1
 
 ### Retorna a quantidade total de produções
 GET http://localhost:8080/producao/count HTTP/1.1

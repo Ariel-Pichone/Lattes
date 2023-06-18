@@ -2,9 +2,12 @@ package org.prog.lattes.service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.prog.lattes.model.Instituto;
 import org.prog.lattes.repository.InstitutoRepository;
+import org.prog.lattes.view.InstitutoView;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -41,25 +44,45 @@ public class InstitutoService {
         return spec;
     }
 
-    public Page<Instituto> buscarComFiltroDinamico(String nome, String acronimo, String nomeAcronimo, Pageable pageable) {
+    public Page<InstitutoView> buscarComFiltroDinamico(String nome, String acronimo, String nomeAcronimo, Pageable pageable) {
         //Usado para ordenar a pagina pelo nome do pesquisador de forma crescente
         PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("nome"));
 
         Specification<Instituto> spec = querySpecification(nome, acronimo, nomeAcronimo);
 
-        return institutoRepository.findAll(spec, pageRequest);
+        Page<Instituto> institutosPage = institutoRepository.findAll(spec, pageRequest);
+
+        List<InstitutoView> institutosView = institutosPage
+                .stream()
+                .map(this::convertToInstitutoView)
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(institutosView, pageRequest, institutosPage.getTotalElements());
     }
 
-    public List<Instituto> listBuscarComFiltroDinamico(String nome, String acronimo, String nomeAcronimo) {
+    public List<InstitutoView> listBuscarComFiltroDinamico(String nome, String acronimo, String nomeAcronimo) {
         Specification<Instituto> spec = querySpecification(nome, acronimo, nomeAcronimo);
 
         List<Instituto> listInstituto = institutoRepository.findAll(spec);
 
         Collections.sort(listInstituto, (p1, p2) -> p1.getNome().compareTo(p2.getNome()));
-        
-        return listInstituto;
+
+        List<InstitutoView> institutosView = listInstituto
+                .stream()
+                .map(this::convertToInstitutoView)
+                .collect(Collectors.toList());
+
+        return institutosView;
     }
-    
+
+    private InstitutoView convertToInstitutoView(Instituto instituto) {
+        InstitutoView institutoView = new InstitutoView();
+        institutoView.setId(instituto.getId());
+        institutoView.setNome(instituto.getNome());
+        institutoView.setAcronimo(instituto.getAcronimo());
+        return institutoView;
+    }
+
     public long countInstituto() {
         return institutoRepository.count();
     }

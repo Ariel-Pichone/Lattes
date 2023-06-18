@@ -45,7 +45,7 @@ public class LeituraXml {
 
                 producao.setNome(nome);
                 producao.setAno(ano);
-                producao.setTipoProducao(tipoProducao);
+                producao.setTipoProducao(tipoProducao.getNome());
                 producao.setPesquisador(pesquisador);
 
                 // Obtenha a lista de elementos "AUTORES" dentro do elemento "LIVRO-PUBLICADO-OU-ORGANIZADO"

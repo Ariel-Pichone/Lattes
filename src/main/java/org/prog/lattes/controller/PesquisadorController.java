@@ -3,12 +3,10 @@ package org.prog.lattes.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
-
 import org.prog.lattes.model.GrafoInstituto;
-import org.prog.lattes.model.GrafoPesquisador;
 import org.prog.lattes.model.Instituto;
-import org.prog.lattes.model.Pesquisador;
 import org.prog.lattes.service.PesquisadorService;
+import org.prog.lattes.view.PesquisadorView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,20 +33,22 @@ public class PesquisadorController {
     }
 
     @GetMapping
-    public Page<Pesquisador> buscarComFiltroDinamico(
+    public Page<PesquisadorView> buscarComFiltroDinamico(
             @RequestParam(required = false) String identificador,
             @RequestParam(required = false) String nome,
             @RequestParam(required = false) Long instituto,
+            @RequestParam(required = false) String institutoNome,
             Pageable pageable) {        
-        return pesquisadorService.buscarComFiltroDinamico(identificador, nome, instituto, pageable);
+        return pesquisadorService.buscarComFiltroDinamico(identificador, nome, instituto, institutoNome, pageable);
     }
 
     @GetMapping("/list")
-    public List<Pesquisador> buscarComFiltroDinamico(
+    public List<PesquisadorView> buscarComFiltroDinamico(
             @RequestParam(required = false) String identificador,
             @RequestParam(required = false) String nome,
-            @RequestParam(required = false) Long instituto) {
-        return pesquisadorService.listBuscarComFiltroDinamico(identificador, nome, instituto);
+            @RequestParam(required = false) Long instituto,
+            @RequestParam(required = false) String institutoNome) {
+        return pesquisadorService.listBuscarComFiltroDinamico(identificador, nome, instituto, institutoNome);
     }
 
     @Operation(summary = "Busca a quantidade de Pesquisadores Cadastrados")

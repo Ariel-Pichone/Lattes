@@ -2,14 +2,16 @@ package org.prog.lattes.service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.prog.lattes.convert.ReadXML;
 import org.prog.lattes.model.GrafoInstituto;
-import org.prog.lattes.model.GrafoPesquisador;
 import org.prog.lattes.model.Instituto;
 import org.prog.lattes.model.Pesquisador;
 import org.prog.lattes.repository.PesquisadorRepository;
+import org.prog.lattes.view.PesquisadorView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -34,7 +36,7 @@ public class PesquisadorService {
         this.pesquisadorRepository = pesquisadorRepository;
     }
 
-    public Specification<Pesquisador> querySpecification(String identificador, String nome, Long instituto){
+    public Specification<Pesquisador> querySpecification(String identificador, String nome, Long instituto, String institutoNome){
         Specification<Pesquisador> spec = Specification.where(null);
         
         if (identificador != null) {
@@ -49,26 +51,51 @@ public class PesquisadorService {
             spec = spec.and(PesquisadorRepository.filtrarPorInstituto(instituto));
         }
 
+        if (institutoNome != null) {
+            spec = spec.and(PesquisadorRepository.filtrarPorInstitutoNome(institutoNome));
+        }
+
         return spec;
     }
 
-    public Page<Pesquisador> buscarComFiltroDinamico(String identificador, String nome, Long instituto, Pageable pageable) {
+    public Page<PesquisadorView> buscarComFiltroDinamico(String identificador, String nome, Long institutoId, String institutoNome, Pageable pageable) {
         //Usado para ordenar a pagina pelo nome do pesquisador de forma crescente
         PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("nome"));
 
-        Specification<Pesquisador> spec = querySpecification(identificador, nome, instituto);
+        Specification<Pesquisador> spec = querySpecification(identificador, nome, institutoId, institutoNome);
 
-        return pesquisadorRepository.findAll(spec, pageRequest);
+        Page<Pesquisador> pesquisadoresPage = pesquisadorRepository.findAll(spec, pageRequest);
+
+        List<PesquisadorView> pesquisadoresView = pesquisadoresPage
+                .stream()
+                .map(this::convertToPesquisadorView)
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(pesquisadoresView, pageRequest, pesquisadoresPage.getTotalElements());
     }
 
-    public List<Pesquisador> listBuscarComFiltroDinamico(String identificador, String nome, Long instituto) {
-        Specification<Pesquisador> spec = querySpecification(identificador, nome, instituto);
+    public List<PesquisadorView> listBuscarComFiltroDinamico(String identificador, String nome, Long instituto, String institutoNome) {
+        Specification<Pesquisador> spec = querySpecification(identificador, nome, instituto, institutoNome);
 
         List<Pesquisador> listPesquisador = pesquisadorRepository.findAll(spec);
 
         Collections.sort(listPesquisador, (p1, p2) -> p1.getNome().compareTo(p2.getNome()));
         
-        return listPesquisador;
+        List<PesquisadorView> pesquisadoresView = listPesquisador
+                .stream()
+                .map(this::convertToPesquisadorView)
+                .collect(Collectors.toList());
+                
+        return pesquisadoresView;
+    }
+
+    private PesquisadorView convertToPesquisadorView(Pesquisador pesquisador) {
+        PesquisadorView pesquisadorView = new PesquisadorView();
+        pesquisadorView.setIdentificador(pesquisador.getIdentificador());
+        pesquisadorView.setNome(pesquisador.getNome());
+        pesquisadorView.setUfNascimento(pesquisador.getUfNascimento());
+        pesquisadorView.setInstituto(pesquisador.getInstituto().getNome());
+        return pesquisadorView;
     }
 
     public long countPesquisador() {
