@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form';
 import BarChart from './components/BarChart';
 import DoughnutChart from './components/DoughnutChart';
 import { Doughnut } from 'react-chartjs-2';
+import { isEmpty } from 'lodash';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -24,14 +25,14 @@ export default function Home() {
 
   const [instituto, setInstituto] = useState(null);
   const [pesquisador, setPesquisador] = useState(null);
+  const [selectedInstituto, setSelectedInstituto] = useState('');
   const [tipoProducao, setTipoProducao] = useState(null);
   const [totalInstitutos, setTotalInstitutos] = useState(0);
   const [totalPesquisadores, setTotalPesquisadores] = useState(0);
-  const [countTotalProducoesPorTipo, setCountTotalProducoesPorTipo] =
-    useState(null);
+  const [countTotalProducoesPorTipo, setCountTotalProducoesPorTipo] = useState(null);
   const [isLoading, setLoading] = useState(true);
   const { register, handleSubmit, formState: { errors }, watch,} = useForm();
-  const dataInicio = watch('dataInicio');
+  const anoInicio = watch('anoInicio');
 
   function pesquisarProducao(data) {
     const termo = data.termo;
@@ -65,16 +66,9 @@ export default function Home() {
     });
   }
 
-  function pesquisarProducao({
-    dataInicio,
-    dataFim,
-    instituto,
-    pesquisador,
-    tipoProducao,
-  }) {
-    fetch(
-      `http://localhost:8080/producao/countTotalProducoesPorAno?dataInicio=${dataInicio}&dataFim=${dataFim}&instituto=${instituto}&pesquisador=${pesquisador}&tipoProducao=${tipoProducao}`
-    )
+  function pesquisarProducao({anoInicio, anoFim, instituto, pesquisador, tipoProducao}) {
+    //tem um erro aqui pois não está fazendo a consulta
+    fetch(`http://localhost:8080/producao/countTotalProducoesPorAno?anoInicio=${anoInicio}&anoFim=${anoFim}&instituto=${instituto}&pesquisador=${pesquisador}&tipoProducao=${tipoProducao}`)
       .then((res) => res.json())
       .then((data) => {
         setData(data);
@@ -86,15 +80,8 @@ export default function Home() {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:8080/producao/countTotalProducoesPorAno`)
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-        setLoading(false);
-        agruparPorAno(data);
-      })
-      .catch((err) => console.log(err));
-
+    
+    // Fazer a chamada para buscar a lista de institutos
     fetch('http://localhost:8080/instituto/list')
       .then((res) => res.json())
       .then((instituto) => {
@@ -103,14 +90,35 @@ export default function Home() {
       })
       .catch((err) => console.log(err));
 
-    fetch('http://localhost:8080/pesquisador/list') //deve retornar apenas os pesquisadores que estão no instituto
+    // Fazer a chamada para buscar a lista de pesquisadores
+    fetch('http://localhost:8080/pesquisador/list')
       .then((res) => res.json())
       .then((pesquisador) => {
         setPesquisador(pesquisador);
         setLoading(false);
       })
-      .catch((err) => console.log(err));
+    .catch((err) => console.log(err));
+  }, []);
 
+  useEffect(() => {
+    setLoading(true);
+
+    // Fazer a chamada para buscar os pesquisadores quando um instituto for selecionado
+    if (selectedInstituto) {
+      fetch(`http://localhost:8080/pesquisador/list?institutoNome=${selectedInstituto}`)
+        .then((res) => res.json())
+        .then((pesquisador) => {
+          setPesquisador(pesquisador);
+          setLoading(false);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [selectedInstituto]);
+
+  useEffect(() => {
+    setLoading(true);
+
+    // Fazer a chamada para buscar os tipos de produção
     fetch('http://localhost:8080/tipoProducao')
       .then((res) => res.json())
       .then((tipoProducao) => {
@@ -118,23 +126,27 @@ export default function Home() {
         setLoading(false);
       })
       .catch((err) => console.log(err));
+  }, []);
 
-    fetch('http://localhost:8080/instituto/count')
+  useEffect(() => {
+    setLoading(true);
+
+    // Fazer a chamada para buscar a lista de produções por ano para geração do gráfico de barras
+    setLoading(true);
+    fetch(`http://localhost:8080/producao/countTotalProducoesPorAno`)
       .then((res) => res.json())
-      .then((totalInstitutos) => {
-        setTotalInstitutos(totalInstitutos);
+      .then((data) => {
+        setData(data);
         setLoading(false);
+        agruparPorAno(data);
       })
       .catch((err) => console.log(err));
+  }, []);
 
-    fetch('http://localhost:8080/pesquisador/count')
-      .then((res) => res.json())
-      .then((totalPesquisador) => {
-        setTotalPesquisadores(totalPesquisador);
-        setLoading(false);
-      })
-      .catch((err) => console.log(err));
+  useEffect(() => {
+    setLoading(true);
 
+    // Fazer a chamada para buscar a lista de produções por tipo para geração do gráfico de pizza
     fetch('http://localhost:8080/producao/countTotalProducoesPorTipo')
       .then((res) => res.json())
       .then((countTotalProducoesPorTipo) => {
@@ -144,60 +156,88 @@ export default function Home() {
         setLoading(false);
       })
       .catch((err) => console.log(err));
+
+    // Fazer a chamada para buscar o número de institutos cadastrados
+    fetch('http://localhost:8080/instituto/count')
+      .then((res) => res.json())
+      .then((totalInstitutos) => {
+        setTotalInstitutos(totalInstitutos);
+        setLoading(false);
+      })
+      .catch((err) => console.log(err));
+
+    // Fazer achamada para buscar o número de pesquisadores cadastrados
+    fetch('http://localhost:8080/pesquisador/count')
+      .then((res) => res.json())
+      .then((totalPesquisador) => {
+        setTotalPesquisadores(totalPesquisador);
+        setLoading(false);
+      })
+      .catch((err) => console.log(err));
   }, []);
+
+  const handleInstitutoChange = (event) => {
+    const selectedInstitutoNome = event.target.value;
+    setSelectedInstituto(selectedInstitutoNome);
+  };
 
   return (
     <div className="mx-2">
       <div className="flex justify-between items-center">
         <h1 className="text-4xl font-bold px-4 py-6">Painel Principal</h1>
 
-        <form
-          onSubmit={handleSubmit(pesquisarProducao)}
-          className='flex justify-between items-center"'
-        >
+        <form onSubmit={handleSubmit(pesquisarProducao)} className='flex justify-between items-center'>
           <div className="block mr-4">
             <TextInput
-              {...register('dataInicio')}
+              {...register('anoInicio')}
               className="w-23"
-              id="dataInicio"
-              name="dataInicio"
-              placeholder="Data Início"
+              id="anoInicio"
+              name="anoInicio"
+              placeholder="Ano Início"
               type="number"
             />
           </div>
+          
           <div className="block mr-4">
             <TextInput
-              {...register('dataFim', {
-                validate: (value) => value >= dataInicio || 'Data Fim deve ser maior ou igual a Data Início',
+              {...register('anoFim', {
+                validate: (value) => {
+                  if (isEmpty(anoInicio) || value >= anoInicio) {
+                    return true;
+                  }
+                  return 'Ano Fim deve ser maior ou igual a Ano Início';
+                },
               })}
               className="w-23"
-              id="dataFim"
-              name="dataFim"
-              placeholder="Data Fim"
+              id="anoFim"
+              name="anoFim"
+              placeholder="Ano Fim"
               type="number"
-              disabled={!dataInicio}
+              disabled={!anoInicio}
             />
-            {errors.dataFim && <span>{errors.dataFim.message}</span>}
+            {errors.anoFim && <span>{errors.anoFim.message}</span>}
           </div>
 
           <div className="mr-4" id="select">
-            <Select {...register('instituto')} id="camp" name="instituto">
+            <Select value={selectedInstituto} onChange={handleInstitutoChange} id="campo" name="instituto">
               <option value="">Instituto</option>
               {instituto && instituto.map((instituto) => (
-                  <option value={instituto.nome}>{instituto.nome}</option>
-                ))}
+                <option value={instituto.nome}>{instituto.nome}</option>
+              ))}
             </Select>
           </div>
+          
           <div className="mr-4" id="select">
             <Select {...register('pesquisador')} id="campo" name="pesquisador">
               <option value="">Pesquisador</option>
               {pesquisador && pesquisador.map((pesquisador) => (
-                  <option value={pesquisador.nome}>{pesquisador.nome}</option>
-                ))}
+                <option value={pesquisador.nome}>{pesquisador.nome}</option>
+              ))}
             </Select>
           </div>
+          
           <div className="mr-4" id="select">
-            <Select {...register('tipoProducao')} name="tipoProducao">
+            <Select {...register('tipoProducao')} id="campo" name="tipoProducao">
               <option value="">Tipo Prod.</option>
               {tipoProducao && tipoProducao.map((tipo) => (
                 <option key={tipo} value={tipo}>{tipo}</option>
@@ -220,46 +260,36 @@ export default function Home() {
       </div>
 
       <div className="grid gap-x-8 gap-y-4 grid-cols-4">
-        <Card
-          href="/producao"
-          className="row-span-1 bg-zinc-800 text-zinc-400 hover:bg-zinc-900"
-        >
-          <h3 className="text-3xl font-normal  dark:text-gray-400">
+        <Card href="/producao" className="row-span-1 bg-zinc-800 text-zinc-400 hover:bg-zinc-900">
+          <h3 className="text-3xl font-normal  dark:text-gray-400 flex flex-col items-center justify-center">
             Total Produção
           </h3>
           <DoughnutChart dataDoughnut={dataDoughnut} />
         </Card>
-
-        <Card
-          href="/instituto"
-          className="row-span-1 bg-zinc-800 text-zinc-400 hover:bg-zinc-900"
-        >
-          <h3 className="text-3xl font-normal  dark:text-gray-400">
+        
+        <Card href="/instituto" className="row-span-1 bg-zinc-800 text-zinc-400 hover:bg-zinc-900">
+          <h3 className="text-3xl font-normal  dark:text-gray-400 flex flex-col items-center justify-center">
             Institutos
           </h3>
-          <p className="text-5xl font-bold tracking-tight  dark:text-white">
+          <p className="text-5xl font-bold tracking-tight  dark:text-white flex flex-col items-center justify-center">
             {totalInstitutos}
           </p>
         </Card>
 
-        <Card
-          href="/pesquisador"
-          className="row-span-1 bg-zinc-800 text-zinc-400 hover:bg-zinc-900"
-        >
-          <h3 className="text-3xl font-normal  dark:text-gray-400">
+        <Card href="/pesquisador" className="row-span-1 bg-zinc-800 text-zinc-400 hover:bg-zinc-900">
+          <h3 className="text-3xl font-normal  dark:text-gray-400 flex flex-col items-center justify-center">
             Pesquisadores
           </h3>
-          <p className="text-5xl font-bold tracking-tight  dark:text-white">
+          <p className="text-5xl font-bold tracking-tight  dark:text-white flex flex-col items-center justify-center">
             {totalPesquisadores}
           </p>
         </Card>
 
-        <Card
-          href="/grafo"
-          className="row-span-1 bg-zinc-800 text-zinc-400 hover:bg-zinc-900"
-        >
-          <h3 className="text-3xl font-normal  dark:text-gray-400">Grafos</h3>
-          <p className="text-5xl font-bold tracking-tight dark:text-white">
+        <Card href="/grafo" className="row-span-1 bg-zinc-800 text-zinc-400 hover:bg-zinc-900">
+          <h3 className="text-3xl font-normal  dark:text-gray-400 flex flex-col items-center justify-center">
+            Grafos
+          </h3>
+          <p className="text-5xl font-bold tracking-tight dark:text-white flex flex-col items-center justify-center">
             GRAFOS
           </p>
         </Card>

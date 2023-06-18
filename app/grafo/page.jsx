@@ -11,6 +11,7 @@ const inter = Inter({ subsets: ['latin'] });
 export default function Grafo() {
   const [instituto, setInstituto] = useState(null);
   const [pesquisador, setPesquisador] = useState(null);
+  const [selectedInstituto, setSelectedInstituto] = useState('');
   const [tipoProducao, setTipoProducao] = useState(null);
   const [tipoVertice, setTipoVertice] = useState(null);
   const [isLoading, setLoading] = useState(true);
@@ -43,6 +44,7 @@ export default function Grafo() {
   useEffect(() => {
     setLoading(true);
     
+    // Fazer a chamada para buscar a lista de institutos
     fetch('http://localhost:8080/instituto/list')
       .then((res) => res.json())
       .then((instituto) => {
@@ -51,14 +53,35 @@ export default function Grafo() {
       })
       .catch((err) => console.log(err));
 
-    fetch('http://localhost:8080/pesquisador/list') //deve retornar apenas os pesquisadores que estão no instituto
+    // Fazer a chamada para buscar a lista de pesquisadores
+    fetch('http://localhost:8080/pesquisador/list')
       .then((res) => res.json())
       .then((pesquisador) => {
         setPesquisador(pesquisador);
         setLoading(false);
       })
-      .catch((err) => console.log(err));
+    .catch((err) => console.log(err));
+  }, []);
 
+  useEffect(() => {
+    setLoading(true);
+
+    // Fazer a chamada para buscar os pesquisadores quando um instituto for selecionado
+    if (selectedInstituto) {
+      fetch(`http://localhost:8080/pesquisador/list?institutoNome=${selectedInstituto}`)
+        .then((res) => res.json())
+        .then((pesquisador) => {
+          setPesquisador(pesquisador);
+          setLoading(false);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [selectedInstituto]);
+
+  useEffect(() => {
+    setLoading(true);
+
+    // Fazer a chamada para buscar os tipos de produção
     fetch('http://localhost:8080/tipoProducao')
       .then((res) => res.json())
       .then((tipoProducao) => {
@@ -66,7 +89,12 @@ export default function Grafo() {
         setLoading(false);
       })
       .catch((err) => console.log(err));
+  }, []);
 
+  useEffect(() => {
+    setLoading(true);
+
+      // Fazer a chamada para buscar os tipos de vertices
       fetch('http://localhost:8080/tipoVertice')
       .then((res) => res.json())
       .then((tipoVertice) => {
@@ -153,6 +181,12 @@ export default function Grafo() {
     setCampo6(campo6 - 1);
   };
 
+  const handleInstitutoChange = (event) => {
+    // assume que o valor do option é o nome do instituto
+    const selectedInstitutoNome = event.target.value;
+    setSelectedInstituto(selectedInstitutoNome);
+  };
+
   return (
     <div className="mx-2">
       <div className="flex justify-between items-center">
@@ -163,21 +197,23 @@ export default function Grafo() {
           className='flex justify-between items-center"'
         >
           <div className="mr-4" id="select">
-            <Select {...register('instituto')} id="camp" name="instituto">
+            <Select value={selectedInstituto} onChange={handleInstitutoChange} id="camp" name="instituto">
               <option value="">Instituto</option>
               {instituto && instituto.map((instituto) => (
-                  <option value={instituto.nome}>{instituto.nome}</option>
-                ))}
+                <option value={instituto.nome}>{instituto.nome}</option>
+              ))}
             </Select>
           </div>
+          
           <div className="mr-4" id="select">
             <Select {...register('pesquisador')} id="campo" name="pesquisador">
               <option value="">Pesquisador</option>
               {pesquisador && pesquisador.map((pesquisador) => (
-                  <option value={pesquisador.nome}>{pesquisador.nome}</option>
-                ))}
+                <option value={pesquisador.nome}>{pesquisador.nome}</option>
+              ))}
             </Select>
           </div>
+
           <div className="mr-4" id="select">
             <Select {...register('tipoProducao')} name="tipoProducao">
               <option value="">Tipo Prod.</option>
@@ -186,6 +222,7 @@ export default function Grafo() {
               ))}
             </Select>
           </div>
+
           <div className="mr-4" id="select">
             <Select {...register('tipoVertice')} name="tipoVertice" required={true}>
               <option value="">Tipo Vertice</option>
@@ -194,6 +231,7 @@ export default function Grafo() {
               ))}
             </Select>
           </div>
+
           <div className="flex justify-between items-center">
             <button type="submit" 
               className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"

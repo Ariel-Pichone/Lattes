@@ -155,6 +155,9 @@ export default function Pesquisador() {
                 Identificador
               </th>
               <th cope="col" className="px-6 py-3">
+                Instituto
+              </th>
+              <th cope="col" className="px-6 py-3">
                 Ações
               </th>
             </tr>
@@ -174,6 +177,7 @@ export default function Pesquisador() {
                   </th>
                   <td className="px-6 py-4">{pesquisador.ufNascimento}</td>
                   <td className="px-6 py-4">{pesquisador.identificador}</td>
+                  <td className="px-6 py-4">{pesquisador.instituto}</td>
                   <td className="px-6 py-4 space-x-3">
                     <a
                       onClick={() => handleDelete(pesquisador)}

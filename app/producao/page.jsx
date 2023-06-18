@@ -5,46 +5,35 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import React from 'react';
 import { Pagination } from 'flowbite-react';
+import { isEmpty } from 'lodash';
 
 export default function Producao() {
   const [data, setData] = useState(null);
-  const [pesquisador, setPesquisador] = useState(null);
-  const [tipoProducao, setTipoProducao] = useState(null);
   const [instituto, setInstituto] = useState(null);
+  const [pesquisador, setPesquisador] = useState(null);
+  const [selectedInstituto, setSelectedInstituto] = useState('');
+  const [tipoProducao, setTipoProducao] = useState(null);
   const [producaoList, setProducaoList] = useState(null);
   const [isLoading, setLoading] = useState(true);
   const { register, handleSubmit, formState: { errors }, watch,} = useForm();
-  const dataInicio = watch('dataInicio');
+  const anoInicio = watch('anoInicio');
   const [pageNumber, setPageNumber] = useState(0);
 
-  function pesquisarProducao({
-    dataInicio,
-    dataFim,
-    instituto,
-    pesquisador,
-    tipoProducao,
-  }) {
-    //tem um erro aqui pois quando fazemos uma pesquisa colocando data inicio e data fim o resultado da busca é colocado em uma variável não nula e fica resto da consulta anterior
-    fetch(`http://localhost:8080/producao?dataInicio=${dataInicio}&dataFim=${dataFim}&instituto=${instituto}&pesquisador=${pesquisador}&tipoProducao=${tipoProducao}&page=${pageNumber}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-        setLoading(false); //////////////////////////////////////
-      })
-      .catch((err) => console.log(err));
-  }
-
-   useEffect(() => {
-    setLoading(true);
-    
-    fetch(`http://localhost:8080/producao?page=${pageNumber}`)
+  function pesquisarProducao({anoInicio, anoFim, instituto, pesquisador, tipoProducao, pageNumber}) {
+    //tem um erro aqui pois não está fazendo a consulta
+    fetch(`http://localhost:8080/producao?anoInicio=${anoInicio}&anoFim=${anoFim}&instituto=${instituto}&pesquisador=${pesquisador}&tipoProducao=${tipoProducao}&page=${pageNumber}`)
       .then((res) => res.json())
       .then((data) => {
         setData(data);
         setLoading(false);
       })
       .catch((err) => console.log(err));
+  }
 
+  useEffect(() => {
+    setLoading(true);
+  
+    // Fazer a chamada para buscar a lista de institutos
     fetch('http://localhost:8080/instituto/list')
       .then((res) => res.json())
       .then((instituto) => {
@@ -53,14 +42,35 @@ export default function Producao() {
       })
       .catch((err) => console.log(err));
 
+    // Fazer a chamada para buscar a lista de pesquisadores
     fetch('http://localhost:8080/pesquisador/list')
       .then((res) => res.json())
       .then((pesquisador) => {
         setPesquisador(pesquisador);
         setLoading(false);
       })
-      .catch((err) => console.log(err));
+    .catch((err) => console.log(err));
+  }, []);
 
+  useEffect(() => {
+    setLoading(true);
+
+    // Fazer a chamada para buscar os pesquisadores quando um instituto for selecionado
+    if (selectedInstituto) {
+      fetch(`http://localhost:8080/pesquisador/list?institutoNome=${selectedInstituto}`)
+        .then((res) => res.json())
+        .then((pesquisador) => {
+          setPesquisador(pesquisador);
+          setLoading(false);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [selectedInstituto]);
+
+  useEffect(() => {
+    setLoading(true);
+
+    // Fazer a chamada para buscar os tipos de produção
     fetch('http://localhost:8080/tipoProducao')
       .then((res) => res.json())
       .then((tipoProducao) => {
@@ -68,71 +78,92 @@ export default function Producao() {
         setLoading(false);
       })
       .catch((err) => console.log(err));
+  }, []);
+
+  useEffect(() => {
+    setLoading(true);
+    
+    // Fazer a chamada para buscar uma página de produções
+    fetch(`http://localhost:8080/producao?page=${pageNumber}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data);
+        setLoading(false);
+      })
+      .catch((err) => console.log(err));
   }, [pageNumber]);
+
+  const handleInstitutoChange = (event) => {
+    const selectedInstitutoNome = event.target.value;
+    setSelectedInstituto(selectedInstitutoNome);
+  };
 
   return (
     <div className="mx-2">
       <div className="flex justify-between items-center">
         <h1 className="text-4xl font-bold px-4 py-6">Produção</h1>
 
-        <form
-          onSubmit={handleSubmit(pesquisarProducao)}
-          className='flex justify-between items-center"'
-        >
+        <form onSubmit={handleSubmit(pesquisarProducao)} className='flex justify-between items-center'>
           <div className="block mr-4">
             <TextInput
-              {...register('dataInicio')}
+              {...register('anoInicio')}
               className="w-23"
-              id="dataInicio"
-              name="dataInicio"
-              placeholder="Data Início"
+              id="anoInicio"
+              name="anoInicio"
+              placeholder="Ano Início"
               type="number"
             />
           </div>
+          
           <div className="block mr-4">
             <TextInput
-              {...register('dataFim', {
-                validate: (value) => value >= dataInicio || 'Data Fim deve ser maior ou igual a Data Início',
+              {...register('anoFim', {
+                validate: (value) => {
+                  if (isEmpty(anoInicio) || value >= anoInicio) {
+                    return true;
+                  }
+                  return 'Ano Fim deve ser maior ou igual a Ano Início';
+                },
               })}
               className="w-23"
-              id="dataFim"
-              name="dataFim"
-              placeholder="Data Fim"
+              id="anoFim"
+              name="anoFim"
+              placeholder="Ano Fim"
               type="number"
-              disabled={!dataInicio}
+              disabled={!anoInicio}
             />
-            {errors.dataFim && <span>{errors.dataFim.message}</span>}
+            {errors.anoFim && <span>{errors.anoFim.message}</span>}
           </div>
 
           <div className="mr-4" id="select">
-            <Select {...register('instituto')} name="instituto" > {/*required={true}> temos que olhar esse required pois está obrigando preencher um instituti para fazer a pesquisa */}
+            <Select value={selectedInstituto} onChange={handleInstitutoChange} id="campo" name="instituto">
               <option value="">Instituto</option>
               {instituto && instituto.map((instituto) => (
-                  <option value={instituto.nome}>{instituto.nome}</option>
-                ))}
+                <option value={instituto.nome}>{instituto.nome}</option>
+              ))}
             </Select>
           </div>
+          
           <div className="mr-4" id="select">
-            <Select {...register('pesquisador')} name="pesquisador">
+            <Select {...register('pesquisador')} id="campo" name="pesquisador">
               <option value="">Pesquisador</option>
               {pesquisador && pesquisador.map((pesquisador) => (
-                  <option value={pesquisador.id}>{pesquisador.nome}</option>
-                ))}
+                <option value={pesquisador.nome}>{pesquisador.nome}</option>
+              ))}
             </Select>
           </div>
+
           <div className="mr-4" id="select">
-            <Select {...register('tipoProducao')} name="tipoProducao">
+            <Select {...register('tipoProducao')} id="campo" name="tipoProducao">
               <option value="">Tipo Prod.</option>
               {tipoProducao && tipoProducao.map((tipo) => (
                 <option key={tipo} value={tipo}>{tipo}</option>
               ))}
             </Select>
           </div>
+
           <div className="flex justify-between items-center">
-            <button
-              type="submit"
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-            >
+            <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
               Pesquisar
             </button>
           </div>
@@ -143,33 +174,45 @@ export default function Producao() {
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-300 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-              <th scope="col" className="px-6 py-3 max-w-sm">
+              <th scope="col" className="px-6 py-3 max-w-sm text-center">
                 Titulo
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3 text-center">
                 Ano
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3 text-center">
                 Tipo de Produção
+              </th>
+              <th scope="col" className="px-6 py-3 text-center">
+                Pesquisador
               </th>
             </tr>
           </thead>
           <tbody>
-            {data?.content &&
-              data.content.map((producao) => (
-                <tr
-                  key={producao.id}
-                  className="bg-white border-b dark:bg-gray-900 dark:border-gray-700"
-                >
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white max-w-sm overflow-hidden"
-                  >
-                    {producao.nome}
-                  </th>
-                  <td className="px-6 py-4">{producao.ano}</td>
-                  <td className="px-6 py-4">{producao.tipoProducao}</td>
-                </tr>
+            {data?.content && data.content.map((producao) => (
+              <tr key={producao.id} className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                <td className="px-6 py-4 max-w-sm whitespace-normal"> 
+                  {producao.nome}
+                </td>
+                <td className="px-6 py-4 text-center">
+                  {/* Ver como fazer para esse link funcionar */}
+                  <a href={`/producao?ano=${producao.ano}`} className="hover:underline">
+                    {producao.ano}
+                  </a>
+                </td>
+                <td className="px-6 py-4 text-center">
+                  {/* Ver como fazer para esse link funcionar */}
+                  <a href={`/producao?tipoProducao=${producao.tipoProducao}`} className="hover:underline">
+                    {producao.tipoProducao}
+                  </a>
+                </td>
+                <td className="px-6 py-4 text-center">
+                  {/* Ver como fazer para esse link funcionar */}
+                  <a href={`/producao?pesquisador=${producao.pesquisador}`} className="hover:underline">
+                    {producao.pesquisador}
+                  </a>
+                </td>
+              </tr>
               ))}
           </tbody>
         </table>
