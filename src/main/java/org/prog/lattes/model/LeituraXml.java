@@ -3,7 +3,10 @@ package org.prog.lattes.model;
 import java.io.File;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Element;
@@ -33,7 +36,7 @@ public class LeituraXml {
         for (int i = 0; i < nodeList.getLength(); i++) {
             Producao producao = new Producao();
 
-            List<Autor> autoresList = new ArrayList<>();
+            Set<Autor> autoresSet = new HashSet<Autor>();
 
             node = nodeList.item(i);
 
@@ -59,8 +62,8 @@ public class LeituraXml {
 
                     if (autorNode.getNodeType() == Node.ELEMENT_NODE) {
                         Element autorElement = (Element) autorNode;
+                        
                         String nomeAutor = autorElement.getAttribute("NOME-COMPLETO-DO-AUTOR");
-
                         autor.setNome(nomeAutor);
 
                         //Lendo os nomes para citação
@@ -69,7 +72,7 @@ public class LeituraXml {
                         // Divida a string em nomes de citação separados por vírgula
                         String[] nomesCitacaoArray = nomesCitacao.split(";");
 
-                        List<Citacao> citacaoList = new ArrayList<>();
+                        Set<Citacao> citacaoSet = new HashSet<Citacao>();
 
                         // Percorra os nomes de citação
                         for (String nomeCitacao : nomesCitacaoArray) {
@@ -80,16 +83,16 @@ public class LeituraXml {
 
                             citacao.setNomeCitacao(nomeCitacao);
                             
-                            citacao.setAutores(autoresList);
+                            citacao.setAutores(autoresSet);
 
-                            citacaoList.add(citacao);
+                            citacaoSet.add(citacao);
                         }
-                        autor.setCitacoes(citacaoList);
+                        autor.setCitacoes(citacaoSet);
 
-                        autoresList.add(autor);
+                        autoresSet.add(autor);
                     }
                 }
-                producao.setAutores(autoresList);
+                producao.setAutores(autoresSet);
                 
                 producaoList.add(producao);
             }

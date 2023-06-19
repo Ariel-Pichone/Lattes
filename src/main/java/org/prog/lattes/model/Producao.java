@@ -1,12 +1,9 @@
 package org.prog.lattes.model;
 
-import java.util.List;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.Set;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -46,12 +43,12 @@ public class Producao {
     @JoinColumn(name = "pesquisador", nullable = false)
     private Pesquisador pesquisador;
 
-    @JsonIgnore
+    //@JsonIgnore
     @ManyToMany (cascade = CascadeType.ALL)
-    @JoinTable(name = "producao_autor",
-        joinColumns = @JoinColumn(name = "producao_id"),
+    @JoinTable(name = "producao_autor", 
+        joinColumns =  @JoinColumn(name = "producao_id"),
         inverseJoinColumns = @JoinColumn(name = "autor_id"))
-    private List<Autor> autores;
+    private Set<Autor> autores;
 
     @Override
     public String toString() {

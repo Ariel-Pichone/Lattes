@@ -1,14 +1,22 @@
 package org.prog.lattes.model;
 
-import java.util.List;
+import java.util.Set;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Citacao {
  
     @Id
@@ -16,33 +24,17 @@ public class Citacao {
     @Column(nullable = false)
     private Long id;
 
-    // Está aceitando cadastrar 2 citações com o mesmo nome
-    // unique = true,
     @Column(nullable = false, length = 100)
     private String nomeCitacao;
 
     @ManyToMany (mappedBy = "citacoes")
-    private List<Autor> autores;
-    
-    public Citacao() {}
+    private Set<Autor> autores;
 
-    public Long getId() {
-        return this.id;
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((nomeCitacao == null) ? 0 : nomeCitacao.hashCode());
+        return result;
     }
-    
-    public String getNomeCitacao() {
-        return this.nomeCitacao;
-    }
-
-    public void setNomeCitacao(String nomeCitacao) {
-        this.nomeCitacao = nomeCitacao;
-    }
-
-    public List<Autor> getAutores() {
-        return this.autores;
-    }
-
-    public void setAutores(List<Autor> autores) {
-        this.autores = autores;
-    }    
 }

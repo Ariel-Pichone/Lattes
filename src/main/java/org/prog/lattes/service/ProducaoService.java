@@ -32,31 +32,30 @@ public class ProducaoService {
         this.producaoRepository = producaoRepository;
     }
 
-    // public Page<ProducaoView> pageProducaoPeloAno(Integer ano, Pageable pageable) {
-    //     //Usado para ordenar a pagina pelo nome da produção de forma crescente
-    //     PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("nome"));
-        
-    //     return producaoRepository.findByAno(ano, pageRequest);
-    // }
-
     public Specification<Producao> querySpecification(Integer anoInicio, Integer anoFim, String instituto, String pesquisador, String tipoProducao, Integer ano){
         Specification<Producao> spec = Specification.where(null);
         if (anoInicio != null) {
+            System.out.println("Ano Inicio = " + anoInicio); ////////////////////////////////////////////////////////////////////////////////////////////////
             spec = spec.and(ProducaoRepository.filtrarPorAnoInicio(anoInicio));
         }
         if (anoFim != null) {
+            System.out.println("Ano Fim = " + anoFim); ////////////////////////////////////////////////////////////////////////////////////////////////
             spec = spec.and(ProducaoRepository.filtrarPorAnoFim(anoFim));
         }
         if (instituto != null) {
+            System.out.println("Instituto = " + instituto); ////////////////////////////////////////////////////////////////////////////////////////////////
             spec = spec.and(ProducaoRepository.filtrarPorInstituto(instituto));
         }
         if (pesquisador != null) {
+            System.out.println("Pesquisador = " + pesquisador); ////////////////////////////////////////////////////////////////////////////////////////////////
             spec = spec.and(ProducaoRepository.filtrarPorPesquisador(pesquisador));
         }
         if (tipoProducao != null) {
+            System.out.println("Tipo Produção = " + tipoProducao); ////////////////////////////////////////////////////////////////////////////////////////////////
             spec = spec.and(ProducaoRepository.filtrarPorTipoProducao(tipoProducao));
         }
         if (ano != null) {
+            System.out.println("Ano = " + ano); ////////////////////////////////////////////////////////////////////////////////////////////////
             spec = spec.and(ProducaoRepository.filtrarPorAno(ano));
         }
         return spec;
@@ -65,18 +64,23 @@ public class ProducaoService {
     public Specification<Producao> querySpecification(Integer anoInicio, Integer anoFim, String instituto, String pesquisador, String tipoProducao){
         Specification<Producao> spec = Specification.where(null);
         if (anoInicio != null) {
+            System.out.println("Ano Inicio = " + anoInicio); ////////////////////////////////////////////////////////////////////////////////////////////////
             spec = spec.and(ProducaoRepository.filtrarPorAnoInicio(anoInicio));
         }
         if (anoFim != null) {
+            System.out.println("Ano Fim = " + anoFim); ////////////////////////////////////////////////////////////////////////////////////////////////
             spec = spec.and(ProducaoRepository.filtrarPorAnoFim(anoFim));
         }
         if (instituto != null) {
+            System.out.println("Instituto = " + instituto); ////////////////////////////////////////////////////////////////////////////////////////////////
             spec = spec.and(ProducaoRepository.filtrarPorInstituto(instituto));
         }
         if (pesquisador != null) {
+            System.out.println("Pesquisador = " + pesquisador); ////////////////////////////////////////////////////////////////////////////////////////////////
             spec = spec.and(ProducaoRepository.filtrarPorPesquisador(pesquisador));
         }
         if (tipoProducao != null) {
+            System.out.println("Tipo Produção = " + tipoProducao); ////////////////////////////////////////////////////////////////////////////////////////////////
             spec = spec.and(ProducaoRepository.filtrarPorTipoProducao(tipoProducao));
         }
         return spec;

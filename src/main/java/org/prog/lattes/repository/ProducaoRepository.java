@@ -36,24 +36,11 @@ public interface ProducaoRepository extends JpaRepository<Producao, Long>, JpaSp
     }
 
     public static Specification<Producao> filtrarPorTipoProducao(String tipoProducao) {
-        TipoProducao aux = buscarTipoProducao(tipoProducao);
-
-        System.out.println(aux);
-
-        return (root, query, builder) -> builder.like(builder.lower(root.get("tipoProducao")), "%" + aux.getNome().toLowerCase() + "%");
+        return (root, query, builder) -> builder.like(builder.lower(root.get("tipoProducao")), "%" + tipoProducao + "%");
     }
 
     public static Specification<Producao> filtrarPorAno(Integer ano) {
         return (root, query, builder) -> builder.equal(root.get("ano"), ano);
-    }
-    
-    public static TipoProducao buscarTipoProducao(String tipoProducao) {
-        for (TipoProducao tp : TipoProducao.values()) {
-            if (tp.getNome().equalsIgnoreCase(tipoProducao)) {
-                return tp;
-            }
-        }
-        return null; // Caso nenhum tipo de produção correspondente seja encontrado
     }
 
     public Page<Producao> findByAno(Integer ano, Pageable pageable);
