@@ -29,9 +29,15 @@ export default function Home() {
   const [tipoProducao, setTipoProducao] = useState(null);
   const [totalInstitutos, setTotalInstitutos] = useState(0);
   const [totalPesquisadores, setTotalPesquisadores] = useState(0);
-  const [countTotalProducoesPorTipo, setCountTotalProducoesPorTipo] = useState(null);
+  const [countTotalProducoesPorTipo, setCountTotalProducoesPorTipo] =
+    useState(null);
   const [isLoading, setLoading] = useState(true);
-  const { register, handleSubmit, formState: { errors }, watch,} = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm();
   const anoInicio = watch('anoInicio');
 
   function pesquisarProducao(data) {
@@ -60,20 +66,30 @@ export default function Home() {
         {
           label: 'total Prod.',
           data: countTotalProducoesPorTipo.map((data) => data.totalProducao),
-          backgroundColor: ['#f17f14', 
-                            'rgba(9, 243, 29, 0.603)',
-                            'rgba(233, 13, 13, 0.932)',
-                            'rgba(235, 105, 54, 0.2)',
-                            'rgba(238, 223, 13, 0.925)',
-                            'rgba(223, 16, 241, 0.938)'],
+          backgroundColor: [
+            '#f17f14',
+            'rgba(9, 243, 29, 0.603)',
+            'rgba(233, 13, 13, 0.932)',
+            'rgba(235, 105, 54, 0.2)',
+            'rgba(238, 223, 13, 0.925)',
+            'rgba(223, 16, 241, 0.938)',
+          ],
         },
       ],
     });
   }
 
-  function pesquisarProducao({anoInicio, anoFim, instituto, pesquisador, tipoProducao}) {
+  function pesquisarProducao({
+    anoInicio,
+    anoFim,
+    instituto,
+    pesquisador,
+    tipoProducao,
+  }) {
     //tem um erro aqui pois não está fazendo a consulta
-    fetch(`http://localhost:8080/producao/countTotalProducoesPorAno?anoInicio=${anoInicio}&anoFim=${anoFim}&instituto=${instituto}&pesquisador=${pesquisador}&tipoProducao=${tipoProducao}`)
+    fetch(
+      `http://localhost:8080/producao/countTotalProducoesPorAno?anoInicio=${anoInicio}&anoFim=${anoFim}&instituto=${instituto}&pesquisador=${pesquisador}&tipoProducao=${tipoProducao}`
+    )
       .then((res) => res.json())
       .then((data) => {
         setData(data);
@@ -85,7 +101,7 @@ export default function Home() {
 
   useEffect(() => {
     setLoading(true);
-    
+
     // Fazer a chamada para buscar a lista de institutos
     fetch('http://localhost:8080/instituto/list')
       .then((res) => res.json())
@@ -100,9 +116,10 @@ export default function Home() {
       .then((res) => res.json())
       .then((pesquisador) => {
         setPesquisador(pesquisador);
+        console.log(pesquisador);
         setLoading(false);
       })
-    .catch((err) => console.log(err));
+      .catch((err) => console.log(err));
   }, []);
 
   useEffect(() => {
@@ -110,7 +127,9 @@ export default function Home() {
 
     // Fazer a chamada para buscar os pesquisadores quando um instituto for selecionado
     if (selectedInstituto) {
-      fetch(`http://localhost:8080/pesquisador/list?institutoNome=${selectedInstituto}`)
+      fetch(
+        `http://localhost:8080/pesquisador/list?institutoNome=${selectedInstituto}`
+      )
         .then((res) => res.json())
         .then((pesquisador) => {
           setPesquisador(pesquisador);
@@ -191,7 +210,10 @@ export default function Home() {
       <div className="flex justify-between items-center">
         <h1 className="text-4xl font-bold px-4 py-6">Painel Principal</h1>
 
-        <form onSubmit={handleSubmit(pesquisarProducao)} className='flex justify-between items-center'>
+        <form
+          onSubmit={handleSubmit(pesquisarProducao)}
+          className="flex justify-between items-center"
+        >
           <div className="block mr-4">
             <TextInput
               {...register('anoInicio')}
@@ -202,7 +224,7 @@ export default function Home() {
               type="number"
             />
           </div>
-          
+
           <div className="block mr-4">
             <TextInput
               {...register('anoFim', {
@@ -224,29 +246,43 @@ export default function Home() {
           </div>
 
           <div className="mr-4" id="select">
-            <Select value={selectedInstituto} onChange={handleInstitutoChange} id="campo" name="instituto">
+            <Select
+              value={selectedInstituto}
+              onChange={handleInstitutoChange}
+              id="campo"
+              name="instituto"
+            >
               <option value="">Instituto</option>
-              {instituto && instituto.map((instituto) => (
-                <option value={instituto.nome}>{instituto.nome}</option>
-              ))}
+              {instituto &&
+                instituto.map((instituto) => (
+                  <option value={instituto.nome}>{instituto.nome}</option>
+                ))}
             </Select>
           </div>
-          
+
           <div className="mr-4" id="select">
             <Select {...register('pesquisador')} id="campo" name="pesquisador">
               <option value="">Pesquisador</option>
-              {pesquisador && pesquisador.map((pesquisador) => (
-                <option value={pesquisador.nome}>{pesquisador.nome}</option>
-              ))}
+              {pesquisador &&
+                pesquisador.map((pesquisador) => (
+                  <option value={pesquisador.nome}>{pesquisador.nome}</option>
+                ))}
             </Select>
           </div>
-          
+
           <div className="mr-4" id="select">
-            <Select {...register('tipoProducao')} id="campo" name="tipoProducao">
+            <Select
+              {...register('tipoProducao')}
+              id="campo"
+              name="tipoProducao"
+            >
               <option value="">Tipo Prod.</option>
-              {tipoProducao && tipoProducao.map((tipo) => (
-                <option key={tipo} value={tipo}>{tipo}</option>
-              ))}
+              {tipoProducao &&
+                tipoProducao.map((tipo) => (
+                  <option key={tipo} value={tipo}>
+                    {tipo}
+                  </option>
+                ))}
             </Select>
           </div>
 
@@ -260,20 +296,26 @@ export default function Home() {
           </div>
         </form>
       </div>
-      
-      <div className="pb-8 w-full" >
-        <BarChart chartData={dataBar}/>
+
+      <div className="pb-8 w-full">
+        <BarChart chartData={dataBar} />
       </div>
 
       <div className="grid gap-x-8 gap-y-4 grid-cols-4">
-        <Card href="/producao" className="row-span-1 bg-zinc-800 text-zinc-400 hover:bg-zinc-900">
+        <Card
+          href="/producao"
+          className="row-span-1 bg-zinc-800 text-zinc-400 hover:bg-zinc-900"
+        >
           <h3 className="text-3xl font-normal  dark:text-gray-400 flex flex-col items-center justify-center">
             Total Produção
           </h3>
           <DoughnutChart dataDoughnut={dataDoughnut} />
         </Card>
-        
-        <Card href="/instituto" className="row-span-1 bg-zinc-800 text-zinc-400 hover:bg-zinc-900">
+
+        <Card
+          href="/instituto"
+          className="row-span-1 bg-zinc-800 text-zinc-400 hover:bg-zinc-900"
+        >
           <h3 className="text-3xl font-normal  dark:text-gray-400 flex flex-col items-center justify-center">
             Institutos
           </h3>
@@ -282,7 +324,10 @@ export default function Home() {
           </p>
         </Card>
 
-        <Card href="/pesquisador" className="row-span-1 bg-zinc-800 text-zinc-400 hover:bg-zinc-900">
+        <Card
+          href="/pesquisador"
+          className="row-span-1 bg-zinc-800 text-zinc-400 hover:bg-zinc-900"
+        >
           <h3 className="text-3xl font-normal  dark:text-gray-400 flex flex-col items-center justify-center">
             Pesquisadores
           </h3>
@@ -291,7 +336,10 @@ export default function Home() {
           </p>
         </Card>
 
-        <Card href="/grafo" className="row-span-1 bg-zinc-800 text-zinc-400 hover:bg-zinc-900">
+        <Card
+          href="/grafo"
+          className="row-span-1 bg-zinc-800 text-zinc-400 hover:bg-zinc-900"
+        >
           <h3 className="text-3xl font-normal  dark:text-gray-400 flex flex-col items-center justify-center">
             Grafos
           </h3>

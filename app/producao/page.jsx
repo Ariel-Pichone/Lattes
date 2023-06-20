@@ -15,13 +15,26 @@ export default function Producao() {
   const [tipoProducao, setTipoProducao] = useState(null);
   const [producaoList, setProducaoList] = useState(null);
   const [isLoading, setLoading] = useState(true);
-  const { register, handleSubmit, formState: { errors }, watch,} = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm();
   const anoInicio = watch('anoInicio');
   const [pageNumber, setPageNumber] = useState(0);
 
-  function pesquisarProducao({anoInicio, anoFim, instituto, pesquisador, tipoProducao, pageNumber}) {
+  function pesquisarProducao({
+    anoInicio,
+    anoFim,
+    instituto,
+    pesquisador,
+    tipoProducao,
+  }) {
     //tem um erro aqui pois não está fazendo a consulta
-    fetch(`http://localhost:8080/producao?anoInicio=${anoInicio}&anoFim=${anoFim}&instituto=${instituto}&pesquisador=${pesquisador}&tipoProducao=${tipoProducao}&page=${pageNumber}`)
+    fetch(
+      `http://localhost:8080/producao?anoInicio=${anoInicio}&anoFim=${anoFim}&instituto=${instituto}&pesquisador=${pesquisador}&tipoProducao=${tipoProducao}`
+    )
       .then((res) => res.json())
       .then((data) => {
         setData(data);
@@ -32,7 +45,7 @@ export default function Producao() {
 
   useEffect(() => {
     setLoading(true);
-  
+
     // Fazer a chamada para buscar a lista de institutos
     fetch('http://localhost:8080/instituto/list')
       .then((res) => res.json())
@@ -49,7 +62,7 @@ export default function Producao() {
         setPesquisador(pesquisador);
         setLoading(false);
       })
-    .catch((err) => console.log(err));
+      .catch((err) => console.log(err));
   }, []);
 
   useEffect(() => {
@@ -57,7 +70,9 @@ export default function Producao() {
 
     // Fazer a chamada para buscar os pesquisadores quando um instituto for selecionado
     if (selectedInstituto) {
-      fetch(`http://localhost:8080/pesquisador/list?institutoNome=${selectedInstituto}`)
+      fetch(
+        `http://localhost:8080/pesquisador/list?institutoNome=${selectedInstituto}`
+      )
         .then((res) => res.json())
         .then((pesquisador) => {
           setPesquisador(pesquisador);
@@ -82,7 +97,7 @@ export default function Producao() {
 
   useEffect(() => {
     setLoading(true);
-    
+
     // Fazer a chamada para buscar uma página de produções
     fetch(`http://localhost:8080/producao?page=${pageNumber}`)
       .then((res) => res.json())
@@ -103,7 +118,10 @@ export default function Producao() {
       <div className="flex justify-between items-center">
         <h1 className="text-4xl font-bold px-4 py-6">Produção</h1>
 
-        <form onSubmit={handleSubmit(pesquisarProducao)} className='flex justify-between items-center'>
+        <form
+          onSubmit={handleSubmit(pesquisarProducao)}
+          className="flex justify-between items-center"
+        >
           <div className="block mr-4">
             <TextInput
               {...register('anoInicio')}
@@ -114,7 +132,7 @@ export default function Producao() {
               type="number"
             />
           </div>
-          
+
           <div className="block mr-4">
             <TextInput
               {...register('anoFim', {
@@ -130,46 +148,62 @@ export default function Producao() {
               name="anoFim"
               placeholder="Ano Fim"
               type="number"
-              disabled={!anoInicio}
+              // disabled={!anoInicio}
             />
             {errors.anoFim && <span>{errors.anoFim.message}</span>}
           </div>
 
           <div className="mr-4" id="select">
-            <Select value={selectedInstituto} onChange={handleInstitutoChange} id="campo" name="instituto">
+            <Select
+              {...register('instituto')}
+              value={selectedInstituto}
+              onChange={handleInstitutoChange}
+              id="campo"
+              name="instituto"
+            >
               <option value="">Instituto</option>
-              {instituto && instituto.map((instituto) => (
-                <option value={instituto.nome}>{instituto.nome}</option>
-              ))}
+              {instituto &&
+                instituto.map((instituto) => (
+                  <option value={instituto.nome}>{instituto.nome}</option>
+                ))}
             </Select>
           </div>
-          
           <div className="mr-4" id="select">
             <Select {...register('pesquisador')} id="campo" name="pesquisador">
               <option value="">Pesquisador</option>
-              {pesquisador && pesquisador.map((pesquisador) => (
-                <option value={pesquisador.nome}>{pesquisador.nome}</option>
-              ))}
+              {pesquisador &&
+                pesquisador.map((pesquisador) => (
+                  <option value={pesquisador.nome}>{pesquisador.nome}</option>
+                ))}
             </Select>
           </div>
 
           <div className="mr-4" id="select">
-            <Select {...register('tipoProducao')} id="campo" name="tipoProducao">
+            <Select
+              {...register('tipoProducao')}
+              id="campo"
+              name="tipoProducao"
+            >
               <option value="">Tipo Prod.</option>
-              {tipoProducao && tipoProducao.map((tipo) => (
-                <option key={tipo} value={tipo}>{tipo}</option>
-              ))}
+              {tipoProducao &&
+                tipoProducao.map((tipo) => (
+                  <option key={tipo} value={tipo.nome}>
+                    {tipo}
+                  </option>
+                ))}
             </Select>
           </div>
 
           <div className="flex justify-between items-center">
-            <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+            <button
+              type="submit"
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            >
               Pesquisar
             </button>
           </div>
         </form>
       </div>
-
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-300 dark:bg-gray-700 dark:text-gray-400">
@@ -189,30 +223,43 @@ export default function Producao() {
             </tr>
           </thead>
           <tbody>
-            {data?.content && data.content.map((producao) => (
-              <tr key={producao.id} className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
-                <td className="px-6 py-4 max-w-sm whitespace-normal"> 
-                  {producao.nome}
-                </td>
-                <td className="px-6 py-4 text-center">
-                  {/* Ver como fazer para esse link funcionar */}
-                  <a href={`/producao?ano=${producao.ano}`} className="hover:underline">
-                    {producao.ano}
-                  </a>
-                </td>
-                <td className="px-6 py-4 text-center">
-                  {/* Ver como fazer para esse link funcionar */}
-                  <a href={`/producao?tipoProducao=${producao.tipoProducao}`} className="hover:underline">
-                    {producao.tipoProducao}
-                  </a>
-                </td>
-                <td className="px-6 py-4 text-center">
-                  {/* Ver como fazer para esse link funcionar */}
-                  <a href={`/producao?pesquisador=${producao.pesquisador}`} className="hover:underline">
-                    {producao.pesquisador}
-                  </a>
-                </td>
-              </tr>
+            {data?.content &&
+              data.content.map((producao) => (
+                <tr
+                  key={producao.id}
+                  className="bg-white border-b dark:bg-gray-900 dark:border-gray-700"
+                >
+                  <td className="px-6 py-4 max-w-sm whitespace-normal">
+                    {producao.nome}
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    {/* Ver como fazer para esse link funcionar */}
+                    <a
+                      href={`/producao?ano=${producao.ano}`}
+                      className="hover:underline"
+                    >
+                      {producao.ano}
+                    </a>
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    {/* Ver como fazer para esse link funcionar */}
+                    <a
+                      href={`/producao?tipoProducao=${producao.tipoProducao}`}
+                      className="hover:underline"
+                    >
+                      {producao.tipoProducao}
+                    </a>
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    {/* Ver como fazer para esse link funcionar */}
+                    <a
+                      href={`/producao?pesquisador=${producao.pesquisador}`}
+                      className="hover:underline"
+                    >
+                      {producao.pesquisador}
+                    </a>
+                  </td>
+                </tr>
               ))}
           </tbody>
         </table>
