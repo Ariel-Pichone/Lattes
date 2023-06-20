@@ -28,7 +28,7 @@ export default function Grafo() {
   const [campo3, setCampo3] = useState(campo2 + 1);
   const [campo4, setCampo4] = useState(campo3);
   const [campo5, setCampo5] = useState(campo4 + 1);
-  const [campo6, setCampo6] = useState(1000);
+  const [campo6, setCampo6] = useState(10000);
   
   function pesquisarGrafo({instituto, pesquisador, tipoProducao, tipoVertice}) {
     fetch(`http://localhost:8080/grafo?instituto=${instituto}&pesquisador=${pesquisador}&tipoProducao=${tipoProducao}&tipoVertice=${tipoVertice}`)
@@ -134,51 +134,21 @@ export default function Grafo() {
     if (value >= campo1) {
       setCampo2(value);
       setCampo3(value + 1);
-      if (campo3 > campo4){
-        setCampo4(campo3);
-        setCampo5(campo3 + 1);
+      if ((value + 1) > campo4){
+        setCampo4(value + 1);
+        if((value + 1) > campo5){
+          setCampo5(value + 2);
+        }
       }
     }
   };
 
   const handleCampo4Change = (e) => {
     const value = parseInt(e.target.value);
-    if (campo3 > campo4) {
-      setCampo4(campo3);
-      setCampo5(campo3 + 1);
+    if (value > campo3) {
+      setCampo4(value);
+      setCampo5(value + 1);
     }
-  };
-
-  {/* incrementar os campos numéricos */}
-
-  const incrementarCampo2 = () => {
-    setCampo2(campo2 + 1);
-  };
-
-  const incrementarCampo4 = () => {
-    setCampo4(campo4 + 1);
-  };
-
-  const incrementarCampo5 = () => {
-    setCampo6(campo5 + 1);
-  };
-
-  const incrementarCampo6 = () => {
-    setCampo6(campo6 + 1);
-  };
-
-  {/* decrementar os campos numéricos */}
-
-  const decrementarCampo2 = () => {
-    setCampo2(campo2 - 1);
-  };
-
-  const decrementarCampo4 = () => {
-    setCampo4(campo4 - 1);
-  };
-
-  const decrementarCampo6 = () => {
-    setCampo6(campo6 - 1);
   };
 
   const handleInstitutoChange = (event) => {
@@ -197,29 +167,44 @@ export default function Grafo() {
           className='flex justify-between items-center"'
         >
           <div className="mr-4" id="select">
-            <Select value={selectedInstituto} onChange={handleInstitutoChange} id="camp" name="instituto">
+            <Select
+              {...register('instituto')}
+              value={selectedInstituto}
+              onChange={handleInstitutoChange}
+              id="campo"
+              name="instituto"
+            >
               <option value="">Instituto</option>
-              {instituto && instituto.map((instituto) => (
-                <option value={instituto.nome}>{instituto.nome}</option>
-              ))}
-            </Select>
-          </div>
-          
-          <div className="mr-4" id="select">
-            <Select {...register('pesquisador')} id="campo" name="pesquisador">
-              <option value="">Pesquisador</option>
-              {pesquisador && pesquisador.map((pesquisador) => (
-                <option value={pesquisador.nome}>{pesquisador.nome}</option>
-              ))}
+              {instituto &&
+                instituto.map((instituto) => (
+                  <option value={instituto.nome}>{instituto.nome}</option>
+                ))}
             </Select>
           </div>
 
           <div className="mr-4" id="select">
-            <Select {...register('tipoProducao')} name="tipoProducao">
+            <Select {...register('pesquisador')} id="campo" name="pesquisador">
+              <option value="">Pesquisador</option>
+              {pesquisador &&
+                pesquisador.map((pesquisador) => (
+                  <option value={pesquisador.nome}>{pesquisador.nome}</option>
+                ))}
+            </Select>
+          </div>
+
+          <div className="mr-4" id="select">
+            <Select
+              {...register('tipoProducao')}
+              id="campo"
+              name="tipoProducao"
+            >
               <option value="">Tipo Prod.</option>
-              {tipoProducao && tipoProducao.map((tipoProducao) => (
-                <option key={tipoProducao} value={tipoProducao}>{tipoProducao}</option>
-              ))}
+              {tipoProducao &&
+                tipoProducao.map((tipo) => (
+                  <option key={tipo} value={tipo.nome}>
+                    {tipo}
+                  </option>
+                ))}
             </Select>
           </div>
 
@@ -227,7 +212,9 @@ export default function Grafo() {
             <Select {...register('tipoVertice')} name="tipoVertice" required={true}>
               <option value="">Tipo Vertice</option>
               {tipoVertice && tipoVertice.map((tipoVertice) => (
-                <option key={tipoVertice} value={tipoVertice}>{tipoVertice}</option>
+                <option key={tipoVertice} value={tipoVertice.nome}>
+                  {tipoVertice}
+                </option>
               ))}
             </Select>
           </div>
@@ -244,16 +231,14 @@ export default function Grafo() {
 
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg pt-5">
         <div className="">
-          <form onSubmit={() => {}} className=" grid items-center gap-5 grid-cols-5" style={{ gridTemplateColumns: '40% 20% 20% 5% 5%' }}>
+          <form onSubmit={() => {}} className=" grid items-center gap-5 grid-cols-5 text-center" style={{ gridTemplateColumns: '50% 20% 20%' }}>
             <p className="text-2xl">Vértice (Cor)</p>
             <p className="text-2xl">Valor NP (início)</p>
             <p className="text-2xl">Valor NP (fim)</p>
-            <p className="text-1xl"> </p>
-            <p className="text-1xl"> </p>
           </form>
 
-          <form onSubmit={() => {}} className=" grid items-center gap-5 grid-cols-5" style={{ gridTemplateColumns: '40% 20% 20% 5% 5%' }}>
-            <div className="grid items-center gap-5">
+          <form onSubmit={() => {}} className=" grid items-center gap-5 grid-cols-5" style={{ gridTemplateColumns: '50% 20% 20%' }}>
+            <div className="grid items-center gap-5 ">
               <div className="column">
                 <Select value={selectedColors[0]} onChange={handleSelect1Change}>
                   <option value="">Cor 1</option>
@@ -282,7 +267,7 @@ export default function Grafo() {
               </div>
             </div>
             
-            <div className="grid items-center gap-5">
+            <div className="grid items-center gap-5 text-center">
               <div className="column">
                 <input
                   disabled
@@ -308,7 +293,7 @@ export default function Grafo() {
               </div>
             </div>
 
-            <div className="grid items-center gap-5">
+            <div className="grid items-center gap-5 text-center">
               <div className="column">
                 <input
                   type="number"
@@ -333,20 +318,13 @@ export default function Grafo() {
                 />
               </div>
             </div>
-            {/*
-            <div className="grid items-center gap-5">
-              <button type="submit" className="botao_personalizado" onClick={incrementarCampo2}>+</button>
-              <button type="submit" className="botao_personalizado" onClick={incrementarCampo4}>+</button>
-              <button type="submit" className="botao_personalizado" onClick={incrementarCampo6}>+</button>
-            </div>
-          
-            <div className="grid items-center gap-5">
-              <button type="submit" className="botao_personalizado" onClick={decrementarCampo2}>-</button>
-              <button type="submit" className="botao_personalizado" onClick={decrementarCampo4}>-</button>
-              <button type="submit" className="botao_personalizado" onClick={decrementarCampo6}>-</button>
-            </div>
-            */}
           </form>
+
+          <div className="pb-8 w-full">
+            <div>
+              Grafo aqui nessa área
+            </div><div/>
+          </div>
         </div>
       </div>
     </div>
