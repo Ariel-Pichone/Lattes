@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.prog.lattes.model.Autor;
 import org.prog.lattes.service.AutorService;
+import org.prog.lattes.view.AutorView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +35,7 @@ public class AutorController {
 
     @Operation(summary = "Busca um autor pelo o nome")
     @GetMapping("/nome/{nome}")
-    public List<Autor> listAutorPeloNome(@PathVariable("nome") String nome) {
+    public List<AutorView> listAutorPeloNome(@PathVariable("nome") String nome) {
         return autorService.listAutorPeloNome(nome);
     }
 }
