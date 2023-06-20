@@ -2,7 +2,11 @@ package org.prog.lattes.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
+import org.prog.lattes.model.TotalProducoesAno;
+import org.prog.lattes.model.TotalProducoesTipo;
 import org.prog.lattes.service.ProducaoService;
+import org.prog.lattes.view.GrafoPesquisador;
 import org.prog.lattes.view.ProducaoView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,9 +15,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.prog.lattes.model.GrafoPesquisador;
-import org.prog.lattes.model.TotalProducoesAno;
-import org.prog.lattes.model.TotalProducoesTipo;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
@@ -29,12 +30,6 @@ public class ProducaoController {
     public ProducaoController(ProducaoService producaoService) {
         this.producaoService = producaoService;
     }
-
-    // @Operation(summary = "Busca a produção Baseado no ano")
-    // @GetMapping("/")
-    // public Page<ProducaoView> pageProducaoPeloAno(@RequestParam(required = true) Integer ano, Pageable pageable) {
-    //     return producaoService.pageProducaoPeloAno(ano, pageable);
-    // }
 
     @GetMapping
     public Page<ProducaoView> buscarComFiltroDinamico(

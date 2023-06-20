@@ -3,10 +3,7 @@ package org.prog.lattes.model;
 import java.io.File;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Element;
@@ -17,6 +14,7 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import org.prog.lattes.service.AutorService;
 import org.prog.lattes.service.PesquisadorService;
 import org.prog.lattes.service.ProducaoService;
 import org.springframework.stereotype.Component;
@@ -26,17 +24,19 @@ public class LeituraXml {
 
     private PesquisadorService pesquisadorService;
     private ProducaoService producaoService;
+    private AutorService autorService;
 
-    public LeituraXml(PesquisadorService pesquisadorService, ProducaoService producaoService){
+    public LeituraXml(PesquisadorService pesquisadorService, ProducaoService producaoService, AutorService autorService){
         this.pesquisadorService = pesquisadorService;
         this.producaoService = producaoService;
+        this.autorService = autorService;
     }
 
     public void lerProducao(File file,  Node node, List<Producao> producaoList, TipoProducao tipoProducao, NodeList nodeList, String tagProducao, String tagNome, String tagAno, Pesquisador pesquisador){
         for (int i = 0; i < nodeList.getLength(); i++) {
             Producao producao = new Producao();
 
-            Set<Autor> autoresSet = new HashSet<Autor>();
+            //List<Autor> autoresList = new ArrayList<Autor>();
 
             node = nodeList.item(i);
 
@@ -51,7 +51,7 @@ public class LeituraXml {
                 producao.setTipoProducao(tipoProducao.getNome());
                 producao.setPesquisador(pesquisador);
 
-                // Obtenha a lista de elementos "AUTORES" dentro do elemento "LIVRO-PUBLICADO-OU-ORGANIZADO"
+                // Obtenha a lista de elementos "AUTORES"
                 NodeList autoresNodeList = element.getElementsByTagName("AUTORES");
 
                 // Percorra os elementos "AUTORES"
@@ -64,36 +64,49 @@ public class LeituraXml {
                         Element autorElement = (Element) autorNode;
                         
                         String nomeAutor = autorElement.getAttribute("NOME-COMPLETO-DO-AUTOR");
-                        autor.setNome(nomeAutor);
+                        
+                        Autor autorExisteNoBanco = autorService.buscarAutorNoBanco(nomeAutor);
 
-                        //Lendo os nomes para citação
-                        String nomesCitacao = autorElement.getAttribute("NOME-PARA-CITACAO");
+                        Autor autorExisteNaLista = autorService.buscarAutorNaLista(nomeAutor, producaoList);
 
-                        // Divida a string em nomes de citação separados por vírgula
-                        String[] nomesCitacaoArray = nomesCitacao.split(";");
-
-                        Set<Citacao> citacaoSet = new HashSet<Citacao>();
-
-                        // Percorra os nomes de citação
-                        for (String nomeCitacao : nomesCitacaoArray) {
-                            Citacao citacao = new Citacao();
-
-                            // Remova espaços em branco no início e no final do nome de citação
-                            nomeCitacao = nomeCitacao.trim();
-
-                            citacao.setNomeCitacao(nomeCitacao);
+                        //Se autor não estiver cadastrado no banco nem na lista, então deve ser cadastrado
+                        if((autorExisteNoBanco == null) && (autorExisteNaLista == null)){
+                            autor.setNome(nomeAutor);
+                            autor.addProducao(producao);
+                            producao.addAutor(autor);
                             
-                            citacao.setAutores(autoresSet);
+                            //Lendo os nomes para citação
+                            String nomesCitacao = autorElement.getAttribute("NOME-PARA-CITACAO");
 
-                            citacaoSet.add(citacao);
+                            // Divida a string em nomes de citação separados por vírgula
+                            String[] nomesCitacaoArray = nomesCitacao.split(";");
+
+                            //List<Citacao> citacaoList = new ArrayList<Citacao>();
+
+                            // Percorra os nomes de citação
+                            for (String nomeCitacao : nomesCitacaoArray) {
+                                Citacao citacao = new Citacao();
+
+                                // Remova espaços em branco no início e no final do nome de citação
+                                nomeCitacao = nomeCitacao.trim();
+
+                                citacao.setNomeCitacao(nomeCitacao);
+                                
+                                citacao.addAutor(autor);
+                                autor.addCitacao(citacao);
+                            }
                         }
-                        autor.setCitacoes(citacaoSet);
-
-                        autoresSet.add(autor);
+                        //Não preciso cadastrar o autor nem seus nomes de citação. Só precisamos descobrir onde autor está persistindo
+                        else if(autorExisteNoBanco != null){
+                            autorExisteNoBanco.addProducao(producao);
+                            producao.addAutor(autorExisteNoBanco);
+                        } 
+                        else{
+                            autorExisteNaLista.addProducao(producao);
+                            producao.addAutor(autorExisteNaLista);
+                        }
                     }
-                }
-                producao.setAutores(autoresSet);
-                
+                }                
                 producaoList.add(producao);
             }
         }

@@ -1,7 +1,7 @@
 package org.prog.lattes.model;
 
-import java.util.Objects;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,27 +28,30 @@ public class Autor {
     @Column(nullable = false)
     private Long id;
 
-    // Está aceitando cadastrar 2 autores com o mesmo nome
-    // unique = true,
     @Column(nullable = false, length = 100)
     private String nome;
 
     @ManyToMany (mappedBy = "autores")
-    private Set<Producao> producoes;
+    private List<Producao> producoes;
 
-    //@JsonIgnore
     @ManyToMany (cascade = CascadeType.ALL)
     @JoinTable(name = "autor_citacao",
         joinColumns = @JoinColumn(name = "autor_id"),
         inverseJoinColumns = @JoinColumn(name = "citacao_id"))
-    private Set<Citacao> citacoes;
+    private List<Citacao> citacoes;
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((nome == null) ? 0 : nome.hashCode());
-        return result;
+    public void addProducao(Producao producao) {
+        if (producoes == null) {
+            producoes = new ArrayList<>();
+        }
+        producoes.add(producao);
+    }
+
+    public void addCitacao(Citacao citacao) {
+        if (citacoes == null) {
+            citacoes = new ArrayList<>();
+        }
+        citacoes.add(citacao);
     }
 
     @Override

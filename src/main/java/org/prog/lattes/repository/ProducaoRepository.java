@@ -2,8 +2,8 @@ package org.prog.lattes.repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.prog.lattes.model.GrafoPesquisador;
 import org.prog.lattes.model.Producao;
+import org.prog.lattes.view.GrafoPesquisador;
 import org.prog.lattes.model.TotalProducoesTipo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -48,7 +48,7 @@ public interface ProducaoRepository extends JpaRepository<Producao, Long>, JpaSp
          + "FROM producao AS p GROUP BY p.tipo_producao ORDER BY p.tipo_producao", nativeQuery = true)
     public List<TotalProducoesTipo> countTotalProducoesPorTipo();
 
-    @Query(value = "SELECT p1.pesquisador AS pesquisador1, p2.pesquisador AS pesquisador2, p1.nome AS nomeProducao " +
+    @Query(value = "SELECT p1.pesquisador AS pesquisador1, p2.pesquisador AS pesquisador2, p1.nome AS nomeProducao, p1.tipo_producao AS tipoProducao " +
             "FROM producao p1 " +
             "INNER JOIN producao p2 ON p1.nome = p2.nome " +
             "AND p1.pesquisador != p2.pesquisador " +
@@ -64,22 +64,9 @@ public interface ProducaoRepository extends JpaRepository<Producao, Long>, JpaSp
             grafoPesquisador.setPesquisador1((String) row[0]);
             grafoPesquisador.setPesquisador2((String) row[1]);
             grafoPesquisador.setNomeProducao((String) row[2]);
+            grafoPesquisador.setTipoProducao((String) row[3]);
             graph.add(grafoPesquisador);
         }
         return graph;
     }
-
-    // default List<GrafoInstituto> grafoInstituto() {
-    //     List<Object[]> results = findGrafoPesquisador();
-    //     List<GrafoInstituto> graph = new ArrayList<>();
-
-    //     for (Object[] row : results) {
-    //         GrafoInstituto grafoInstituto = new GrafoInstituto();
-    //         grafoInstituto.setInstituto1((Instituto) row[0].instituto);
-    //         grafoInstituto.setInstituto2((Instituto) row[1].instituto);
-    //         grafoInstituto.setNomeProducao((String) row[2]);
-    //         graph.add(grafoInstituto);
-    //     }
-    //     return graph;
-    // }
 }

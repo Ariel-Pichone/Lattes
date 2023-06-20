@@ -239,6 +239,14 @@ GET http://localhost:8080/producao/countTotalProducoesPorTipo HTTP/1.1
 ### Verifica se um autor já está cadastrado
 GET http://localhost:8080/autor/autorExiste/Lï¿½sia Mï¿½nica de Souza Gestinari HTTP/1.1
 
+
+
+
+
+
+
+
+### erro
 ### Pesquisa o ator pelo nome em qualquer parte
 GET http://localhost:8080/autor/nome/Lï¿½sia HTTP/1.1
 

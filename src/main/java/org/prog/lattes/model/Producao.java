@@ -1,6 +1,7 @@
 package org.prog.lattes.model;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -42,13 +43,19 @@ public class Producao {
     @ManyToOne
     @JoinColumn(name = "pesquisador", nullable = false)
     private Pesquisador pesquisador;
-
-    //@JsonIgnore
+    
     @ManyToMany (cascade = CascadeType.ALL)
     @JoinTable(name = "producao_autor", 
         joinColumns =  @JoinColumn(name = "producao_id"),
         inverseJoinColumns = @JoinColumn(name = "autor_id"))
-    private Set<Autor> autores;
+    private List<Autor> autores;
+
+    public void addAutor(Autor autor) {
+        if (this.autores == null) {
+            this.autores = new ArrayList<>();
+        }
+        this.autores.add(autor);
+    }
 
     @Override
     public String toString() {

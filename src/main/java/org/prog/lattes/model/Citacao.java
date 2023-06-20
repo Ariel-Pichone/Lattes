@@ -1,6 +1,7 @@
 package org.prog.lattes.model;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,13 +29,12 @@ public class Citacao {
     private String nomeCitacao;
 
     @ManyToMany (mappedBy = "citacoes")
-    private Set<Autor> autores;
+    private List<Autor> autores;
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((nomeCitacao == null) ? 0 : nomeCitacao.hashCode());
-        return result;
+    public void addAutor(Autor autor) {
+        if (autores == null) {
+            autores = new ArrayList<>();
+        }
+        autores.add(autor);
     }
 }

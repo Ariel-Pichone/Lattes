@@ -1,4 +1,4 @@
-package org.prog.lattes.model;
+package org.prog.lattes.view;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,4 +15,5 @@ public class GrafoInstituto {
     private Long instituto1;
     private Long instituto2;
     private String nomeProducao;
+    private String tipoProducao;
 }
