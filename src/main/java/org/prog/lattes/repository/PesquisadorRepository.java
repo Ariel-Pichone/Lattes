@@ -50,7 +50,7 @@ public interface PesquisadorRepository extends JpaRepository<Pesquisador, String
     @Query(value = "SELECT p1.pesquisador AS pesquisador1, p2.pesquisador AS pesquisador2, p1.nome AS nomeProducao " +
             "FROM producao p1 " +
             "INNER JOIN producao p2 ON p1.nome = p2.nome " +
-            "AND p1.pesquisador != p2.pesquisador;", nativeQuery = true)
+        "WHERE p1.pesquisador < p2.pesquisador;", nativeQuery = true)
     List<Object[]> findGrafoInstituto();
 
     default List<GrafoInstituto> grafoInstituto() {
