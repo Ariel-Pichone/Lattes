@@ -136,9 +136,7 @@ export default function Grafo() {
       setCampo3(value + 1);
       if ((value + 1) > campo4){
         setCampo4(value + 1);
-        if((value + 1) > campo5){
-          setCampo5(value + 2);
-        }
+        setCampo5(value + 2);
       }
     }
   };
