@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.prog.lattes.model.GrafoPesquisador;
 import org.prog.lattes.model.Producao;
-import org.prog.lattes.model.TipoProducao;
 import org.prog.lattes.model.TotalProducoesTipo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -68,4 +67,18 @@ public interface ProducaoRepository extends JpaRepository<Producao, Long>, JpaSp
         }
         return graph;
     }
+
+    // default List<GrafoInstituto> grafoInstituto() {
+    //     List<Object[]> results = findGrafoPesquisador();
+    //     List<GrafoInstituto> graph = new ArrayList<>();
+
+    //     for (Object[] row : results) {
+    //         GrafoInstituto grafoInstituto = new GrafoInstituto();
+    //         grafoInstituto.setInstituto1((Instituto) row[0].instituto);
+    //         grafoInstituto.setInstituto2((Instituto) row[1].instituto);
+    //         grafoInstituto.setNomeProducao((String) row[2]);
+    //         graph.add(grafoInstituto);
+    //     }
+    //     return graph;
+    // }
 }
