@@ -18,6 +18,7 @@ export default function Producao() {
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
     watch,
   } = useForm();
@@ -33,7 +34,7 @@ export default function Producao() {
   }) {
     //tem um erro aqui pois não está fazendo a consulta
     fetch(
-      `http://localhost:8080/producao?anoInicio=${anoInicio}&anoFim=${anoFim}&instituto=${instituto}&pesquisador=${pesquisador}&tipoProducao=${tipoProducao}`
+      `http://localhost:8080/producao?anoInicio=${anoInicio}&anoFim=${anoFim}&instituto=${instituto}&pesquisador=${pesquisador}&tipoProducao=${tipoProducao}&page=0`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -99,10 +100,19 @@ export default function Producao() {
     setLoading(true);
 
     // Fazer a chamada para buscar uma página de produções
-    fetch(`http://localhost:8080/producao?page=${pageNumber}`)
+    fetch(
+      `http://localhost:8080/producao?anoInicio=${getValues(
+        'anoInicio'
+      )}&anoFim=${getValues('anoFim')}&instituto=${getValues(
+        'instituto'
+      )}&pesquisador=${getValues('pesquisador')}&tipoProducao=${getValues(
+        'tipoProducao'
+      )}&page=${pageNumber}`
+    )
       .then((res) => res.json())
       .then((data) => {
         setData(data);
+        console.log(getValues(anoInicio));
         setLoading(false);
       })
       .catch((err) => console.log(err));
