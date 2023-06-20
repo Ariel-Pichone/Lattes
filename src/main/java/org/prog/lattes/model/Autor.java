@@ -5,6 +5,7 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -31,8 +32,8 @@ public class Autor {
     @Column(nullable = false, length = 100)
     private String nome;
 
-    @ManyToMany (mappedBy = "autores")
-    private List<Producao> producoes;
+    // @ManyToMany (mappedBy = "autores")
+    // private List<Producao> producoes;
 
     @ManyToMany (cascade = CascadeType.ALL)
     @JoinTable(name = "autor_citacao",
@@ -40,18 +41,18 @@ public class Autor {
         inverseJoinColumns = @JoinColumn(name = "citacao_id"))
     private List<Citacao> citacoes;
 
-    public void addProducao(Producao producao) {
-        if (producoes == null) {
-            producoes = new ArrayList<>();
-        }
-        producoes.add(producao);
-    }
+    // public void addProducao(Producao producao) {
+    //     if (this.producoes == null) {
+    //         this.producoes = new ArrayList<>();
+    //     }
+    //     this.producoes.add(producao);
+    // }
 
     public void addCitacao(Citacao citacao) {
-        if (citacoes == null) {
-            citacoes = new ArrayList<>();
+        if (this.citacoes == null) {
+            this.citacoes = new ArrayList<>();
         }
-        citacoes.add(citacao);
+        this.citacoes.add(citacao);
     }
 
     @Override

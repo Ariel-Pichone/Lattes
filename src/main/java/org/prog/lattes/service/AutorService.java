@@ -2,13 +2,10 @@ package org.prog.lattes.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.prog.lattes.model.Autor;
-import org.prog.lattes.model.Pesquisador;
 import org.prog.lattes.model.Producao;
 import org.prog.lattes.repository.AutorRepository;
 import org.prog.lattes.view.AutorView;
-import org.prog.lattes.view.PesquisadorView;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 

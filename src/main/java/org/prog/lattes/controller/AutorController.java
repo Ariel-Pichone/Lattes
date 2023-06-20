@@ -4,7 +4,6 @@ import java.util.List;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.prog.lattes.model.Autor;
 import org.prog.lattes.service.AutorService;
 import org.prog.lattes.view.AutorView;
 import org.springframework.beans.factory.annotation.Autowired;

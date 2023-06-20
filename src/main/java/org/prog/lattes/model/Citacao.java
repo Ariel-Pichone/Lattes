@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -28,13 +29,13 @@ public class Citacao {
     @Column(nullable = false, length = 100)
     private String nomeCitacao;
 
-    @ManyToMany (mappedBy = "citacoes")
-    private List<Autor> autores;
+    // @ManyToMany (mappedBy = "citacoes")
+    // private List<Autor> autores;
 
-    public void addAutor(Autor autor) {
-        if (autores == null) {
-            autores = new ArrayList<>();
-        }
-        autores.add(autor);
-    }
+    // public void addAutor(Autor autor) {
+    //     if (this.autores == null) {
+    //         this.autores = new ArrayList<>();
+    //     }
+    //     this.autores.add(autor);
+    // }
 }

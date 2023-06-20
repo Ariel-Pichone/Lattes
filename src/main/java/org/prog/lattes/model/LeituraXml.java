@@ -72,7 +72,7 @@ public class LeituraXml {
                         //Se autor não estiver cadastrado no banco nem na lista, então deve ser cadastrado
                         if((autorExisteNoBanco == null) && (autorExisteNaLista == null)){
                             autor.setNome(nomeAutor);
-                            autor.addProducao(producao);
+                            //autor.addProducao(producao);
                             producao.addAutor(autor);
                             
                             //Lendo os nomes para citação
@@ -92,17 +92,17 @@ public class LeituraXml {
 
                                 citacao.setNomeCitacao(nomeCitacao);
                                 
-                                citacao.addAutor(autor);
+                                //citacao.addAutor(autor);
                                 autor.addCitacao(citacao);
                             }
                         }
                         //Não preciso cadastrar o autor nem seus nomes de citação. Só precisamos descobrir onde autor está persistindo
                         else if(autorExisteNoBanco != null){
-                            autorExisteNoBanco.addProducao(producao);
+                            //autorExisteNoBanco.addProducao(producao);
                             producao.addAutor(autorExisteNoBanco);
                         } 
                         else{
-                            autorExisteNaLista.addProducao(producao);
+                            //autorExisteNaLista.addProducao(producao);
                             producao.addAutor(autorExisteNaLista);
                         }
                     }
