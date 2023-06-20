@@ -158,7 +158,7 @@ export default function Producao() {
               name="anoFim"
               placeholder="Ano Fim"
               type="number"
-              // disabled={!anoInicio}
+              //disabled={!anoInicio}
             />
             {errors.anoFim && <span>{errors.anoFim.message}</span>}
           </div>
@@ -178,6 +178,7 @@ export default function Producao() {
                 ))}
             </Select>
           </div>
+          
           <div className="mr-4" id="select">
             <Select {...register('pesquisador')} id="campo" name="pesquisador">
               <option value="">Pesquisador</option>

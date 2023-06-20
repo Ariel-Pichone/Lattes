@@ -240,13 +240,14 @@ export default function Home() {
               name="anoFim"
               placeholder="Ano Fim"
               type="number"
-              disabled={!anoInicio}
+              //disabled={!anoInicio}
             />
             {errors.anoFim && <span>{errors.anoFim.message}</span>}
           </div>
 
           <div className="mr-4" id="select">
             <Select
+              {...register('instituto')}
               value={selectedInstituto}
               onChange={handleInstitutoChange}
               id="campo"
@@ -279,7 +280,7 @@ export default function Home() {
               <option value="">Tipo Prod.</option>
               {tipoProducao &&
                 tipoProducao.map((tipo) => (
-                  <option key={tipo} value={tipo}>
+                  <option key={tipo} value={tipo.nome}>
                     {tipo}
                   </option>
                 ))}
