@@ -1,17 +1,11 @@
 package org.prog.lattes.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -45,18 +39,18 @@ public class Producao {
     @JoinColumn(name = "pesquisador", nullable = false)
     private Pesquisador pesquisador;
     
-    @ManyToMany (cascade = CascadeType.ALL)
-    @JoinTable(name = "producao_autor", 
-        joinColumns =  @JoinColumn(name = "producao_id"),
-        inverseJoinColumns = @JoinColumn(name = "autor_id"))
-    private List<Autor> autores;
+    // @ManyToMany (cascade = CascadeType.ALL)
+    // @JoinTable(name = "producao_autor", 
+    //     joinColumns =  @JoinColumn(name = "producao_id"),
+    //     inverseJoinColumns = @JoinColumn(name = "autor_id"))
+    // private List<Autor> autores;
 
-    public void addAutor(Autor autor) {
-        if (this.autores == null) {
-            this.autores = new ArrayList<>();
-        }
-        this.autores.add(autor);
-    }
+    // public void addAutor(Autor autor) {
+    //     if (this.autores == null) {
+    //         this.autores = new ArrayList<>();
+    //     }
+    //     this.autores.add(autor);
+    // }
 
     @Override
     public String toString() {

@@ -14,7 +14,7 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import org.prog.lattes.service.AutorService;
+//import org.prog.lattes.service.AutorService;
 import org.prog.lattes.service.PesquisadorService;
 import org.prog.lattes.service.ProducaoService;
 import org.springframework.stereotype.Component;
@@ -24,12 +24,12 @@ public class LeituraXml {
 
     private PesquisadorService pesquisadorService;
     private ProducaoService producaoService;
-    private AutorService autorService;
+    //private AutorService autorService;
 
-    public LeituraXml(PesquisadorService pesquisadorService, ProducaoService producaoService, AutorService autorService){
+    public LeituraXml(PesquisadorService pesquisadorService, ProducaoService producaoService){// AutorService autorService){
         this.pesquisadorService = pesquisadorService;
         this.producaoService = producaoService;
-        this.autorService = autorService;
+        //this.autorService = autorService;
     }
 
     public void lerProducao(File file,  Node node, List<Producao> producaoList, TipoProducao tipoProducao, NodeList nodeList, String tagProducao, String tagNome, String tagAno, Pesquisador pesquisador){
@@ -51,9 +51,11 @@ public class LeituraXml {
                 producao.setTipoProducao(tipoProducao.getNome());
                 producao.setPesquisador(pesquisador);
 
+                /*
                 // Obtenha a lista de elementos "AUTORES"
                 NodeList autoresNodeList = element.getElementsByTagName("AUTORES");
 
+                
                 // Percorra os elementos "AUTORES"
                 for (int j = 0; j < autoresNodeList.getLength(); j++) {
                     Autor autor = new Autor();
@@ -106,7 +108,8 @@ public class LeituraXml {
                             producao.addAutor(autorExisteNaLista);
                         }
                     }
-                }                
+                } 
+                */               
                 producaoList.add(producao);
             }
         }

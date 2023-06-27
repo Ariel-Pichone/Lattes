@@ -42,15 +42,15 @@ public class ProducaoService {
             System.out.println("Ano Fim = " + anoFim); ////////////////////////////////////////////////////////////////////////////////////////////////
             spec = spec.and(ProducaoRepository.filtrarPorAnoFim(anoFim));
         }
-        if (instituto != null) {
+        if ((instituto != null) && (instituto.trim() != "")){
             System.out.println("Instituto = " + instituto); ////////////////////////////////////////////////////////////////////////////////////////////////
             spec = spec.and(ProducaoRepository.filtrarPorInstituto(instituto));
         }
-        if (pesquisador != null) {
+        if ((pesquisador != null) && (pesquisador.trim() != "")){
             System.out.println("Pesquisador = " + pesquisador); ////////////////////////////////////////////////////////////////////////////////////////////////
             spec = spec.and(ProducaoRepository.filtrarPorPesquisador(pesquisador));
         }
-        if (tipoProducao != null) {
+        if ((tipoProducao != null) && (tipoProducao.trim() != "")){
             System.out.println("Tipo Produção = " + tipoProducao); ////////////////////////////////////////////////////////////////////////////////////////////////
             spec = spec.and(ProducaoRepository.filtrarPorTipoProducao(tipoProducao));
         }

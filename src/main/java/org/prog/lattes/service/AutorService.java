@@ -1,5 +1,5 @@
 package org.prog.lattes.service;
-
+/*
 import java.util.List;
 import java.util.stream.Collectors;
 import org.prog.lattes.model.Autor;
@@ -69,3 +69,4 @@ public class AutorService {
         return autorView;
     }
 }
+*/

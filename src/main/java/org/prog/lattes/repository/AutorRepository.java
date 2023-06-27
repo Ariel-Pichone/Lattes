@@ -1,5 +1,5 @@
 package org.prog.lattes.repository;
-
+/*
 import java.util.List;
 import org.prog.lattes.model.Autor;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,3 +14,4 @@ public interface AutorRepository extends JpaRepository<Autor, Long>{
 
     List<Autor> findByNomeContainingIgnoreCase(String nome);
 }
+*/

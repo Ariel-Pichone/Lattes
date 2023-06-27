@@ -48,10 +48,11 @@ public interface ProducaoRepository extends JpaRepository<Producao, Long>, JpaSp
          + "FROM producao AS p GROUP BY p.tipo_producao ORDER BY p.tipo_producao", nativeQuery = true)
     public List<TotalProducoesTipo> countTotalProducoesPorTipo();
 
-    @Query(value = "SELECT p1.pesquisador AS pesquisador1, p2.pesquisador AS pesquisador2, p1.nome AS nomeProducao, p1.tipo_producao AS tipoProducao " +
-            "FROM producao p1 " +
-            "INNER JOIN producao p2 ON p1.nome = p2.nome " +
-            "AND p1.pesquisador != p2.pesquisador " +
+    @Query(value = "SELECT DISTINCT p1.nome AS producao, pe1.nome AS pesquisador1, pe2.nome AS pesquisador2, p1.tipo_producao AS tipoProducao " + 
+            "FROM producao p1 " + 
+            "JOIN producao p2 ON p1.nome ILIKE '%' || p2.nome || '%' " + 
+            "JOIN pesquisador pe1 ON p1.pesquisador = pe1.identificador " +
+            "JOIN pesquisador pe2 ON p2.pesquisador = pe2.identificador " + 
             "WHERE p1.pesquisador < p2.pesquisador;", nativeQuery = true)
     List<Object[]> findGrafoPesquisador();
 
@@ -61,9 +62,9 @@ public interface ProducaoRepository extends JpaRepository<Producao, Long>, JpaSp
 
         for (Object[] row : results) {
             GrafoPesquisador grafoPesquisador = new GrafoPesquisador();
-            grafoPesquisador.setPesquisador1((String) row[0]);
-            grafoPesquisador.setPesquisador2((String) row[1]);
-            grafoPesquisador.setNomeProducao((String) row[2]);
+            grafoPesquisador.setNomeProducao((String) row[0]);
+            grafoPesquisador.setPesquisador1((String) row[1]);
+            grafoPesquisador.setPesquisador2((String) row[2]);
             grafoPesquisador.setTipoProducao((String) row[3]);
             graph.add(grafoPesquisador);
         }

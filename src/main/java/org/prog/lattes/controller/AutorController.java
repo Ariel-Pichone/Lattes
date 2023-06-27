@@ -1,7 +1,6 @@
 package org.prog.lattes.controller;
-
+/*
 import java.util.List;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.prog.lattes.service.AutorService;
@@ -38,3 +37,4 @@ public class AutorController {
         return autorService.listAutorPeloNome(nome);
     }
 }
+*/
