@@ -292,10 +292,11 @@ public class ProducaoService {
     }
 
     public String filtroDinamicoGrafo(List<Pesquisador> pesquisadores, String tipoProducao, String tipoVertice){
-        String result = new String();
+        StringBuilder nodeFormat = new StringBuilder();
+    StringBuilder edgeFormat = new StringBuilder();
 
-        //COLOCAR AQUI A LÓGICA DO FILTRO DINÂMICO
-        List<GrafoPesquisador> listGrafoPesquisador = grafoPesquisador();
+    // COLOCAR AQUI A LÓGICA DO FILTRO DINÂMICO
+    List<GrafoPesquisador> listGrafoPesquisador = grafoPesquisador();
 
     if (tipoVertice.equals("pesquisador")) {
         List<String> idsPesquisadores = pesquisadores.stream()
@@ -323,11 +324,12 @@ public class ProducaoService {
     }
 
     for (int i = 0; i < listGrafoPesquisador.size(); i++) {
-        result = result + "{ data: { source: '" + listGrafoPesquisador.get(i).getIdPesquisador1() + "', " +
-                "target: '" + listGrafoPesquisador.get(i).getIdPesquisador2() + "', " +
-                "label: '" + listGrafoPesquisador.get(i).getTotal() + "'}},\n";
+        GrafoPesquisador grafo = listGrafoPesquisador.get(i);
+        nodeFormat.append("{ data: { id: '").append(grafo.getIdPesquisador1()).append("', label: '").append(grafo.getIdPesquisador1()).append("'}},\n");
+        nodeFormat.append("{ data: { id: '").append(grafo.getIdPesquisador2()).append("', label: '").append(grafo.getIdPesquisador2()).append("'}},\n");
+        edgeFormat.append("{ data: { source: '").append(grafo.getIdPesquisador1()).append("', target: '").append(grafo.getIdPesquisador2()).append("', label: '").append(grafo.getTotal()).append("'}},\n");
     }
 
-        return result;
+    return nodeFormat.toString() + edgeFormat.toString();
     }
 }
