@@ -274,4 +274,4 @@ GET http://localhost:8080/producao/cytoscapejsInstituto HTTP/1.1
 
 ### FALTA IMPLEMENTAR O FILTRO DINÂMICO
 ### Filtro Dinamico para Geração do Grafo
-GET http://localhost:8080/producao/filtroDinamicoGrafo?pesquisadores=0235080730138338&tipoProducao=Artigo&tipoVertice=Pesquisador HTTP/1.1
+GET http://localhost:8080/producao/filtroDinamicoGrafo?pesquisadores=0235080730138338&tipoProducao=Livro&tipoVertice=Pesquisador HTTP/1.1

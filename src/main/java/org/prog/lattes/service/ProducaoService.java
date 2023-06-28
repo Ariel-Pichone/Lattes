@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.prog.lattes.model.Instituto;
 import org.prog.lattes.model.Pesquisador;
 import org.prog.lattes.model.Producao;
 import org.prog.lattes.model.TipoProducao;
@@ -294,7 +295,39 @@ public class ProducaoService {
         String result = new String();
 
         //COLOCAR AQUI A LÓGICA DO FILTRO DINÂMICO
-        
+        List<GrafoPesquisador> listGrafoPesquisador = grafoPesquisador();
+
+    if (tipoVertice.equals("pesquisador")) {
+        List<String> idsPesquisadores = pesquisadores.stream()
+                .map(Pesquisador::getIdentificador)
+                .collect(Collectors.toList());
+
+        listGrafoPesquisador = listGrafoPesquisador.stream()
+                .filter(p -> idsPesquisadores.contains(p.getIdPesquisador1()) || idsPesquisadores.contains(p.getIdPesquisador2()))
+                .collect(Collectors.toList());
+    } else if (tipoVertice.equals("instituto")) {
+        List<Long> idsInstitutos = pesquisadores.stream()
+                .map(Pesquisador::getInstituto)
+                .map(Instituto::getId)
+                .collect(Collectors.toList());
+
+        listGrafoPesquisador = listGrafoPesquisador.stream()
+                .filter(p -> idsInstitutos.contains(buscarIdInstituto(p.getIdPesquisador1())) || idsInstitutos.contains(buscarIdInstituto(p.getIdPesquisador2())))
+                .collect(Collectors.toList());
+    }
+
+    if (tipoProducao != null && !tipoProducao.isEmpty()) {
+        listGrafoPesquisador = listGrafoPesquisador.stream()
+                .filter(p -> p.getTipoProducao().equals(tipoProducao))
+                .collect(Collectors.toList());
+    }
+
+    for (int i = 0; i < listGrafoPesquisador.size(); i++) {
+        result = result + "{ data: { source: '" + listGrafoPesquisador.get(i).getIdPesquisador1() + "', " +
+                "target: '" + listGrafoPesquisador.get(i).getIdPesquisador2() + "', " +
+                "label: '" + listGrafoPesquisador.get(i).getTotal() + "'}},\n";
+    }
+
         return result;
     }
 }
