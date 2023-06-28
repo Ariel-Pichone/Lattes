@@ -56,13 +56,11 @@ export default function Grafo() {
     { data: { id: '0814717344017544', label: 'Kate Cerqueira Revoredo'}},
 
   //Edge format
-    { data: { source: '0023809873085852', target: '0743793296062293', label: 'Aresta de 0023809873085852 para 0743793296062293'}},
-    { data: { source: '0082487176176434', target: '0329773854976808', label: 'Aresta de 0082487176176434 para 0329773854976808'}},
-    { data: { source: '0082487176176434', target: '0329773854976808', label: 'Aresta de 0082487176176434 para 0329773854976808'}},
-    { data: { source: '0194631586754988', target: '0770145420421898', label: 'Aresta de 0194631586754988 para 0770145420421898'}},
-    { data: { source: '0194631586754988', target: '0770145420421898', label: 'Aresta de 0194631586754988 para 0770145420421898'}},
-    { data: { source: '0082487176176434', target: '0329773854976808', label: 'Aresta de 0082487176176434 para 0329773854976808'}},
-    { data: { source: '0235080730138338', target: '0781779929562675', label: 'Aresta de 0235080730138338 para 0781779929562675'}},
+    { data: { source: '0235080730138338', target: '0604237405440586', label: '1'}},
+    { data: { source: '0023809873085852', target: '0743793296062293', label: '1'}},
+    { data: { source: '0082487176176434', target: '0329773854976808', label: '3'}},
+    { data: { source: '0194631586754988', target: '0770145420421898', label: '2'}},
+    { data: { source: '0235080730138338', target: '0781779929562675', label: '1'}},
   ]);
 
   {/* Controle de cores nos campos de escolha de cor das arestas */}
@@ -375,7 +373,7 @@ export default function Grafo() {
                 
                 //adding a layout
                 layout={{
-                  name: 'breadthfirst',
+                  name: 'concentric',
                   //fit: true,
                   directed: true,
                   padding: 50,
@@ -384,12 +382,13 @@ export default function Grafo() {
                   avoidOverlap: true,
                   nodeDimensionsIncludeLabels: false
                 }}
+                
                 //adding style sheet
                 stylesheet={[
                   {
                     selector: "node",
                     style: {
-                      backgroundColor: "#555",
+                      backgroundColor: "#1258e0",
                       width: 60,
                       height: 60,
                       "text-valign": "center",
@@ -414,7 +413,7 @@ export default function Grafo() {
                   {
                     selector: "label",
                     style: {
-                      color: "white",
+                      color: "black",
                       width: 30,
                       height: 30,
                       fontSize: 30
