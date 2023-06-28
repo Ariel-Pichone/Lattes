@@ -2,11 +2,9 @@ package org.prog.lattes.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
 import org.prog.lattes.model.TotalProducoesAno;
 import org.prog.lattes.model.TotalProducoesTipo;
 import org.prog.lattes.service.ProducaoService;
-import org.prog.lattes.view.GrafoPesquisador;
 import org.prog.lattes.view.ProducaoView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

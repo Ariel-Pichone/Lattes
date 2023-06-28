@@ -1,6 +1,5 @@
 package org.prog.lattes.service;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,7 +7,6 @@ import org.prog.lattes.convert.ReadXML;
 import org.prog.lattes.model.Instituto;
 import org.prog.lattes.model.Pesquisador;
 import org.prog.lattes.repository.PesquisadorRepository;
-import org.prog.lattes.view.GrafoInstituto;
 import org.prog.lattes.view.PesquisadorView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

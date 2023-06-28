@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.prog.lattes.model.Instituto;
 import org.prog.lattes.service.PesquisadorService;
-import org.prog.lattes.view.GrafoInstituto;
 import org.prog.lattes.view.PesquisadorView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -69,18 +68,8 @@ public class PesquisadorController {
         pesquisadorService.excluir(identificador);
     }
 
-    @GetMapping("/grafoInstituto")
-    public List<GrafoInstituto> grafoInstituto() {
-        return pesquisadorService.grafoInstituto();
-    }
-
     @GetMapping("/cytoscapejs")
     public String cytoscapejs() {
         return pesquisadorService.cytoscapejs();
-    }
-
-    @GetMapping("/cytoscapejsInstituto")
-    public String cytoscapejsInstituto() {
-        return pesquisadorService.cytoscapejsInstituto();
     }
 }

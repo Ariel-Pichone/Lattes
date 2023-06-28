@@ -1,10 +1,7 @@
 package org.prog.lattes.repository;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.prog.lattes.model.Instituto;
 import org.prog.lattes.model.Pesquisador;
-import org.prog.lattes.view.GrafoInstituto;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
