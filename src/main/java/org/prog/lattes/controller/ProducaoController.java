@@ -2,6 +2,8 @@ package org.prog.lattes.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
+import org.prog.lattes.model.Pesquisador;
 import org.prog.lattes.model.TotalProducoesAno;
 import org.prog.lattes.model.TotalProducoesTipo;
 import org.prog.lattes.service.ProducaoService;
@@ -72,5 +74,13 @@ public class ProducaoController {
     @GetMapping("/cytoscapejsInstituto")
     public String cytoscapejsInstituto() {
         return producaoService.cytoscapejsInstituto();
+    }
+
+    @GetMapping("/filtroDinamicoGrafo")
+    public String filtroDinamicoGrafo(
+        @RequestParam(required = false) List<Pesquisador> pesquisadores,
+        @RequestParam(required = false) String tipoProducao,
+        @RequestParam(required = false) String tipoVertice){
+        return producaoService.filtroDinamicoGrafo(pesquisadores, tipoProducao, tipoVertice);
     }
 }

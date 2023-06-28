@@ -6,6 +6,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import org.prog.lattes.model.Pesquisador;
 import org.prog.lattes.model.Producao;
 import org.prog.lattes.model.TipoProducao;
 import org.prog.lattes.model.TotalProducoesAno;
@@ -286,5 +288,13 @@ public class ProducaoService {
                     "label: '" + listGrafoInstituto.get(i).getTotal() + "'}},\n";
         }
         return edgeFormat;
+    }
+
+    public String filtroDinamicoGrafo(List<Pesquisador> pesquisadores, String tipoProducao, String tipoVertice){
+        String result = new String();
+
+        //COLOCAR AQUI A LÓGICA DO FILTRO DINÂMICO
+        
+        return result;
     }
 }
