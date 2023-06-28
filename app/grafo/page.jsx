@@ -21,10 +21,12 @@ export default function Grafo() {
 
   const [width, setWith] = useState("100%");
   const [height, setHeight] = useState("800px");
+  
 
   //Adding elements here
   const [graphData, setGraphData] = useState([
     //Node format
+    
     { data: { id: '0023809873085852', label: 'Rodrigo Salvador Monteiro'}},
     { data: { id: '0024160866319507', label: 'Leonardo da Silva Gasparini'}},
     { data: { id: '0028876341054325', label: 'Marcelo dos Santos MagalhÃ£es'}},
@@ -89,7 +91,7 @@ export default function Grafo() {
 
   useEffect(() => {
     setLoading(true);
-    
+
     // Fazer a chamada para buscar a lista de institutos
     fetch('http://localhost:8080/instituto/list')
       .then((res) => res.json())
@@ -152,27 +154,27 @@ export default function Grafo() {
 
   {/* Controle de cores nos campos de escolha de cor das arestas */}
 
-  const handleSelect1Change = (event) => {
-    const color = event.target.value;
-    if (color !== selectedColors[1] && color !== selectedColors[2]) {
-      setSelectedColors([color, selectedColors[1], selectedColors[2]]);
-    }
-  };
+  // const handleSelect1Change = (event) => {
+  //   const color = event.target.value;
+  //   if (color !== selectedColors[1] && color !== selectedColors[2]) {
+  //     setSelectedColors([color, selectedColors[1], selectedColors[2]]);
+  //   }
+  // };
 
-  const handleSelect2Change = (event) => {
-    const color = event.target.value;
-    if (color !== selectedColors[0] && color !== selectedColors[2]) {
-      setSelectedColors([selectedColors[0], color, selectedColors[2]]);
-    }
-  };
+  // const handleSelect2Change = (event) => {
+  //   const color = event.target.value;
+  //   if (color !== selectedColors[0] && color !== selectedColors[2]) {
+  //     setSelectedColors([selectedColors[0], color, selectedColors[2]]);
+  //   }
+  // };
 
-  const handleSelect3Change = (event) => {
-    const color = event.target.value;
-    if (color !== selectedColors[0] && color !== selectedColors[1]) {
-      setSelectedColors([selectedColors[0], selectedColors[1], color]);
-    }
-  };
-
+  // const handleSelect3Change = (event) => {
+  //   const color = event.target.value;
+  //   if (color !== selectedColors[0] && color !== selectedColors[1]) {
+  //     setSelectedColors([selectedColors[0], selectedColors[1], color]);
+  //   }
+  // };
+  
   {/* Controle de valores nos campos numéricos */}
 
   const handleCampo2Change = (e) => {
@@ -284,29 +286,14 @@ export default function Grafo() {
           <form onSubmit={() => {}} className=" grid items-center gap-5 grid-cols-5" style={{ gridTemplateColumns: '50% 20% 20%' }}>
             <div className="grid items-center gap-5 ">
               <div className="column">
-                <Select value={selectedColors[0]} onChange={handleSelect1Change}>
-                  <option value="">Cor 1</option>
-                  <option>Vermelha</option>
-                  <option>Roxa</option>
-                  <option>Azul</option>
-                  <option>Verde</option>
-                  <option>Amarela</option>
+                <Select value={selectedColors[0]} >
+                  <option value="">Vermelha</option>
                 </Select>
-                <Select value={selectedColors[1]} onChange={handleSelect2Change}>
-                  <option value="">Cor 2</option>
-                  <option>Vermelha</option>
-                  <option>Roxa</option>
-                  <option>Azul</option>
-                  <option>Verde</option>
-                  <option>Amarela</option>
+                <Select value={selectedColors[1]} >
+                  <option value="">Amarela</option>
                 </Select>
-                <Select value={selectedColors[2]} onChange={handleSelect3Change}>
-                  <option value="">Cor 3</option>
-                  <option>Vermelha</option>
-                  <option>Roxa</option>
-                  <option>Azul</option>
-                  <option>Verde</option>
-                  <option>Amarela</option>
+                <Select value={selectedColors[2]} >
+                  <option value="">Verde</option>
                 </Select>
               </div>
             </div>
@@ -374,7 +361,7 @@ export default function Grafo() {
                 //adding a layout
                 layout={{
                   name: 'concentric',
-                  //fit: true,
+                  fit: true,
                   directed: true,
                   padding: 50,
                   animate: true,
@@ -393,8 +380,6 @@ export default function Grafo() {
                       height: 60,
                       "text-valign": "center",
                       "text-halign": "center",
-                      "text-outline-color": "#555",
-                      "text-outline-width": "2px",
                       "overlay-padding": "6px",
                       "z-index": "10"
                     }
@@ -404,9 +389,9 @@ export default function Grafo() {
                     style: {
                       label: "data(label)",
                       "border-width": "6px",
-                      "border-color": "#AAD8FF",
+                      "border-color": "#0F48BA",
                       "border-opacity": "0.5",
-                      "background-color": "#31363a",
+                      "background-color": "#5B8DF0",
                       "text-outline-color": "#5c5959"
                     }
                   },
@@ -416,7 +401,7 @@ export default function Grafo() {
                       color: "black",
                       width: 30,
                       height: 30,
-                      fontSize: 30
+                      fontSize: 12
                     }
                   },
                   {
@@ -424,7 +409,7 @@ export default function Grafo() {
                     style: {
                       width: 3,
                       label: "data(label)",
-                      "line-color": "#AAD8FF",
+                      "line-color": "#BC2800",
                       "target-arrow-color": "#6774cb",
                       "curve-style": "bezier"
                     }
