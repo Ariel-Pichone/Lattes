@@ -4,7 +4,7 @@ import { Inter } from 'next/font/google';
 import { Button, Label, Modal, Select, TextInput, Card } from 'flowbite-react';
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { Doughnut } from 'react-chartjs-2';
+import CytoscapeComponent from 'react-cytoscapejs';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -16,6 +16,54 @@ export default function Grafo() {
   const [tipoVertice, setTipoVertice] = useState(null);
   const [isLoading, setLoading] = useState(true);
   const { register, handleSubmit, formState: { errors }, watch,} = useForm();
+
+  {/* const para o cytoscapejs */}
+
+  const [width, setWith] = useState("100%");
+  const [height, setHeight] = useState("800px");
+
+  //Adding elements here
+  const [graphData, setGraphData] = useState([
+    //Node format
+    { data: { id: '0023809873085852', label: 'Rodrigo Salvador Monteiro'}},
+    { data: { id: '0024160866319507', label: 'Leonardo da Silva Gasparini'}},
+    { data: { id: '0028876341054325', label: 'Marcelo dos Santos MagalhÃ£es'}},
+    { data: { id: '0047810385809553', label: 'Aleksandra Menezes de Oliveira'}},
+    { data: { id: '0053636364868790', label: 'Lismeia Raimundo Soares'}},
+    { data: { id: '0066576690749759', label: 'Gizele da ConceiÃ§Ã£o Soares Martins'}},
+    { data: { id: '0082487176176434', label: 'Marialda Moreira Christoffel'}},
+    { data: { id: '0110662125645595', label: 'RogÃ©rio Ferreira de Moraes'}},
+    { data: { id: '0112621452737067', label: 'VinÃ­cius AntÃ´nio Gomes Marques'}},
+    { data: { id: '0161902355523060', label: 'Vinicios Batista Pereira'}},
+    { data: { id: '0194631586754988', label: 'Michael Maia Mincarone'}},
+    { data: { id: '0235080730138338', label: 'Rute Ramos da Silva Costa'}},
+    { data: { id: '0263660448893625', label: 'Jussara Mathias Netto Khouri'}},
+    { data: { id: '0329773854976808', label: 'Patricia Regina Affonso de Siqueira'}},
+    { data: { id: '0348923590713594', label: 'MÃ¡rcio JosÃ© de Medeiros'}},
+    { data: { id: '0485361810192703', label: 'LuÃ­s Claudio de Carvalho'}},
+    { data: { id: '0491984479926888', label: 'Rafael Malheiro da Silva do Amaral Ferreira'}},
+    { data: { id: '0549723858731158', label: 'Danielle Marques de Araujo Stapelfeldt'}},
+    { data: { id: '0559800226477492', label: 'VinÃ­cius Albano AraÃºjo'}},
+    { data: { id: '0600549075776976', label: 'Juliana Milanez'}},
+    { data: { id: '0604237405440586', label: 'Glaucimara Riguete de Souza Soares'}},
+    { data: { id: '0658455060876989', label: 'Leonardo Lima dos Santos'}},
+    { data: { id: '0659726776097432', label: 'Karine da Silva Verdoorn'}},
+    { data: { id: '0676650998291996', label: 'Fernando Fernandes Morgado'}},
+    { data: { id: '0692400140993944', label: 'Raquel Silva de Paiva'}},
+    { data: { id: '0743793296062293', label: 'Daniel Cardoso Moraes de Oliveira'}},
+    { data: { id: '0770145420421898', label: 'LÃ©sia MÃ´nica de Souza Gestinari'}},
+    { data: { id: '0781779929562675', label: 'Camila Rolim Laricchia'}},
+    { data: { id: '0814717344017544', label: 'Kate Cerqueira Revoredo'}},
+
+  //Edge format
+    { data: { source: '0023809873085852', target: '0743793296062293', label: 'Aresta de 0023809873085852 para 0743793296062293'}},
+    { data: { source: '0082487176176434', target: '0329773854976808', label: 'Aresta de 0082487176176434 para 0329773854976808'}},
+    { data: { source: '0082487176176434', target: '0329773854976808', label: 'Aresta de 0082487176176434 para 0329773854976808'}},
+    { data: { source: '0194631586754988', target: '0770145420421898', label: 'Aresta de 0194631586754988 para 0770145420421898'}},
+    { data: { source: '0194631586754988', target: '0770145420421898', label: 'Aresta de 0194631586754988 para 0770145420421898'}},
+    { data: { source: '0082487176176434', target: '0329773854976808', label: 'Aresta de 0082487176176434 para 0329773854976808'}},
+    { data: { source: '0235080730138338', target: '0781779929562675', label: 'Aresta de 0235080730138338 para 0781779929562675'}},
+  ]);
 
   {/* Controle de cores nos campos de escolha de cor das arestas */}
 
@@ -164,7 +212,7 @@ export default function Grafo() {
           onSubmit={handleSubmit(pesquisarGrafo)}
           className='flex justify-between items-center"'
         >
-          <div className="mr-4" id="select">
+          {/* <div className="mr-4" id="select">
             <Select
               {...register('instituto')}
               value={selectedInstituto}
@@ -178,7 +226,7 @@ export default function Grafo() {
                   <option value={instituto.nome}>{instituto.nome}</option>
                 ))}
             </Select>
-          </div>
+          </div> */}
 
           <div className="mr-4" id="select">
             <Select {...register('pesquisador')} id="campo" name="pesquisador">
@@ -319,9 +367,72 @@ export default function Grafo() {
           </form>
 
           <div className="pb-8 w-full">
-            <div>
-              Grafo aqui nessa área
-            </div><div/>
+            <h1>Gerador de Grafo</h1>
+            <div style={{border: "1px solid", backgroundColor: "#f5f6fe"}}>
+              <CytoscapeComponent
+                elements={graphData}
+                style={{ width: width, height: height }}
+                
+                //adding a layout
+                layout={{
+                  name: 'breadthfirst',
+                  //fit: true,
+                  directed: true,
+                  padding: 50,
+                  animate: true,
+                  animationDuration: 1000,
+                  avoidOverlap: true,
+                  nodeDimensionsIncludeLabels: false
+                }}
+                //adding style sheet
+                stylesheet={[
+                  {
+                    selector: "node",
+                    style: {
+                      backgroundColor: "#555",
+                      width: 60,
+                      height: 60,
+                      "text-valign": "center",
+                      "text-halign": "center",
+                      "text-outline-color": "#555",
+                      "text-outline-width": "2px",
+                      "overlay-padding": "6px",
+                      "z-index": "10"
+                    }
+                  },
+                  {
+                    selector: "node:selected",
+                    style: {
+                      label: "data(label)",
+                      "border-width": "6px",
+                      "border-color": "#AAD8FF",
+                      "border-opacity": "0.5",
+                      "background-color": "#31363a",
+                      "text-outline-color": "#5c5959"
+                    }
+                  },
+                  {
+                    selector: "label",
+                    style: {
+                      color: "white",
+                      width: 30,
+                      height: 30,
+                      fontSize: 30
+                    }
+                  },
+                  {
+                    selector: "edge",
+                    style: {
+                      width: 3,
+                      label: "data(label)",
+                      "line-color": "#AAD8FF",
+                      "target-arrow-color": "#6774cb",
+                      "curve-style": "bezier"
+                    }
+                  }
+                ]}
+              />
+            </div>
           </div>
         </div>
       </div>

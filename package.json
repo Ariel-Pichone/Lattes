@@ -11,12 +11,14 @@
   "dependencies": {
     "@react-icons/all-files": "^4.1.0",
     "chart.js": "^4.3.0",
+    "cytoscape": "^3.25.0",
     "flowbite": "^1.6.4",
     "flowbite-react": "^0.4.7",
     "lodash": "^4.17.21",
     "next": "13.2.4",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
+    "react-cytoscapejs": "^2.0.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.9",
     "react-select": "^5.7.2"
