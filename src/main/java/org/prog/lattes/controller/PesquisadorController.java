@@ -78,4 +78,9 @@ public class PesquisadorController {
     public String cytoscapejs() {
         return pesquisadorService.cytoscapejs();
     }
+
+    @GetMapping("/cytoscapejsInstituto")
+    public String cytoscapejsInstituto() {
+        return pesquisadorService.cytoscapejsInstituto();
+    }
 }

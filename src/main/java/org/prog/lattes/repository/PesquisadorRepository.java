@@ -46,24 +46,4 @@ public interface PesquisadorRepository extends JpaRepository<Pesquisador, String
     public Long findByInstituto(@Param("identificador") String identificador);
       
     Boolean existsByIdentificador(String identificador);
-
-    @Query(value = "SELECT DISTINCT p1.nome AS producao, p1.pesquisador AS pesquisador1, p2.pesquisador AS pesquisador2, p1.tipo_producao AS tipoProducao " + 
-            "FROM producao p1 " + 
-            "JOIN producao p2 ON p1.nome ILIKE '%' || p2.nome || '%' " +
-            "WHERE p1.pesquisador < p2.pesquisador;", nativeQuery = true)
-    List<Object[]> findGrafoInstituto();
-
-    default List<GrafoInstituto> grafoInstituto() {
-        List<Object[]> results = findGrafoInstituto();
-        List<GrafoInstituto> graph = new ArrayList<>();
-        for (Object[] row : results) {
-            GrafoInstituto grafoInstituto = new GrafoInstituto();
-            grafoInstituto.setNomeProducao((String) row[0]);
-            grafoInstituto.setInstituto1(findByInstituto((String) row[1]));
-            grafoInstituto.setInstituto2(findByInstituto((String) row[2]));
-            grafoInstituto.setTipoProducao((String) row[3]);
-            graph.add(grafoInstituto);
-        }
-        return graph;
-    }
 }

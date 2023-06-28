@@ -65,19 +65,14 @@ public class ProducaoController {
     public List<TotalProducoesTipo> countTotalProducoesPorTipo() {
         return producaoService.countTotalProducoesPorTipo();
     }
-
-    @GetMapping("/grafoPesquisador")
-    public List<GrafoPesquisador> grafoPesquisador() {
-        return producaoService.grafoPesquisador();
-    }
-
+    
     @GetMapping("/cytoscapejsPesquisador")
     public String cytoscapejsPesquisador() {
         return producaoService.cytoscapejsPesquisador();
     }
 
-    // @GetMapping("/cytoscapejsInstituto")
-    // public String cytoscapejsInstituto() {
-    //     return producaoService.cytoscapejsInstituto();
-    // }
+    @GetMapping("/cytoscapejsInstituto")
+    public String cytoscapejsInstituto() {
+        return producaoService.cytoscapejsInstituto();
+    }
 }

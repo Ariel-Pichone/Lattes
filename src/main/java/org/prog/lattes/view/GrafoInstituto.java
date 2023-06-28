@@ -12,8 +12,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GrafoInstituto {
-    private String nomeProducao;
-    private Long instituto1;
-    private Long instituto2;
+    private Long idInstituto1;
+    private String nomeInstituto1;
+    private Long idInstituto2;
+    private String nomeInstituto2;
     private String tipoProducao;
+    private Integer total;
 }

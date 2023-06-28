@@ -257,23 +257,17 @@ GET http://localhost:8080/tipoProducao HTTP/1.1
 GET http://localhost:8080/tipoVertice HTTP/1.1
 
 ###########################################################################
-#       REQUISIÇÕES PARA OPERAÇÕES COM TIPO DE GRAFO-PESQUISADOR          #
+#             REQUISIÇÕES PARA OPERAÇÕES COM GRAFO                        #
 ###########################################################################
-
-### Retorna uma lista contendo as produções realizadas por mais de um pesquisador cadastrado
-GET http://localhost:8080/producao/grafoPesquisador HTTP/1.1
-
-### Retorna uma lista contendo as produções realizadas por mais de um instituto
-GET http://localhost:8080/pesquisador/grafoInstituto HTTP/1.1
-
-
-
 
 ### Vertices de todos os pesquisadores
 GET http://localhost:8080/pesquisador/cytoscapejs HTTP/1.1
+
+### Vertices de todos os institutos
+GET http://localhost:8080/instituto/cytoscapejs HTTP/1.1
 
 ### Aresta de Pesquisador para Pesquisador
 GET http://localhost:8080/producao/cytoscapejsPesquisador HTTP/1.1
 
 ### Aresta de Instituto para Instituto
-GET http://localhost:8080/instituto/cytoscapejs HTTP/1.1
+GET http://localhost:8080/producao/cytoscapejsInstituto HTTP/1.1

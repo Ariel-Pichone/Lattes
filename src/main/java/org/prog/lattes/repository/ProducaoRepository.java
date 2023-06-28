@@ -1,9 +1,7 @@
 package org.prog.lattes.repository;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.prog.lattes.model.Producao;
-import org.prog.lattes.view.GrafoPesquisador;
 import org.prog.lattes.model.TotalProducoesTipo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +9,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -53,9 +52,16 @@ public interface ProducaoRepository extends JpaRepository<Producao, Long>, JpaSp
             "pe2.identificador AS idPesquisador2, pe2.nome AS pesquisador2, " +
             "p1.tipo_producao AS tipoProducao " + 
             "FROM producao p1 " + 
-            "JOIN producao p2 ON p1.nome ILIKE '%' || p2.nome || '%' " + 
+            "JOIN producao p2 ON upper(p1.nome) = upper(p2.nome) " +
             "JOIN pesquisador pe1 ON p1.pesquisador = pe1.identificador " +
             "JOIN pesquisador pe2 ON p2.pesquisador = pe2.identificador " + 
             "WHERE p1.pesquisador < p2.pesquisador;", nativeQuery = true)
     List<Object[]> findGrafoPesquisador();
+
+
+    @Query(value = "SELECT p.instituto FROM pesquisador p WHERE p.identificador = :idPesquisador", nativeQuery = true)
+    Long buscarIdInstituto(@Param("idPesquisador") String idPesquisador);
+
+    @Query(value = "SELECT i.nome FROM instituto i WHERE i.id = :idInstituto", nativeQuery = true)
+    String buscarNomeInstituto(@Param("idInstituto") Long idInstituto);
 }

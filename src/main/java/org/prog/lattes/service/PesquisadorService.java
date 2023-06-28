@@ -1,5 +1,6 @@
 package org.prog.lattes.service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -129,9 +130,9 @@ public class PesquisadorService {
         pesquisadorRepository.save(pesquisador);
     }
 
-    public List<GrafoInstituto> grafoInstituto(){
-        return pesquisadorRepository.grafoInstituto();
-    }
+    /************************************************************************************************************************************/
+    /*                                     MÉTODOS PARA GERAR O GRAFO COM VERTICE COMO PESQUISADOR                                      */
+    /************************************************************************************************************************************/
 
     public String cytoscapejs() {
         String nodeFormat = "";
@@ -141,7 +142,7 @@ public class PesquisadorService {
         for (int i = 0; i < listPesquisador.size(); i++) {
             nodeFormat = nodeFormat + "{ data: { id: '" + listPesquisador.get(i).getIdentificador() + "', " +
                     "label: '" + listPesquisador.get(i).getNome() + "'}},\n";
-        }      
+        }
         return nodeFormat;
     }
 }

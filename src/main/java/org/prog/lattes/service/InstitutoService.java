@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.prog.lattes.model.Instituto;
-import org.prog.lattes.model.Pesquisador;
 import org.prog.lattes.repository.InstitutoRepository;
 import org.prog.lattes.view.InstitutoView;
 import org.springframework.data.domain.Page;

@@ -6,13 +6,12 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import org.prog.lattes.model.Pesquisador;
 import org.prog.lattes.model.Producao;
 import org.prog.lattes.model.TipoProducao;
 import org.prog.lattes.model.TotalProducoesAno;
 import org.prog.lattes.model.TotalProducoesTipo;
 import org.prog.lattes.repository.ProducaoRepository;
+import org.prog.lattes.view.GrafoInstituto;
 import org.prog.lattes.view.GrafoPesquisador;
 import org.prog.lattes.view.ProducaoView;
 import org.springframework.data.domain.Page;
@@ -143,8 +142,8 @@ public class ProducaoService {
 
             // Calcule o total de produção para o ano e defina-o no objeto TotalProducoesAno
             long totalProducao = totalProducoesAno.getArtigo() + totalProducoesAno.getCapituloLivro()
-                    + totalProducoesAno.getLivro() + totalProducoesAno.getOrientacaoMestrado()
-                    + totalProducoesAno.getOrientacaoTCC() + totalProducoesAno.getTrabalhoEvento();
+                    + totalProducoesAno.getLivro() + /*totalProducoesAno.getOrientacaoMestrado()
+                    + totalProducoesAno.getOrientacaoTCC() +*/ totalProducoesAno.getTrabalhoEvento();
             totalProducoesAno.setTotalProducao(totalProducao);
 
             // Adicione o objeto TotalProducoesAno à lista de resultados
@@ -169,21 +168,47 @@ public class ProducaoService {
         producaoRepository.saveAll(producaoList);
     }
 
+    /************************************************************************************************************************************/
+    /*                                     MÉTODOS PARA GERAR O GRAFO COM VERTICE COMO PESQUISADOR                                      */
+    /************************************************************************************************************************************/
+    
+    private GrafoPesquisador existeNaLista(List<GrafoPesquisador> list, String idPesquisador1, String idPesquisador2){
+        if(!list.isEmpty()){
+            for (int i = 0; i < list.size(); i++) {
+                if(list.get(i).getIdPesquisador1().equals(idPesquisador1) && 
+                    list.get(i).getIdPesquisador2().equals(idPesquisador2)){
+                    return list.get(i);
+                }
+            }
+        }
+        return null;
+    }
+
     public List<GrafoPesquisador> grafoPesquisador(){
         List<Object[]> results = producaoRepository.findGrafoPesquisador();
-        List<GrafoPesquisador> graph = new ArrayList<>();
+        List<GrafoPesquisador> list = new ArrayList<>();
         
         for (Object[] row : results) {
-            GrafoPesquisador grafoPesquisador = new GrafoPesquisador();
-            grafoPesquisador.setNomeProducao((String) row[0]);
-            grafoPesquisador.setIdPesquisador1((String) row[1]);
-            grafoPesquisador.setNomePesquisador1((String) row[2]);
-            grafoPesquisador.setIdPesquisador2((String) row[3]);
-            grafoPesquisador.setNomePesquisador2((String) row[4]);
-            grafoPesquisador.setTipoProducao((String) row[5]);
-            graph.add(grafoPesquisador);
+            String idPesquisador1 = (String) row[1];
+            String idPesquisador2 = (String) row[3];
+
+            GrafoPesquisador pesquisador = existeNaLista(list, idPesquisador1, idPesquisador2);
+
+            if(pesquisador == null){
+                GrafoPesquisador grafoPesquisador = new GrafoPesquisador();
+                grafoPesquisador.setIdPesquisador1((String) row[1]);
+                grafoPesquisador.setNomePesquisador1((String) row[2]);
+                grafoPesquisador.setIdPesquisador2((String) row[3]);
+                grafoPesquisador.setNomePesquisador2((String) row[4]);
+                grafoPesquisador.setTipoProducao((String) row[5]);
+                grafoPesquisador.setTotal(1);
+                list.add(grafoPesquisador);
+            }
+            else{
+                pesquisador.setTotal(pesquisador.getTotal() + 1);
+            }
         }
-        return graph;
+        return list;
     }
 
     public String cytoscapejsPesquisador() {
@@ -194,26 +219,72 @@ public class ProducaoService {
         for (int i = 0; i < listGrafoPesquisador.size(); i++) {
             edgeFormat = edgeFormat + "{ data: { source: '" + listGrafoPesquisador.get(i).getIdPesquisador1() + "', " +
                     "target: '" + listGrafoPesquisador.get(i).getIdPesquisador2() + "', " +
-                    "label: 'Aresta de " + listGrafoPesquisador.get(i).getIdPesquisador1() + 
-                    " para " + listGrafoPesquisador.get(i).getIdPesquisador2() + "'}},\n";
+                    "label: '" + listGrafoPesquisador.get(i).getTotal() + "'}},\n";
         }
         return edgeFormat;
     }
 
-    public void cytoscapejsInstituto() {
+    /************************************************************************************************************************************/
+    /*                                     MÉTODOS PARA GERAR O GRAFO COM VERTICE COMO INSTITUTO                                        */
+    /************************************************************************************************************************************/
+
+    private Long buscarIdInstituto(String idPesquisador){
+        return producaoRepository.buscarIdInstituto(idPesquisador);
+    }
+
+    private String buscarNomeInstituto(Long idInstituto){
+        return producaoRepository.buscarNomeInstituto(idInstituto);
+    }
+
+    private GrafoInstituto existeNaLista(List<GrafoInstituto> list, Long idPesquisador1, Long idPesquisador2){
+        if(!list.isEmpty()){
+            for (int i = 0; i < list.size(); i++) {
+                if(list.get(i).getIdInstituto1().equals(idPesquisador1) && 
+                    list.get(i).getIdInstituto2().equals(idPesquisador2)){
+                    return list.get(i);
+                }
+            }
+        }
+        return null;
+    }
+
+    public List<GrafoInstituto> grafoInstituto(){
+        List<GrafoPesquisador> listGrafoPesquisador = grafoPesquisador();
+        List<GrafoInstituto> list = new ArrayList<>();
+        
+        for (int i = 0; i < listGrafoPesquisador.size(); i++) {
+            Long idInstituto1 = buscarIdInstituto(listGrafoPesquisador.get(i).getIdPesquisador1());
+            Long idInstituto2 = buscarIdInstituto(listGrafoPesquisador.get(i).getIdPesquisador2());
+
+            GrafoInstituto instituto = existeNaLista(list, idInstituto1, idInstituto2);
+
+            if(instituto == null){
+                GrafoInstituto grafoInstituto = new GrafoInstituto();
+                grafoInstituto.setIdInstituto1(idInstituto1);
+                grafoInstituto.setNomeInstituto1(buscarNomeInstituto(idInstituto1));
+                grafoInstituto.setIdInstituto2(idInstituto2);
+                grafoInstituto.setNomeInstituto2(buscarNomeInstituto(idInstituto2));
+                grafoInstituto.setTipoProducao(listGrafoPesquisador.get(i).getTipoProducao());
+                grafoInstituto.setTotal(listGrafoPesquisador.get(i).getTotal());
+                list.add(grafoInstituto);
+            }
+            else{
+                instituto.setTotal(instituto.getTotal() + listGrafoPesquisador.get(i).getTotal());
+            }
+        }
+        return list;
+    }
+    
+    public String cytoscapejsInstituto() {
         String edgeFormat = "";
 
-        List<GrafoPesquisador> listGrafoPesquisador = grafoPesquisador();
+        List<GrafoInstituto> listGrafoInstituto = grafoInstituto();
         
-        // for (int i = 0; i < listGrafoPesquisador.size(); i++) {
-        //     edgeFormat = edgeFormat + "{ data: { source '" + listGrafoPesquisador.get(i).getIdPesquisador1() + "', " +
-        //             "target: '" + listGrafoPesquisador.get(i).getIdPesquisador1() + "', " +
-        //             "label: 'Aresta de " + listGrafoPesquisador.get(i).getIdPesquisador1() + 
-        //             " para " + listGrafoPesquisador.get(i).getIdPesquisador2() + "'}},\n";
-        // }
-        
-        System.out.println(edgeFormat);
-
-        //return edgeFormat;
+        for (int i = 0; i < listGrafoInstituto.size(); i++) {
+            edgeFormat = edgeFormat + "{ data: { source: '" + listGrafoInstituto.get(i).getIdInstituto1() + "', " +
+                    "target: '" + listGrafoInstituto.get(i).getIdInstituto2() + "', " +
+                    "label: '" + listGrafoInstituto.get(i).getTotal() + "'}},\n";
+        }
+        return edgeFormat;
     }
 }
