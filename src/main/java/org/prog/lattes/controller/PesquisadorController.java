@@ -3,7 +3,6 @@ package org.prog.lattes.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
-
 import org.prog.lattes.model.Instituto;
 import org.prog.lattes.service.PesquisadorService;
 import org.prog.lattes.view.GrafoInstituto;
@@ -73,5 +72,10 @@ public class PesquisadorController {
     @GetMapping("/grafoInstituto")
     public List<GrafoInstituto> grafoInstituto() {
         return pesquisadorService.grafoInstituto();
+    }
+
+    @GetMapping("/cytoscapejs")
+    public String cytoscapejs() {
+        return pesquisadorService.cytoscapejs();
     }
 }

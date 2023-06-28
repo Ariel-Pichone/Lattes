@@ -6,6 +6,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import org.prog.lattes.model.Pesquisador;
 import org.prog.lattes.model.Producao;
 import org.prog.lattes.model.TipoProducao;
 import org.prog.lattes.model.TotalProducoesAno;
@@ -135,8 +137,8 @@ public class ProducaoService {
             totalProducoesAno.setArtigo(producoesPorTipo.getOrDefault(TipoProducao.ARTIGO.getNome(), 0L));
             totalProducoesAno.setCapituloLivro(producoesPorTipo.getOrDefault(TipoProducao.CAPITULO_LIVRO.getNome(), 0L));
             totalProducoesAno.setLivro(producoesPorTipo.getOrDefault(TipoProducao.LIVRO.getNome(), 0L));
-            totalProducoesAno.setOrientacaoMestrado(producoesPorTipo.getOrDefault(TipoProducao.ORIENTACOES_MESTRADO.getNome(), 0L));
-            totalProducoesAno.setOrientacaoTCC(producoesPorTipo.getOrDefault(TipoProducao.ORIENTACOES_TCC.getNome(), 0L));
+            //totalProducoesAno.setOrientacaoMestrado(producoesPorTipo.getOrDefault(TipoProducao.ORIENTACOES_MESTRADO.getNome(), 0L));
+            //totalProducoesAno.setOrientacaoTCC(producoesPorTipo.getOrDefault(TipoProducao.ORIENTACOES_TCC.getNome(), 0L));
             totalProducoesAno.setTrabalhoEvento(producoesPorTipo.getOrDefault(TipoProducao.TRABALHO_EVENTO.getNome(), 0L));
 
             // Calcule o total de produção para o ano e defina-o no objeto TotalProducoesAno
@@ -168,6 +170,50 @@ public class ProducaoService {
     }
 
     public List<GrafoPesquisador> grafoPesquisador(){
-        return producaoRepository.grafoPesquisador();
+        List<Object[]> results = producaoRepository.findGrafoPesquisador();
+        List<GrafoPesquisador> graph = new ArrayList<>();
+        
+        for (Object[] row : results) {
+            GrafoPesquisador grafoPesquisador = new GrafoPesquisador();
+            grafoPesquisador.setNomeProducao((String) row[0]);
+            grafoPesquisador.setIdPesquisador1((String) row[1]);
+            grafoPesquisador.setNomePesquisador1((String) row[2]);
+            grafoPesquisador.setIdPesquisador2((String) row[3]);
+            grafoPesquisador.setNomePesquisador2((String) row[4]);
+            grafoPesquisador.setTipoProducao((String) row[5]);
+            graph.add(grafoPesquisador);
+        }
+        return graph;
+    }
+
+    public String cytoscapejsPesquisador() {
+        String edgeFormat = "";
+
+        List<GrafoPesquisador> listGrafoPesquisador = grafoPesquisador();
+        
+        for (int i = 0; i < listGrafoPesquisador.size(); i++) {
+            edgeFormat = edgeFormat + "{ data: { source: '" + listGrafoPesquisador.get(i).getIdPesquisador1() + "', " +
+                    "target: '" + listGrafoPesquisador.get(i).getIdPesquisador2() + "', " +
+                    "label: 'Aresta de " + listGrafoPesquisador.get(i).getIdPesquisador1() + 
+                    " para " + listGrafoPesquisador.get(i).getIdPesquisador2() + "'}},\n";
+        }
+        return edgeFormat;
+    }
+
+    public void cytoscapejsInstituto() {
+        String edgeFormat = "";
+
+        List<GrafoPesquisador> listGrafoPesquisador = grafoPesquisador();
+        
+        // for (int i = 0; i < listGrafoPesquisador.size(); i++) {
+        //     edgeFormat = edgeFormat + "{ data: { source '" + listGrafoPesquisador.get(i).getIdPesquisador1() + "', " +
+        //             "target: '" + listGrafoPesquisador.get(i).getIdPesquisador1() + "', " +
+        //             "label: 'Aresta de " + listGrafoPesquisador.get(i).getIdPesquisador1() + 
+        //             " para " + listGrafoPesquisador.get(i).getIdPesquisador2() + "'}},\n";
+        // }
+        
+        System.out.println(edgeFormat);
+
+        //return edgeFormat;
     }
 }

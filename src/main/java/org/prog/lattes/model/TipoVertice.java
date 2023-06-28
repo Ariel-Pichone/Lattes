@@ -1,7 +1,7 @@
 package org.prog.lattes.model;
 
 public enum TipoVertice {
-    AUTOR("Autor"),
+    //AUTOR("Autor"),
     INSTITUTO("Instituto"),
     PESQUISADOR("Pesquisador");
 

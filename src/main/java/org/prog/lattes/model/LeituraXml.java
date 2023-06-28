@@ -210,31 +210,31 @@ public class LeituraXml {
             /*               Lendo todas as orientações de mestrado que o pesquisador realizou                       */
             /*********************************************************************************************************/
             
-            tipoProducao = TipoProducao.ORIENTACOES_MESTRADO;
+            // tipoProducao = TipoProducao.ORIENTACOES_MESTRADO;
 
-            // Obtenha a lista de elementos "ORIENTACOES-CONCLUIDAS-PARA-MESTRADO"
-            nodeList = doc.getElementsByTagName("ORIENTACOES-CONCLUIDAS-PARA-MESTRADO");
+            // // Obtenha a lista de elementos "ORIENTACOES-CONCLUIDAS-PARA-MESTRADO"
+            // nodeList = doc.getElementsByTagName("ORIENTACOES-CONCLUIDAS-PARA-MESTRADO");
             
-            tagProducao = "DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO";
-            tagNome = "TITULO";
-            tagAno = "ANO";
+            // tagProducao = "DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO";
+            // tagNome = "TITULO";
+            // tagAno = "ANO";
             
-            //lerProducao(file,  node, producaoList, tipoProducao, nodeList, tagProducao, tagNome, tagAno, pesquisador);
+            // lerProducao(file,  node, producaoList, tipoProducao, nodeList, tagProducao, tagNome, tagAno, pesquisador);
             
             /*********************************************************************************************************/
             /*                  Lendo todas as orientações de TCC que o pesquisador realizou                         */
             /*********************************************************************************************************/
             
-            tipoProducao = TipoProducao.ORIENTACOES_TCC;
+            // tipoProducao = TipoProducao.ORIENTACOES_TCC;
 
-            // Obtenha a lista de elementos "OUTRAS-ORIENTACOES-CONCLUIDAS"
-            nodeList = doc.getElementsByTagName("OUTRAS-ORIENTACOES-CONCLUIDAS");
+            // // Obtenha a lista de elementos "OUTRAS-ORIENTACOES-CONCLUIDAS"
+            // nodeList = doc.getElementsByTagName("OUTRAS-ORIENTACOES-CONCLUIDAS");
             
-            tagProducao = "DADOS-BASICOS-DE-OUTRAS-ORIENTACOES-CONCLUIDAS";
-            tagNome = "TITULO";
-            tagAno = "ANO";
+            // tagProducao = "DADOS-BASICOS-DE-OUTRAS-ORIENTACOES-CONCLUIDAS";
+            // tagNome = "TITULO";
+            // tagAno = "ANO";
             
-            //lerProducao(file,  node, producaoList, tipoProducao, nodeList, tagProducao, tagNome, tagAno, pesquisador);
+            // //lerProducao(file,  node, producaoList, tipoProducao, nodeList, tagProducao, tagNome, tagAno, pesquisador);
 
             /*********************************************************************************************************/
             /*                  Lendo todos os trabalhos em eventos que o pesquisador parcipou                       */

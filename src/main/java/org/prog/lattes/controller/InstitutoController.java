@@ -66,4 +66,9 @@ public class InstitutoController {
     public void remover(@PathVariable("id") Long id) throws Exception {
         institutoService.remover(id);
     }
+
+    @GetMapping("/cytoscapejs")
+    public String cytoscapejs() {
+        return institutoService.cytoscapejs();
+    }
 }

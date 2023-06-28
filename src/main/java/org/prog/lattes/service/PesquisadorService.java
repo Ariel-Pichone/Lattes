@@ -132,4 +132,16 @@ public class PesquisadorService {
     public List<GrafoInstituto> grafoInstituto(){
         return pesquisadorRepository.grafoInstituto();
     }
+
+    public String cytoscapejs() {
+        String nodeFormat = "";
+
+        List<Pesquisador> listPesquisador = pesquisadorRepository.findAll();
+        
+        for (int i = 0; i < listPesquisador.size(); i++) {
+            nodeFormat = nodeFormat + "{ data: { id: '" + listPesquisador.get(i).getIdentificador() + "', " +
+                    "label: '" + listPesquisador.get(i).getNome() + "'}},\n";
+        }      
+        return nodeFormat;
+    }
 }

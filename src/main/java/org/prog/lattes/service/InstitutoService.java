@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.prog.lattes.model.Instituto;
+import org.prog.lattes.model.Pesquisador;
 import org.prog.lattes.repository.InstitutoRepository;
 import org.prog.lattes.view.InstitutoView;
 import org.springframework.data.domain.Page;
@@ -100,5 +101,17 @@ public class InstitutoService {
         } else {
             throw new Exception("Id não encontrado");
         }
+    }
+
+    public String cytoscapejs() {
+        String nodeFormat = "";
+
+        List<Instituto> listInstituto = institutoRepository.findAll();
+        
+        for (int i = 0; i < listInstituto.size(); i++) {
+            nodeFormat = nodeFormat + "{ data: { id: '" + listInstituto.get(i).getId() + "', " +
+                    "label: '" + listInstituto.get(i).getNome() + "'}},\n";
+        }
+        return nodeFormat;
     }
 }
